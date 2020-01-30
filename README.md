@@ -18,6 +18,11 @@ This repo for analysis on the [corona virus](https://www.who.int/health-topics/c
 - In `data_prep.py` the data extracts the latest entry for each date, and aggregates all the records into a time series dataset.
 - The script is reproducible, but you will need to enable Google API Access to run it yourself. Follow [this](https://developers.google.com/sheets/api/quickstart/python) tutorial.
 
+### Code
+- `data_prep.py` will save 3 files, 2 for the aggregated time series data (in csv and parquet format) and one for the summed confirms, deaths and recoveries by day for trendlining. 
+- When the script is run, the files will be saved to a datafolder titled with the current date of extraction.
+
+
 
 #### News Sources and Materials
 - [Live Tracker Map](https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6)
