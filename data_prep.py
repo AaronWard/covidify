@@ -188,3 +188,6 @@ print('Saving...')
 file_name = './data/updated_{}.parquet.gzip'.format(datetime.date(datetime.now()))
 final_df.astype(str).to_parquet(file_name, compression='gzip')
 
+
+csv_file_name = './data/updated_{}.csv'.format(datetime.date(datetime.now()))
+final_df.astype(str).to_csv(csv_file_name)
