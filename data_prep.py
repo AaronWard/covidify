@@ -4,7 +4,7 @@ import numpy as np
 import os
 import pickle
 import os.path
-from datetime import datetime
+from datetime import datetime, date, time 
 import pyarrow
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -164,9 +164,21 @@ cleaned_dataframes[-2]['deaths'] = [0] * (cleaned_dataframes[-2]).shape[0]
 print('Concatenating all sheet dataframes into one...')
 final_df = pd.concat(cleaned_dataframes, sort=True)
 
+def convert_date_time(date):
+    
+    try:
+        if 'PM' in date:
+            return datetime.strptime(date,'%m/%d/%Y %H:%M PM').date()
+        elif 'AM' in date:
+            return datetime.strptime(date,'%m/%d/%Y %H:%M AM').date()
+        else:
+            return datetime.strptime(date,'%m/%d/%Y %H:%M').date()
+    except:
+        return datetime.strptime(date, '%m/%d/%y %H:%M PM').date()
 
+# Make sure dates are all the same format
 final_df['date'] = final_df['date'].astype(str)
-final_df.head()
+final_df['date'] = final_df['date'].apply(convert_date_time)
 
 # sheets need to be sorted by date value
 print('Sorting by date...')
