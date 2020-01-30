@@ -184,10 +184,60 @@ final_df['date'] = final_df['date'].apply(convert_date_time)
 print('Sorting by date...')
 final_df = final_df.sort_values('date')
 
+
+'''
+Get the difference of the sum totals for each
+date and plot them on a trendline graph
+'''
+def get_new_cases(final_df, col):
+    diff_list = []
+    tmp_df_list = []
+    df = final_df.copy()
+    
+    for column in ['confirmed', 'deaths', 'recovered']:
+        df[column] = df[column].replace('', 0).astype(int)
+
+    for i, day in enumerate(df.date.unique()):    
+        tmp_df = df[df.date == day]
+        tmp_df_list.append(tmp_df[col].sum())
+        
+        if i == 0:
+            diff_list.append(tmp_df[col].sum())
+        else:
+            diff_list.append(tmp_df[col].sum() - tmp_df_list[i-1])
+        
+    return diff_list
+
+print('Calculating dataframe for new cases...')
+new_cases_df = pd.DataFrame([])
+new_cases_df['new_confirmed_cases'] = get_new_cases(final_df, 'confirmed')
+new_cases_df['new_confirmed_death'] = get_new_cases(final_df, 'deaths')
+new_cases_df['new_confirmed_recovery'] = get_new_cases(final_df, 'recovered')
+new_cases_df['date'] = final_df.date.unique()
+
+
+#Create date of extraction folder
+save_dir  = './data/' + str(datetime.date(datetime.now()))
+
+print('Saving to data subdirectory...')
+print('...', save_dir)
+
+if not os.path.exists(save_dir):
+    os.mkdir(save_dir)
+    
 print('Saving...')
-file_name = './data/updated_{}.parquet.gzip'.format(datetime.date(datetime.now()))
-final_df.astype(str).to_parquet(file_name, compression='gzip')
+file_name = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
+final_df.astype(str).to_parquet(os.path.join(save_dir, file_name), compression='gzip')
+print('...', file_name)
 
 
-csv_file_name = './data/updated_{}.csv'.format(datetime.date(datetime.now()))
-final_df.astype(str).to_csv(csv_file_name)
+csv_file_name = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
+final_df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
+print('...', csv_file_name)
+
+
+new_case_file_name = 'new_confirmed_{}.csv'.format(datetime.date(datetime.now()))
+new_cases_df.astype(str).to_csv(os.path.join(save_dir, new_case_file_name))
+print('...', new_case_file_name)
+
+print('Done!')
