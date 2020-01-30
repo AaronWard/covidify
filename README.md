@@ -7,9 +7,9 @@
 This repo for analysis on the [corona virus](https://www.who.int/health-topics/coronavirus). This includes: <br>
 
 - [X] Script for extracting google sheet data and preprocessing it into a time series dataset
-- [X] Do some data exploration using tableau
-- [ ] Do some data exploration using pandas
-- [ ] Do some time series analysis and apply machine learning to predict the potential confirmed cases in the future.
+- [X] Do data exploration using tableau
+- [ ] Do data exploration using pandas
+- [ ] Implement time series analysis and apply machine learning to predict the potential confirmed cases in the future. (<i>waiting on more data for the days to come</i>)
 
 
 ### Data
