@@ -36,33 +36,33 @@ This repo for analysis on the [corona virus](https://www.who.int/health-topics/c
 This plots will be updated <u>daily</u> to visualize the trend in aggregated sums and the daily counts for 3 attributes: **<i>Confirmed Cases, Deaths and Recoveries.</i>**
 
 **Confirmed Cases**
-this is an aggregated sum trendline for all the cases that have been confirmed with the corona virus
 
+this is an aggregated sum trendline for all the cases that have been confirmed with the corona virus
 ![alt text](./data/images/confirmed_trendline.jpg "Current trend of confirmed cases")
 
 
 **Deaths**
-this is an aggregated sum trendline for all people who have died.
 
+this is an aggregated sum trendline for all people who have died.
 ![alt text](./data/images/deaths_trendline.jpg "Current trend of confirmed cases")
 
 
 **Recoveries**
-An aggregated sum trendline for all the cases were confirmed and later the person has recovered
 
+An aggregated sum trendline for all the cases were confirmed and later the person has recovered
 ![alt text](./data/images/recovered_trendline.jpg "Current trend of confirmed cases")
 
 **Daily Confirmed Cases**
-A count for new cases recorded on that given date, does not take past confirmations into account. 
 
+A count for new cases recorded on that given date, does not take past confirmations into account. 
 ![alt text](./data/images/new_confirmed_cases_trendline.jpg "Current trend of confirmed cases")
 
 **Daily Deaths**
-A count for deaths due to coronavirus recorded on that given date, does not take past deaths into account. 
 
+A count for deaths due to coronavirus recorded on that given date, does not take past deaths into account. 
 ![alt text](./data/images/new_deaths_trendline.jpg "Current trend of confirmed cases")
 
 **Daily Recoveries**
-A count for new recovories recorded on that given date, does not take past confirmations into account. 
 
+A count for new recovories recorded on that given date, does not take past confirmations into account. 
 ![alt text](./data/images/new_recoveries_trendline.jpg "Current trend of confirmed cases")
