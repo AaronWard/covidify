@@ -211,8 +211,8 @@ def get_new_cases(final_df, col):
 print('Calculating dataframe for new cases...')
 new_cases_df = pd.DataFrame([])
 new_cases_df['new_confirmed_cases'] = get_new_cases(final_df, 'confirmed')
-new_cases_df['new_confirmed_death'] = get_new_cases(final_df, 'deaths')
-new_cases_df['new_confirmed_recovery'] = get_new_cases(final_df, 'recovered')
+new_cases_df['new_deaths'] = get_new_cases(final_df, 'deaths')
+new_cases_df['new_recoveries'] = get_new_cases(final_df, 'recovered')
 new_cases_df['date'] = final_df.date.unique()
 
 
@@ -236,7 +236,7 @@ final_df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
 print('...', csv_file_name)
 
 
-new_case_file_name = 'new_confirmed_{}.csv'.format(datetime.date(datetime.now()))
+new_case_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
 new_cases_df.astype(str).to_csv(os.path.join(save_dir, new_case_file_name))
 print('...', new_case_file_name)
 
