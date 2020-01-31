@@ -64,10 +64,10 @@ if not creds or not creds.valid:
         creds.refresh(Request())
     else:
         flow = InstalledAppFlow.from_client_secrets_file(
-            'credentials.json', SCOPES)
+            './src/credentials.json', SCOPES)
         creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
-    with open('token.pickle', 'wb') as token:
+    with open('./src/token.pickle', 'wb') as token:
         pickle.dump(creds, token)
         
 #get all the sheet names for ranges when querying
