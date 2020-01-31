@@ -6,6 +6,7 @@
 
 This repo for analysis on the [corona virus](https://www.who.int/health-topics/coronavirus). This includes: <br>
 
+**To Do:**
 - [X] Script for extracting google sheet data and preprocessing it into a time series dataset
 - [X] Do data exploration using tableau
 - [ ] Do data exploration using pandas
@@ -24,7 +25,44 @@ This repo for analysis on the [corona virus](https://www.who.int/health-topics/c
 
 
 
-#### News Sources and Materials
+##### News Sources and Materials
 - [Live Tracker Map](https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6)
 - [How To Stay Safe](https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public)
 - [Latest Google News Feed](https://www.google.com/search?q=coronavirus&tbm=nws&sxsrf=ACYBGNTsjxRI2IRU0X88bcksb5doQCKzDA:1580388795464&source=lnt&tbs=qdr:d&sa=X&ved=0ahUKEwjiwYqGr6vnAhWYUt4KHQZQB-QQpwUIIA&biw=2133&bih=1052&dpr=0.9)
+
+
+
+## Visualization of data
+This plots will be updated <u>daily</u> to visualize the trend in aggregated sums and the daily counts for 3 attributes: **<i>Confirmed Cases, Deaths and Recoveries.</i>**
+
+**Confirmed Cases**
+this is an aggregated sum trendline for all the cases that have been confirmed with the corona virus
+
+![alt text](./data/images/confirmed_trendline.jpg "Current trend of confirmed cases")
+
+
+**Deaths**
+this is an aggregated sum trendline for all people who have died.
+
+![alt text](./data/images/deaths_trendline.jpg "Current trend of confirmed cases")
+
+
+**Recoveries**
+An aggregated sum trendline for all the cases were confirmed and later the person has recovered
+
+![alt text](./data/images/recovered_trendline.jpg "Current trend of confirmed cases")
+
+**Daily Confirmed Cases**
+A count for new cases recorded on that given date, does not take past confirmations into account. 
+
+![alt text](./data/images/new_confirmed_cases_trendline.jpg "Current trend of confirmed cases")
+
+**Daily Deaths**
+A count for deaths due to coronavirus recorded on that given date, does not take past deaths into account. 
+
+![alt text](./data/images/new_deaths_trendline.jpg "Current trend of confirmed cases")
+
+**Daily Recoveries**
+A count for new recovories recorded on that given date, does not take past confirmations into account. 
+
+![alt text](./data/images/new_recoveries_trendline.jpg "Current trend of confirmed cases")
