@@ -2,7 +2,8 @@
 - [X] Script for extracting google sheet data and preprocessing it into a time series dataset
 - [X] Do data exploration using tableau
 - [ ] Do data exploration using pandas
-- [ ] Implement time series analysis and apply machine learning to predict the potential confirmed cases in the future. (<i>waiting on more data for the days to come</i>)
+- [ ] Experiment with OLS and other time series predictive modelling techniques
+- [ ] Imapply machine learning to predict the potential confirmed cases in the future. (<i>waiting on more data for the days to come</i>)
 
 
 ### Code
