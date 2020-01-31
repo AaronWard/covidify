@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/AaronWard/coronavirus-analysis/blob/master/tableau/spread.gif "Spread of coronavirus 22nd to 29th")
 
-This repo for analysis on the [corona virus](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reporting visualizations and information sheets.
+This repo is for analysis on the [corona virus](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reporting visualizations and information sheets.
 
 ### Data:
 - The data come from the **Novel Coronavirus (2019-nCoV) Cases**,  which is a live dataset provided by JHU CSSE. 
@@ -16,17 +16,20 @@ This repo for analysis on the [corona virus](https://www.who.int/health-topics/c
 - Results will be saved to `reports` folder. 
 
 ## Visualization of data:
+
 This plots will be updated <u>daily</u> to visualize the trend in aggregated sums and the daily counts for 3 attributes: **<i>Confirmed Cases, Deaths and Recoveries.</i>**
+
+Last updated:  `2020-01-31`
 
 **Confirmed Cases**
 
-this is an aggregated sum trendline for all the cases that have been confirmed with the corona virus
+This is an aggregated sum trendline for all the confirmed cases with the corona virus
 ![alt text](./reports/images/confirmed_trendline.jpg "Current trend of confirmed cases")
 
 
 **Deaths**
 
-this is an aggregated sum trendline for all people who have died.
+This is an aggregated sum trendline for all people who have died.
 ![alt text](./reports/images/deaths_trendline.jpg "Current trend of confirmed cases")
 
 
@@ -47,10 +50,8 @@ A count for deaths due to coronavirus recorded on that given date, does not take
 
 **Daily Recoveries**
 
-A count for new recovories recorded on that given date, does not take past confirmations into account. 
+A count for new recovories recorded on that given date, does not take past recoveries into account. 
 ![alt text](./reports/images/new_recoveries_trendline.jpg "Current trend of confirmed cases")
-
-
 
 
 ## Additional information and thanks
