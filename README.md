@@ -53,6 +53,6 @@ A count for new recovories recorded on that given date, does not take past confi
 
 
 
-#### Additional information and thanks
+## Additional information and thanks
 - All code written by me (Aaron Ward  - https://www.linkedin.com/in/aaronjward/)
-- A special thank you to the [JHU CSSE](https://systems.jhu.edu/) team for maintaining this database
+- A special thank you to the [JHU CSSE](https://systems.jhu.edu/) team for maintaining the data
