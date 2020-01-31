@@ -49,3 +49,10 @@ A count for deaths due to coronavirus recorded on that given date, does not take
 
 A count for new recovories recorded on that given date, does not take past confirmations into account. 
 ![alt text](./reports/images/new_recoveries_trendline.jpg "Current trend of confirmed cases")
+
+
+
+
+#### Additional information and thanks
+- All code written by me (Aaron Ward  - https://www.linkedin.com/in/aaronjward/)
+- A special thank you to the [JHU CSSE](https://systems.jhu.edu/) team for maintaining this database
