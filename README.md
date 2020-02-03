@@ -19,9 +19,7 @@ This repo is for analysis on the [corona virus](https://www.who.int/health-topic
 
 This plots will be updated <u>daily</u> to visualize the trend in aggregated sums and the daily counts for 3 attributes: **<i>Confirmed Cases, Deaths and Recoveries.</i>**
 
-**ISSUES:** Data contains incorrect `Last Update` date, need to parse the from the sheet names - Will fix soon!
-
-Last updated:  `2020-02-02`
+Last updated:  `2020-02-03`
 
 **Confirmed Cases**
 
