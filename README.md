@@ -9,8 +9,8 @@ This repo is for analysis on the [corona virus](https://www.who.int/health-topic
 - Data available [here](https://docs.google.com/spreadsheets/d/1yZv9w9zRKwrGTaR-YzmAqMefw4wMlaXocejdxZaTs6w).
 
 ### How to run:
-- `git clone corona-analysis` and cd into repository
-- `pip install -r requirements.txt` to install dependencies
+- `git clone corona-analysis` and `cd` into repository
+- run `pip install -r requirements.txt` to install dependencies
 - run `./pipeline.sh`
 - You may need to authenticate using OAuth, a browser screen will pop up, just click allow. Follow [this](https://developers.google.com/sheets/api/quickstart/python) tutorial. 
 - Make sure you add your own `credentials.json` file to the src folder.
