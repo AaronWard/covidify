@@ -1,6 +1,7 @@
 from __future__ import print_function
 import pandas as pd
 import numpy as np
+import re
 import os
 import pickle
 import os.path
@@ -19,9 +20,13 @@ def clean_sheet_names(sheets):
     new_ranges = []
     indices = []
     
+
     #Get all the tabs in the sheet 
     for s in sheets:
         new_ranges.append(s.get("properties", {}).get("title"))
+        
+    # Remove all sheets that dont have a numeric header
+    new_ranges = [x for x in new_ranges if re.search(r'\d', x)]
         
     #split the names to just get the date
     clean_new_ranges = new_ranges.copy()
@@ -78,6 +83,11 @@ sheets = sheet_metadata.get('sheets', '')
 # Clean the result to the sheet tabs we want
 cleaned_ranges = clean_sheet_names(sheets)
 
+def fix_dates(tmp_df, sheet_range):
+
+        
+
+    return tmp_df
 
 def get_data(sheet_range):
     tmp_df = pd.DataFrame([])
@@ -108,6 +118,8 @@ def get_data(sheet_range):
             ds = pd.Series(data=column_data, name=col_name)
             all_data.append(ds)
         tmp = pd.concat(all_data, axis=1)
+
+        tmp = fix_dates(tmp, sheet_range)
         
     print('...', sheet_range)
     return tmp
@@ -163,6 +175,7 @@ cleaned_dataframes[-2]['deaths'] = [0] * (cleaned_dataframes[-2]).shape[0]
 
 print('Concatenating all sheet dataframes into one...')
 final_df = pd.concat(cleaned_dataframes, sort=True)
+
 
 def convert_date_time(date):
     
