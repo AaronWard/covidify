@@ -6,7 +6,7 @@ This repo is for analysis on the [corona virus](https://www.who.int/health-topic
 
 ### Data:
 - The data come from the **Novel Coronavirus (2019-nCoV) Cases**,  which is a live dataset provided by JHU CSSE. 
-- Data available [here](https://docs.google.com/spreadsheets/d/1yZv9w9zRKwrGTaR-YzmAqMefw4wMlaXocejdxZaTs6w).
+- Data available [here](https://docs.google.com/spreadsheets/d/1wQVypefm946ch4XDp37uZ-wartW4V7ILdg-qYiDXUHM).
 
 ### How to run:
 - `git clone corona-analysis` and `cd` into repository
@@ -18,7 +18,10 @@ This repo is for analysis on the [corona virus](https://www.who.int/health-topic
 
 ## Visualization of data:
 
-This plots will be updated <u>daily</u> to visualize the trend in aggregated sums and the daily counts for 3 attributes: **<i>Confirmed Cases, Deaths and Recoveries.</i>**
+This plots will be updated <u>daily</u> to visualize the trend in aggregated sums and the daily counts for 3 attributes: 
+- **<i>Confirmed Cases</i>**
+- **<i>Death</i>**
+- **<i>secoveries.</i>**
 
 Last updated:  `2020-02-03`
 
