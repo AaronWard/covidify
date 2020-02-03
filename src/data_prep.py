@@ -6,6 +6,7 @@ import os
 import pickle
 import os.path
 from datetime import datetime, date, time 
+from time import strftime
 import pyarrow
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -83,10 +84,18 @@ sheets = sheet_metadata.get('sheets', '')
 # Clean the result to the sheet tabs we want
 cleaned_ranges = clean_sheet_names(sheets)
 
-def fix_dates(tmp_df, sheet_range):
+def fix_dates(tmp_df, tmp_sheet_range):
 
-        
-
+    try:
+        # Get correct year
+        year = datetime.strptime(tmp_df['Last Update'][0].split(' ')[0], '%m/%d/%Y').year()
+    except:
+        year = '2020'# Default to 2020
+    
+    tmp_sheet_range = tmp_sheet_range.split('_')[0]
+    correct_date = datetime.strptime(tmp_sheet_range, '%b%d').strftime('%m/%d/' + year)    
+    tmp_df['Last Update'] = correct_date
+    
     return tmp_df
 
 def get_data(sheet_range):
@@ -133,7 +142,6 @@ for sheet_range in cleaned_ranges:
 # - Fill null values
 # - remore suspected values
 # - change column names
-
 def clean_data(tmp_df):
     if 'Demised' in tmp_df.columns:
         tmp_df.rename(columns={'Demised':'Deaths'}, inplace=True)
@@ -176,22 +184,8 @@ cleaned_dataframes[-2]['deaths'] = [0] * (cleaned_dataframes[-2]).shape[0]
 print('Concatenating all sheet dataframes into one...')
 final_df = pd.concat(cleaned_dataframes, sort=True)
 
-
-def convert_date_time(date):
-    
-    try:
-        if 'PM' in date:
-            return datetime.strptime(date,'%m/%d/%Y %H:%M PM').date()
-        elif 'AM' in date:
-            return datetime.strptime(date,'%m/%d/%Y %H:%M AM').date()
-        else:
-            return datetime.strptime(date,'%m/%d/%Y %H:%M').date()
-    except:
-        return datetime.strptime(date, '%m/%d/%y %H:%M PM').date()
-
 # Make sure dates are all the same format
 final_df['date'] = final_df['date'].astype(str)
-final_df['date'] = final_df['date'].apply(convert_date_time)
 
 # sheets need to be sorted by date value
 print('Sorting by date...')
