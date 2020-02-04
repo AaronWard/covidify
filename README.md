@@ -16,6 +16,10 @@ This repo is for analysis on the [corona virus](https://www.who.int/health-topic
 - Make sure you add your own `credentials.json` file to the src folder.
 - Results will be saved to `reports` folder. 
 
+**TODO:**
+
+- checkout the [kanban boards](https://github.com/AaronWard/coronavirus-analysis/projects) to see future work on this project
+
 ## Visualization of data:
 
 This plots will be updated <u>daily</u> to visualize the trend in accumalitive sums and the daily counts for 3 attributes: 
