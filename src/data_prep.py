@@ -191,6 +191,9 @@ final_df['date'] = final_df['date'].astype(str)
 print('Sorting by date...')
 final_df = final_df.sort_values('date')
 
+#Fix types
+for column in ['confirmed', 'deaths', 'recovered']:
+    final_df[column] = final_df[column].replace('', 0).astype(int)
 
 '''
 Get the difference of the sum totals for each
@@ -200,9 +203,6 @@ def get_new_cases(final_df, col):
     diff_list = []
     tmp_df_list = []
     df = final_df.copy()
-    
-    for column in ['confirmed', 'deaths', 'recovered']:
-        df[column] = df[column].replace('', 0).astype(int)
 
     for i, day in enumerate(df.date.unique()):    
         tmp_df = df[df.date == day]
@@ -216,12 +216,24 @@ def get_new_cases(final_df, col):
     return diff_list
 
 print('Calculating dataframe for new cases...')
-new_cases_df = pd.DataFrame([])
-new_cases_df['new_confirmed_cases'] = get_new_cases(final_df, 'confirmed')
-new_cases_df['new_deaths'] = get_new_cases(final_df, 'deaths')
-new_cases_df['new_recoveries'] = get_new_cases(final_df, 'recovered')
-new_cases_df['date'] = final_df.date.unique()
+daily_cases_df = pd.DataFrame([])
+daily_cases_df['new_confirmed_cases'] = get_new_cases(final_df, 'confirmed')
+daily_cases_df['new_deaths'] = get_new_cases(final_df, 'deaths')
+daily_cases_df['new_recoveries'] = get_new_cases(final_df, 'recovered')
+daily_cases_df['date'] = final_df.date.unique()
 
+'''
+Calculate the number of people that are ACTUALLY infected on a given day
+currently infected = sum of people date - (recovored + died)
+ex: 5 = 10 - (4 - 1)
+
+'''
+
+current_infected = pd.DataFrame([])
+current_infected['currently_infected'] = (final_df.groupby('date').confirmed.sum() - \
+                                          (final_df.groupby('date').deaths.sum() + final_df.groupby('date').recovered.sum()))
+current_infected['delta'] = (current_infected['currently_infected'] - final_df.groupby('date').confirmed.sum())
+daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='date')
 
 #Create date of extraction folder
 save_dir  = './data/' + str(datetime.date(datetime.now()))
@@ -243,8 +255,8 @@ final_df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
 print('...', csv_file_name)
 
 
-new_case_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
-new_cases_df.astype(str).to_csv(os.path.join(save_dir, new_case_file_name))
-print('...', new_case_file_name)
+daily_cases_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
+daily_cases_df.astype(str).to_csv(os.path.join(save_dir, daily_cases_file_name))
+print('...', daily_cases_file_name)
 
 print('Done!')
