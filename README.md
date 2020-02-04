@@ -27,39 +27,44 @@ This plots will be updated <u>daily</u> to visualize the trend in accumalitive s
 - **<i>Deaths</i>**
 - **<i>Recoveries.</i>**
 
-Last updated:  `2020-02-03`
+Last updated:  `2020-02-04`
 
 **Confirmed Cases**
 
 This is an aggregated sum trendline for all the confirmed cases with the corona virus
-![alt text](./reports/images/confirmed_trendline.jpg "Current trend of confirmed cases")
+![alt text](./reports/images/confirmed_trendline.jpg)
 
 
 **Deaths**
 
 This is an aggregated sum trendline for all people who have died.
-![alt text](./reports/images/deaths_trendline.jpg "Current trend of confirmed cases")
+![alt text](./reports/images/deaths_trendline.jpg)
 
 
 **Recoveries**
 
 An aggregated sum trendline for all the cases were confirmed and later the person has recovered
-![alt text](./reports/images/recovered_trendline.jpg "Current trend of confirmed cases")
+![alt text](./reports/images/recovered_trendline.jpg)
 
 **Daily Confirmed Cases**
 
 A count for new cases recorded on that given date, does not take past confirmations into account. 
-![alt text](./reports/images/new_confirmed_cases_trendline.jpg "Current trend of confirmed cases")
+![alt text](./reports/images/new_confirmed_cases_bar.jpg)
 
 **Daily Deaths**
 
 A count for deaths due to coronavirus recorded on that given date, does not take past deaths into account. 
-![alt text](./reports/images/new_deaths_trendline.jpg "Current trend of confirmed cases")
+![alt text](./reports/images/new_deaths_bar.jpg )
 
 **Daily Recoveries**
 
 A count for new recovories recorded on that given date, does not take past recoveries into account. 
-![alt text](./reports/images/new_recoveries_trendline.jpg "Current trend of confirmed cases")
+![alt text](./reports/images/new_recoveries_bar.jpg)
+
+**Currently Infected Count **
+
+Because of the data only recorfs for number of confirmed cases, it doesnt show how many for a given day actually have the virus. This shows number of daily confirmed numbers minus the people who have died/recovered.  
+![alt text](./reports/images/currently_infected_stacked_bar.jpg "Number of people actually with the virus for each day")
 
 
 ## Additional information and thanks
