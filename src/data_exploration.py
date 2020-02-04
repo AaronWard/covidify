@@ -46,7 +46,7 @@ def create_bar(tmp_df, col):
     tmp = tmp_df.head(30).groupby(['date'])[[col]].sum()
     tmp.plot.bar(ax=ax, rot=45, color='lightgreen')
     fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, '{}_trendline.jpg'.format(col)))
+    fig.savefig(os.path.join(image_dir, '{}_bar.jpg'.format(col)))
 
     
 def create_stacked_bar(tmp_df, col1, col2, fig_title):

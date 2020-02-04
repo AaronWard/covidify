@@ -44,7 +44,7 @@ This is an aggregated sum trendline for all people who have died.
 **Recoveries**
 
 An aggregated sum trendline for all the cases were confirmed and later the person has recovered
-![alt text](./reports/images/recovered_trendline.jpg)
+![alt text](./reports/images/recovered_trendline.jpg "")
 
 **Daily Confirmed Cases**
 
@@ -54,7 +54,7 @@ A count for new cases recorded on that given date, does not take past confirmati
 **Daily Deaths**
 
 A count for deaths due to coronavirus recorded on that given date, does not take past deaths into account. 
-![alt text](./reports/images/new_deaths_bar.jpg )
+![alt text](./reports/images/new_deaths_bar.jpg)
 
 **Daily Recoveries**
 
