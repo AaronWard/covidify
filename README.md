@@ -61,7 +61,7 @@ A count for deaths due to coronavirus recorded on that given date, does not take
 A count for new recovories recorded on that given date, does not take past recoveries into account. 
 ![alt text](./reports/images/new_recoveries_bar.jpg)
 
-**Currently Infected Count **
+**Currently Infected Count**
 
 Because of the data only recorfs for number of confirmed cases, it doesnt show how many for a given day actually have the virus. This shows number of daily confirmed numbers minus the people who have died/recovered.  
 ![alt text](./reports/images/currently_infected_stacked_bar.jpg "Number of people actually with the virus for each day")
