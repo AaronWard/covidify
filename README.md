@@ -34,27 +34,25 @@ Last updated:  `2020-02-04`
 This is an aggregated sum trendline for all the confirmed cases with the corona virus
 ![alt text](./reports/images/confirmed_trendline.jpg)
 
+**Daily Confirmed Cases**
+
+A count for new cases recorded on that given date, does not take past confirmations into account. 
+![alt text](./reports/images/new_confirmed_cases_bar.jpg)
 
 **Deaths**
 
 This is an aggregated sum trendline for all people who have died.
 ![alt text](./reports/images/deaths_trendline.jpg)
 
+**Daily Deaths**
+
+A count for deaths due to coronavirus recorded on that given date, does not take past deaths into account. 
+![alt text](./reports/images/new_deaths_bar.jpg)
 
 **Recoveries**
 
 An aggregated sum trendline for all the cases were confirmed and later the person has recovered
 ![alt text](./reports/images/recovered_trendline.jpg "")
-
-**Daily Confirmed Cases**
-
-A count for new cases recorded on that given date, does not take past confirmations into account. 
-![alt text](./reports/images/new_confirmed_cases_bar.jpg)
-
-**Daily Deaths**
-
-A count for deaths due to coronavirus recorded on that given date, does not take past deaths into account. 
-![alt text](./reports/images/new_deaths_bar.jpg)
 
 **Daily Recoveries**
 
