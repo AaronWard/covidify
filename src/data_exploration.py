@@ -48,18 +48,21 @@ def create_bar(tmp_df, col):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, '{}_bar.jpg'.format(col)))
 
+
+# def create_stacked_bar(agg, daily, col1, col2, fig_title):
+#     tmp_df = pd.DataFrame([])
+#     tmp_df['date'] = daily['date']
+#     tmp_df['confirmed_cases'] = agg.groupby(['date']).confirmed.sum().values - daily.new_confirmed_cases
+#     tmp_df['new_confirmed_cases'] = daily.new_confirmed_cases
+#     tmp_df = tmp_df.set_index('date')
+#     fig, ax = plt.subplots(figsize=(15,7))
+#     tmp_df[[col1, col2]].plot.bar(ax=ax,
+#                                   rot=45,
+#                                   stacked=False,
+#                                   title=fig_title);
+#     fig = ax.get_figure()
+#     fig.savefig(os.path.join(image_dir, '{}_stacked_bar.jpg'.format(col2)))
     
-def create_stacked_bar(tmp_df, col1, col2, fig_title):
-    tmp_df = tmp_df.set_index('date')
-    fig, ax = plt.subplots(figsize=(15,7))
-    tmp_df[[col2, col1]].plot.bar(ax=ax,
-                                  rot=45,
-                                  stacked=True,
-                                  title=fig_title);
-    fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, '{}_stacked_bar.jpg'.format(col2)))
-
-
 
 print('Creating graphs...')
 print('... Time Series Data')
@@ -74,7 +77,28 @@ daily_figures_cols = ['new_confirmed_cases', 'new_deaths', 'new_recoveries']
 for col in daily_figures_cols:
     create_bar(daily_df, col)
     
-print('... Currently infected')
-create_stacked_bar(daily_df, 'new_confirmed_cases', 'currently_infected', "Orange means confirmed cases minus deaths and recoveries.")
+print('... Daily New Infections Differences')
+# create_stacked_bar(agg_df, daily_df, 'new_confirmed_cases', 'confirmed_cases',
+#                    "New additional infected numbers by day")
+
+
+def create_stacked_bar(tmp_df, col1, col2, fig_title):
+    tmp_df = tmp_df.set_index('date')
+    fig, ax = plt.subplots(figsize=(15,7))
+    tmp_df[[col2, col1]].plot.bar(ax=ax,
+                                  rot=45,
+                                  stacked=True,
+                                  title=fig_title);
+    fig = ax.get_figure()
+    fig.savefig(os.path.join(image_dir, '{}_stacked_bar.jpg'.format(col2)))
+    
+new_df = pd.DataFrame([])
+new_df['date'] = daily_df['date']
+new_df['confirmed_cases'] = agg_df.groupby(['date']).confirmed.sum().values - daily_df.new_confirmed_cases
+new_df['new_confirmed_cases'] = daily_df.new_confirmed_cases
+
+create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "...")
+
+
 
 print('Done!')

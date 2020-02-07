@@ -27,7 +27,7 @@ This plots will be updated <u>daily</u> to visualize the trend in accumalitive s
 - **<i>Deaths</i>**
 - **<i>Recoveries.</i>**
 
-Last updated:  `2020-02-04`
+Last updated:  `2020-02-07`
 
 **Confirmed Cases**
 
@@ -62,7 +62,7 @@ A count for new recovories recorded on that given date, does not take past recov
 **Currently Infected Count**
 
 Because of the data only recorfs for number of confirmed cases, it doesnt show how many for a given day actually have the virus. This shows number of daily confirmed numbers minus the people who have died/recovered.  
-![alt text](./reports/images/currently_infected_stacked_bar.jpg "Number of people actually with the virus for each day")
+![alt text](./reports/images/confirmed_cases_stacked_bar.jpg "Number of people actually with the virus for each day")
 
 
 ## Additional information and thanks
