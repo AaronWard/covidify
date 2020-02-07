@@ -87,16 +87,10 @@ cleaned_ranges = clean_sheet_names(sheets)
 
 '''
 For assigning date by the time sheet name
-- After visualizing the data it appears to 
-  leave out some entries on certain days
 '''
 def fix_dates(tmp_df, tmp_sheet_range):
-
-    try:
-        # Get correct year
-        year = datetime.strptime(tmp_df['Last Update'][0].split(' ')[0], '%m/%d/%Y').year()
-    except:
-        year = '2020'# Default to 2020
+    #Get year of entry
+    year = parse(tmp_df['Last Update'][0]).strftime("%Y")
     
     tmp_sheet_range = tmp_sheet_range.split('_')[0]
     correct_date = datetime.strptime(tmp_sheet_range, '%b%d').strftime('%m/%d/' + year)    
@@ -104,11 +98,11 @@ def fix_dates(tmp_df, tmp_sheet_range):
     
     return tmp_df
 
-'''
-For using the dates in the Last update cell
-'''
-def clean_dates(date):
-    return parse(date).strftime("%m-%d-%Y %H:%M:%S").split(' ')[0]
+# '''
+# For using the dates in the Last update cell
+# '''
+# def clean_dates(date):
+#     return parse(date).strftime("%m-%d-%Y %H:%M:%S").split(' ')[0]
 
 def get_data(sheet_range):
     tmp_df = pd.DataFrame([])
@@ -140,8 +134,8 @@ def get_data(sheet_range):
             all_data.append(ds)
         tmp = pd.concat(all_data, axis=1)
 
-        #tmp = fix_dates(tmp, sheet_range)
-        tmp['Last Update'] = tmp['Last Update'].apply(clean_dates)
+        tmp = fix_dates(tmp, sheet_range)
+#         tmp['Last Update'] = tmp['Last Update'].apply(clean_dates)
         
     print('...', sheet_range)
     return tmp
