@@ -6,6 +6,7 @@ import os
 import pickle
 import os.path
 from datetime import datetime, date, time 
+from dateutil.parser import parse
 from time import strftime
 import pyarrow
 from googleapiclient.discovery import build
@@ -84,6 +85,11 @@ sheets = sheet_metadata.get('sheets', '')
 # Clean the result to the sheet tabs we want
 cleaned_ranges = clean_sheet_names(sheets)
 
+'''
+For assigning date by the time sheet name
+- After visualizing the data it appears to 
+  leave out some entries on certain days
+'''
 def fix_dates(tmp_df, tmp_sheet_range):
 
     try:
@@ -97,6 +103,12 @@ def fix_dates(tmp_df, tmp_sheet_range):
     tmp_df['Last Update'] = correct_date
     
     return tmp_df
+
+'''
+For using the dates in the Last update cell
+'''
+def clean_dates(date):
+    return parse(date).strftime("%m-%d-%Y %H:%M:%S").split(' ')[0]
 
 def get_data(sheet_range):
     tmp_df = pd.DataFrame([])
@@ -128,7 +140,8 @@ def get_data(sheet_range):
             all_data.append(ds)
         tmp = pd.concat(all_data, axis=1)
 
-        tmp = fix_dates(tmp, sheet_range)
+        #tmp = fix_dates(tmp, sheet_range)
+        tmp['Last Update'] = tmp['Last Update'].apply(clean_dates)
         
     print('...', sheet_range)
     return tmp
@@ -151,7 +164,7 @@ def clean_data(tmp_df):
     
     if 'Province/State' in tmp_df.columns:
         tmp_df.rename(columns={'Province/State':'province'}, inplace=True)
-      
+        
     if 'Last Update' in tmp_df.columns:
         tmp_df.rename(columns={'Last Update':'date'}, inplace=True)
         
