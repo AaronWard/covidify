@@ -1,22 +1,22 @@
-# coronavirus-analysis
+# covid-19-analysis
 
 ![alt text](https://github.com/AaronWard/coronavirus-analysis/blob/master/tableau/spread.gif "Spread of coronavirus 22nd to 29th")
 
-This repo is for analysis on the [corona virus](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reporting visualizations and information sheets. This repo will will be <u>updated daily</u>.
+This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reporting visualizations and information sheets. This repo will will be <u>updated daily</u>.
 
 #### Data:
 - The data come from the **Novel Coronavirus (2019-nCoV) Cases**,  which is a live dataset provided by JHU CSSE. 
 - Data available [here](https://github.com/CSSEGISandData/2019-nCoV).
 
 #### How to run:
-- `git clone corona-analysis` and `cd` into repository
+- `git clone covid-19-analysis` and `cd` into repository
 - run `pip install -r requirements.txt` to install dependencies
 - run `./pipeline.sh`
 - Results will be saved to `reports` folder. 
 
 #### To-Do List:
 
-- checkout the [kanban boards](https://github.com/AaronWard/coronavirus-analysis/projects) to see future work on this project
+- checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see future work on this project
 
 ## Visualization of data:
 
@@ -51,7 +51,7 @@ A count for new cases recorded on that given date, does not take past confirmati
 
 **Daily Deaths**
 
-A count for deaths due to coronavirus recorded on that given date, does not take past deaths into account. 
+A count for deaths due to the virus recorded on that given date, does not take past deaths into account. 
 ![alt text](./reports/images/new_deaths_bar.jpg)
 
 **Daily Recoveries**
