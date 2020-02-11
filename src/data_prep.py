@@ -91,6 +91,7 @@ def get_data(cleaned_sheets):
         tmp_df = tmp_df[keep_cols]
         tmp_df[numeric_cols] = tmp_df[numeric_cols].fillna(0)
         tmp_df[numeric_cols] = tmp_df[numeric_cols].astype(int)
+        tmp_df[['Country/Region', 'Province/State']] = tmp_df[['Country/Region', 'Province/State']].fillna('')
         tmp_df = fix_dates(tmp_df, file)
         all_csv.append(tmp_df)
 
