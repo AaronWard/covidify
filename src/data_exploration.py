@@ -9,6 +9,11 @@ import pyarrow
 import matplotlib.pyplot as plt
 # %matplotlib inline
 
+font = {'weight' : 'bold',
+        'size'   : 22}
+plt.rc('font', **font)
+
+
 #set ggplot style
 plt.style.use('ggplot')
  
@@ -32,59 +37,26 @@ if not os.path.exists(image_dir):
 for col in ['confirmed', 'deaths', 'recovered']:
     agg_df[col] = agg_df[col].replace('', 0).astype(int)
 
-    
+
+##### Define Graphs #####
 
 # Plot and save trendline graph
-def create_trend_line(tmp_df, col):
-    fig, ax = plt.subplots(figsize=(15,7))
-    tmp_df.groupby(['date'])[[col]].sum().plot(ax=ax, marker='o')
+def create_trend_line(tmp_df, col, col2, col3):
+    fig, ax = plt.subplots(figsize=(20,10))
+    tmp_df.groupby(['date'])[[col, col2, col3]].sum().plot(ax=ax, marker='o')
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, '{}_trendline.jpg'.format(col)))
 
-def create_bar(tmp_df, col):
-    fig, ax = plt.subplots(figsize=(15,7))
+def create_bar(tmp_df, col, rgb):
+    fig, ax = plt.subplots(figsize=(20,10))
     tmp = tmp_df.head(30).groupby(['date'])[[col]].sum()
-    tmp.plot.bar(ax=ax, rot=45, color='lightgreen')
+    tmp.plot.bar(ax=ax, rot=45, color=rgb)
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, '{}_bar.jpg'.format(col)))
-
-
-# def create_stacked_bar(agg, daily, col1, col2, fig_title):
-#     tmp_df = pd.DataFrame([])
-#     tmp_df['date'] = daily['date']
-#     tmp_df['confirmed_cases'] = agg.groupby(['date']).confirmed.sum().values - daily.new_confirmed_cases
-#     tmp_df['new_confirmed_cases'] = daily.new_confirmed_cases
-#     tmp_df = tmp_df.set_index('date')
-#     fig, ax = plt.subplots(figsize=(15,7))
-#     tmp_df[[col1, col2]].plot.bar(ax=ax,
-#                                   rot=45,
-#                                   stacked=False,
-#                                   title=fig_title);
-#     fig = ax.get_figure()
-#     fig.savefig(os.path.join(image_dir, '{}_stacked_bar.jpg'.format(col2)))
     
-
-print('Creating graphs...')
-print('... Time Series Data')
-# Time Series Data Plots
-agg_cols = ['confirmed', 'deaths', 'recovered']
-for col in agg_cols:
-    create_trend_line(agg_df, col)
-
-print('... Daily Figures')
-# Daily Figures Data Plots
-daily_figures_cols = ['new_confirmed_cases', 'new_deaths', 'new_recoveries']
-for col in daily_figures_cols:
-    create_bar(daily_df, col)
-    
-print('... Daily New Infections Differences')
-# create_stacked_bar(agg_df, daily_df, 'new_confirmed_cases', 'confirmed_cases',
-#                    "New additional infected numbers by day")
-
-
 def create_stacked_bar(tmp_df, col1, col2, fig_title):
     tmp_df = tmp_df.set_index('date')
-    fig, ax = plt.subplots(figsize=(15,7))
+    fig, ax = plt.subplots(figsize=(20,10))
     tmp_df[[col2, col1]].plot.bar(ax=ax,
                                   rot=45,
                                   stacked=True,
@@ -92,13 +64,31 @@ def create_stacked_bar(tmp_df, col1, col2, fig_title):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, '{}_stacked_bar.jpg'.format(col2)))
     
+    
+##### Create Graphs #####
+    
+print('Creating graphs...')
+print('... Time Series Trend Line')
+# Time Series Data Plots
+create_trend_line(agg_df, 'confirmed', 'deaths', 'recovered')
+
+
+print('... Daily Figures')
+# Daily Figures Data Plots
+daily_figures_cols = ['new_confirmed_cases', 'new_deaths', 'new_recoveries']
+for col, rgb in zip(daily_figures_cols, ['tomato', 'lightblue', 'mediumpurple']):
+    create_bar(daily_df, col, rgb)  
+    
+# Trend line for new cases
+create_trend_line(daily_df, 'new_confirmed_cases', 'new_deaths', 'new_recoveries')
+    
+    
+print('... Daily New Infections Differences')
 new_df = pd.DataFrame([])
 new_df['date'] = daily_df['date']
 new_df['confirmed_cases'] = agg_df.groupby(['date']).confirmed.sum().values - daily_df.new_confirmed_cases
 new_df['new_confirmed_cases'] = daily_df.new_confirmed_cases
-
-create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "...")
-
+create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked bar of confirmed and new cases by day")
 
 
 print('Done!')
