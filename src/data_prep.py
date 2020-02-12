@@ -24,27 +24,11 @@ def clean_sheet_names(new_ranges):
     latest point in the day
     '''
     indices = []
-    # Remove all sheets that dont have a numeric header
-    new_ranges = [x for x in new_ranges if re.search(r'\d', x)]
-        
-    #split the names to just get the date
-    clean_new_ranges = new_ranges.copy()
-    for i, x in enumerate(clean_new_ranges):
-        clean_new_ranges[i] = x.split('_')[0]    
     
-    #Get the index of the latest tab for each date
-    for item in set(clean_new_ranges):
-        indices.append(clean_new_ranges.index(item))
-
-    clean_new_ranges = []
-    # Return wanted tabs for the sheet extraction
-    for index in sorted(indices):
-        clean_new_ranges.append(new_ranges[index])
-        
-    for sheet_name in clean_new_ranges:
-        print('...', sheet_name.split('_')[0])
-        
-    return clean_new_ranges
+    # Remove all sheets that dont have a numeric header
+    numeric_sheets = [x for x in new_ranges if re.search(r'\d', x)]
+    
+    return numeric_sheets
 
 def clone_repo(TMP_FOLDER, REPO):
     print('Cloning Data Repo...')
@@ -75,10 +59,31 @@ cleaned_sheets = clean_sheet_names(sheets)
 '''
 For assigning date by the time sheet name
 '''
-def fix_dates(tmp_df, file_name):
-    file_name = file_name.split('_')[0]
-    tmp_df['Last Update'] = file_name
-    return tmp_df
+
+def clean_last_updates(last_update):
+    date = parse(str(last_update).split(' ')[0]).strftime("%Y-%m-%d")
+    time = parse(str(last_update).split(' ')[1]).strftime('%H:%M:%S')
+    parsed_date = str(date) + ' ' + str(time)
+
+    return parsed_date
+
+def get_date(last_update):
+    return parse(str(last_update).split(' ')[0]).strftime("%Y-%m-%d")
+
+
+def drop_duplicates(df_raw):
+    '''
+    Take the max date value for each province for a given date
+    '''
+    days_list = []
+    
+    for datetime in df_raw.date.unique():
+        tmp_df = df_raw[df_raw.date == datetime]
+        tmp_df = tmp_df.sort_values(['Last Update']).drop_duplicates('Province/State', keep='last')
+        days_list.append(tmp_df)
+
+    return days_list
+
 
 keep_cols = ['Confirmed', 'Country/Region', 'Deaths', 'Last Update', 'Province/State', 'Recovered']
 numeric_cols = ['Confirmed', 'Deaths', 'Recovered']
@@ -86,17 +91,28 @@ numeric_cols = ['Confirmed', 'Deaths', 'Recovered']
 def get_data(cleaned_sheets):
     all_csv = []
     # Import all CSV's
-    for file in sorted(cleaned_sheets):
-        tmp_df = pd.read_csv(os.path.join(DATA, file), index_col=None, header=0)
-        tmp_df = tmp_df[keep_cols]
-        tmp_df[numeric_cols] = tmp_df[numeric_cols].fillna(0)
-        tmp_df[numeric_cols] = tmp_df[numeric_cols].astype(int)
-        tmp_df[['Country/Region', 'Province/State']] = tmp_df[['Country/Region', 'Province/State']].fillna('')
-        tmp_df = fix_dates(tmp_df, file)
-        all_csv.append(tmp_df)
+    for file in sorted(sheets):
+        if 'csv' in file:
+            print('...', file)
+            tmp_df = pd.read_csv(os.path.join(DATA, file), index_col=None, header=0, parse_dates=['Last Update'])
+            tmp_df = tmp_df[keep_cols]
+            tmp_df[numeric_cols] = tmp_df[numeric_cols].fillna(0)
+            tmp_df[numeric_cols] = tmp_df[numeric_cols].astype(int)
+            tmp_df['Province/State'].fillna(tmp_df['Country/Region'], inplace=True)
 
-    tmp_df = pd.concat(all_csv, axis=0, ignore_index=True, sort=True)
-    return tmp_df
+            tmp_df['Last Update'] = tmp_df['Last Update'].apply(clean_last_updates)
+            tmp_df['date'] = tmp_df['Last Update'].apply(get_date)
+
+            all_csv.append(tmp_df)
+
+    df_raw = pd.concat(all_csv, axis=0, ignore_index=True, sort=True)
+    df_raw = df_raw.sort_values(by=['Last Update'])
+
+    #Get the last entry per region by date
+    frames = drop_duplicates(df_raw)
+    tmp = pd.concat(frames, axis=0, ignore_index=True, sort=True)
+    
+    return tmp
 
 
 df = get_data(cleaned_sheets)
@@ -116,7 +132,7 @@ def clean_data(tmp_df):
         tmp_df.rename(columns={'Province/State':'province'}, inplace=True)
         
     if 'Last Update' in tmp_df.columns:
-        tmp_df.rename(columns={'Last Update':'date'}, inplace=True)
+        tmp_df.rename(columns={'Last Update':'datetime'}, inplace=True)
         
     if 'Suspected' in tmp_df.columns:
         tmp_df = tmp_df.drop(columns='Suspected')
@@ -132,11 +148,13 @@ def clean_data(tmp_df):
 print('Cleaning dataframes...')
 df  = clean_data(df)
 
-# sheets need to be sorted by date value
-print('Sorting by date...')
-df['date'] = df['date'].astype(str)
-df = df.sort_values('date')
 
+df = df[df.date != df.date.max()]
+
+
+# sheets need to be sorted by date value
+print('Sorting by datetime...')
+df = df.sort_values('datetime')
 
 '''
 Get the difference of the sum totals for each
@@ -146,9 +164,6 @@ def get_new_cases(tmp, col):
     diff_list = []
     tmp_df_list = []
     df = tmp.copy()
-    
-    for column in ['confirmed', 'deaths', 'recovered']:
-        df[column] = df[column].replace('', 0).astype(int)
 
     for i, day in enumerate(df.date.unique()):    
         tmp_df = df[df.date == day]
