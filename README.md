@@ -5,7 +5,7 @@
 This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reporting visualizations and information sheets. This repo will will be <u>updated daily</u>.
 
 #### Data:
-- The data come from the **Novel Coronavirus (2019-nCoV) Cases**,  which is a live dataset provided by JHU CSSE. 
+- The data come from the **Novel Coronavirus (COVID-19) Cases**, which is a live dataset provided by JHU CSSE. 
 - Data available [here](https://github.com/CSSEGISandData/2019-nCoV).
 
 #### How to run:
