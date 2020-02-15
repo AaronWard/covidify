@@ -61,7 +61,7 @@ A count for new recovories recorded on that given date, does not take past recov
 
 **Currently Infected**
 A count for all the people who are currently infected for a given date (confirmed cases - (recoveries + deaths))
-![alt text](./reports/images/currently_infected.jpg)
+![alt text](./reports/images/currently_infected_bar.jpg)
 
 
 ## Additional information and thanks
