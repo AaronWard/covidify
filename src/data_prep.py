@@ -12,10 +12,10 @@ import pyarrow
 import json
 import git
 
-REPO = 'https://github.com/CSSEGISandData/2019-nCoV.git'
+REPO = 'https://github.com/CSSEGISandData/COVID-19.git'
 TMP_FOLDER = '/tmp/corona/'
-TMP_GIT = os.path.join(TMP_FOLDER, '2019-nCoV')
-DATA = os.path.join(TMP_GIT, 'daily_case_updates')
+TMP_GIT = os.path.join(TMP_FOLDER, 'COVID-19')
+DATA = os.path.join(TMP_GIT, 'csse_covid_19_data/csse_covid_19_daily_reports/')
 
 
 def clean_sheet_names(new_ranges):
@@ -141,19 +141,21 @@ def clean_data(tmp_df):
         tmp_df[col] = tmp_df[col].fillna(0)
     
     #Lower case all col names
-    tmp_df.columns = map(str.lower, tmp_df.columns)    
-    
+    tmp_df.columns = map(str.lower, tmp_df.columns) 
     return tmp_df
 
 print('Cleaning dataframes...')
 df  = clean_data(df)
 
-
-df = df[df.date != df.date.max()]
-
-
 # sheets need to be sorted by date value
 print('Sorting by datetime...')
+current_date = str(datetime.date(datetime.now()))
+
+if df.date.max() == current_date:
+    df = df[df.date != df.date.max()]
+else:
+    df = df[df.date != current_date]
+
 df = df.sort_values('datetime')
 
 '''
