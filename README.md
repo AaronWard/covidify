@@ -60,6 +60,7 @@ A count for new recovories recorded on that given date, does not take past recov
 ![alt text](./reports/images/new_recoveries_bar.jpg)
 
 **Currently Infected**
+
 A count for all the people who are currently infected for a given date (confirmed cases - (recoveries + deaths))
 ![alt text](./reports/images/currently_infected_bar.jpg)
 
