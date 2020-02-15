@@ -75,9 +75,9 @@ create_trend_line(agg_df, 'confirmed', 'deaths', 'recovered')
 
 print('... Daily Figures')
 # Daily Figures Data Plots
-daily_figures_cols = ['new_confirmed_cases', 'new_deaths', 'new_recoveries']
-for col, rgb in zip(daily_figures_cols, ['tomato', 'lightblue', 'mediumpurple']):
-    create_bar(daily_df, col, rgb)  
+daily_figures_cols = ['new_confirmed_cases', 'new_deaths', 'new_recoveries', 'currently_infected']
+for col, rgb in zip(daily_figures_cols, ['tomato', 'lightblue', 'mediumpurple', 'green']):
+    create_bar(daily_df, col, rgb)    
     
 # Trend line for new cases
 create_trend_line(daily_df, 'new_confirmed_cases', 'new_deaths', 'new_recoveries')
