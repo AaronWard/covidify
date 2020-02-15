@@ -25,7 +25,7 @@ This plots will be updated <u>daily</u> to visualize the trend in accumalitive s
 - **<i>Deaths</i>**
 - **<i>Recoveries.</i>**
 
-Last updated: `2020-02-12`
+Last updated: `2020-02-15`
 
 **Trend Line**
 
