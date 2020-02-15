@@ -59,6 +59,10 @@ A count for deaths due to the virus recorded on that given date, does not take p
 A count for new recovories recorded on that given date, does not take past recoveries into account. 
 ![alt text](./reports/images/new_recoveries_bar.jpg)
 
+**Currently Infected**
+A count for all the people who are currently infected for a given date (confirmed cases - (recoveries + deaths))
+![alt text](./reports/images/currently_infected.jpg)
+
 
 ## Additional information and thanks
 - All code written by me (Aaron Ward  - https://www.linkedin.com/in/aaronjward/)
