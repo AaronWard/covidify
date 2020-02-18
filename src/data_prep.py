@@ -178,6 +178,15 @@ def get_new_cases(tmp, col):
         
     return diff_list
 
+def get_moving_average(tmp, col):
+    df = tmp.copy()
+    return df[col].rolling(window=2).mean()
+
+def get_exp_moving_average(tmp, col):
+    df = tmp.copy()
+    return df[col].ewm(span=2, adjust=True).mean()
+
+
 print('Calculating dataframe for new cases...')
 daily_cases_df = pd.DataFrame([])
 daily_cases_df['new_confirmed_cases'] = get_new_cases(df, 'confirmed')
@@ -185,6 +194,13 @@ daily_cases_df['new_deaths'] = get_new_cases(df, 'deaths')
 daily_cases_df['new_recoveries'] = get_new_cases(df, 'recovered')
 daily_cases_df['date'] = df.date.unique()
 
+daily_cases_df['confirmed_MA'] = get_moving_average(daily_cases_df, 'new_confirmed_cases')
+daily_cases_df['deaths_moving_MA'] = get_moving_average(daily_cases_df, 'new_deaths')
+daily_cases_df['recovered_moving_MA'] = get_moving_average(daily_cases_df, 'new_recoveries')
+
+daily_cases_df['confirmed_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_confirmed_cases')
+daily_cases_df['deaths_moving_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_deaths')
+daily_cases_df['recovered_moving_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_recoveries')
 
 
 '''
