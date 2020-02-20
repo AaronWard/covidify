@@ -194,13 +194,15 @@ daily_cases_df['new_deaths'] = get_new_cases(df, 'deaths')
 daily_cases_df['new_recoveries'] = get_new_cases(df, 'recovered')
 daily_cases_df['date'] = df.date.unique()
 
+#Moving average
 daily_cases_df['confirmed_MA'] = get_moving_average(daily_cases_df, 'new_confirmed_cases')
-daily_cases_df['deaths_moving_MA'] = get_moving_average(daily_cases_df, 'new_deaths')
-daily_cases_df['recovered_moving_MA'] = get_moving_average(daily_cases_df, 'new_recoveries')
+daily_cases_df['deaths_MA'] = get_moving_average(daily_cases_df, 'new_deaths')
+daily_cases_df['recovered_MA'] = get_moving_average(daily_cases_df, 'new_recoveries')
 
+#Exponential moving average
 daily_cases_df['confirmed_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_confirmed_cases')
-daily_cases_df['deaths_moving_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_deaths')
-daily_cases_df['recovered_moving_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_recoveries')
+daily_cases_df['deaths_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_deaths')
+daily_cases_df['recovered_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_recoveries')
 
 
 '''
