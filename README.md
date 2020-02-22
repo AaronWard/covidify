@@ -2,69 +2,77 @@
 
 ![alt text](https://github.com/AaronWard/coronavirus-analysis/blob/master/tableau/spread.gif "Spread of coronavirus 22nd to 29th")
 
-This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reporting visualizations and information sheets. This repo will will be <u>updated daily</u>.
+This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reports. This repo will be <u>updated daily</u>.
 
-#### Data:
-- The data come from the **Novel Coronavirus (COVID-19) Cases**, which is a live dataset provided by JHU CSSE. 
+<hr>
+
+#### <u>Data</u>
+- The data comes from the **Novel Coronavirus (COVID-19) Cases**, which is a live dataset provided by JHU CSSE. 
 - Data available [here](https://github.com/CSSEGISandData/2019-nCoV).
 
-#### How to run:
+#### <u>How to run</u>
+
 - `git clone covid-19-analysis` and `cd` into repository
 - run `pip install -r requirements.txt` to install dependencies
 - run `./pipeline.sh`
 - Results will be saved to `reports` folder. 
 
-#### To-Do List:
 
-- checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see future work on this project
+#### <u>To-do list</u>
 
-## Visualization of data:
+- checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see work in progress
 
-This plots will be updated <u>daily</u> to visualize the trend in accumalitive sums and the daily counts for 3 attributes: 
-- **<i>Confirmed Cases</i>**
-- **<i>Deaths</i>**
-- **<i>Recoveries.</i>**
+<hr>
+
+
+### <u>Visualization of data</u>
+
+This plots will be updated daily to visualize stats 3 attributes: 
+- ```confirmed cases```
+- ```deaths```
+- ```recoveries```
 
 Last updated: `2020-02-22`
 
-**Trend Line**
+
+##### Trend Line
 
 This is an accumalitive sum trendline for all the confirmed cases, deaths and recoveries.
 ![alt text](./reports/images/confirmed_trendline.jpg)
 
-**Daily Trend Line**
+##### Daily Trend Line
 
 This is an daily sum trendline for all the confirmed cases, deaths and recoveries.
 ![alt text](./reports/images/new_confirmed_cases_trendline.jpg)
 
-**Stacked Daily Confirmed Cases**
+##### Stacked Daily Confirmed Cases
 
 This stacked bar chart shows a daily sum of people who are currently confirmed (<i>red</i>) and the number of people who have been been confirmed on that day (<i>blue</i>)
 
 ![alt text](./reports/images/confirmed_cases_stacked_bar.jpg "Number of people actually with the virus for each day")
 
 
-**Daily Confirmed Cases**
+##### Daily Confirmed Cases
 
 A count for new cases recorded on that given date, does not take past confirmations into account. 
 ![alt text](./reports/images/new_confirmed_cases_bar.jpg)
 
-**Daily Deaths**
+##### Daily Deaths
 
 A count for deaths due to the virus recorded on that given date, does not take past deaths into account. 
 ![alt text](./reports/images/new_deaths_bar.jpg)
 
-**Daily Recoveries**
+##### Daily Recoveries
 
 A count for new recovories recorded on that given date, does not take past recoveries into account. 
 ![alt text](./reports/images/new_recoveries_bar.jpg)
 
-**Currently Infected**
+##### Currently Infected
 
 A count for all the people who are currently infected for a given date (confirmed cases - (recoveries + deaths))
 ![alt text](./reports/images/currently_infected_bar.jpg)
 
 
-## Additional information and thanks
+### Appendix
 - All code written by me (Aaron Ward  - https://www.linkedin.com/in/aaronjward/)
 - A special thank you to the [JHU CSSE](https://systems.jhu.edu/) team for maintaining the data
