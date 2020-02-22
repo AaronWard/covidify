@@ -49,7 +49,7 @@ def create_trend_line(tmp_df, col, col2, col3):
 
 def create_bar(tmp_df, col, rgb):
     fig, ax = plt.subplots(figsize=(20,10))
-    tmp = tmp_df.head(30).groupby(['date'])[[col]].sum()
+    tmp = tmp_df.groupby(['date'])[[col]].sum()
     tmp.plot.bar(ax=ax, rot=45, color=rgb)
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, '{}_bar.jpg'.format(col)))
