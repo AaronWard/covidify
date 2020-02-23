@@ -32,7 +32,7 @@ This plots will be updated daily to visualize stats 3 attributes:
 - ```deaths```
 - ```recoveries```
 
-Last updated: `2020-02-22`
+Last updated: `2020-02-23`
 
 
 ##### Trend Line
