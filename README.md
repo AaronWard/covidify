@@ -1,4 +1,4 @@
-# covid-19-analysis
+#covid-19-analysis
 
 ![alt text](https://github.com/AaronWard/coronavirus-analysis/blob/master/tableau/spread.gif "Spread of coronavirus 22nd to 29th")
 
@@ -32,7 +32,7 @@ This plots will be updated daily to visualize stats 3 attributes:
 - ```deaths```
 - ```recoveries```
 
-Last updated: `2020-02-23`
+Last updated: `2020-02-24`
 
 
 ##### Trend Line
