@@ -19,12 +19,7 @@ DATA = os.path.join(TMP_GIT, 'csse_covid_19_data/csse_covid_19_daily_reports/')
 
 
 def clean_sheet_names(new_ranges):
-    '''
-    Get rid of the duplicate sheets, only take the sheets from the 
-    latest point in the day
-    '''
-    indices = []
-    
+    indices = []    
     # Remove all sheets that dont have a numeric header
     numeric_sheets = [x for x in new_ranges if re.search(r'\d', x)]
     
@@ -41,13 +36,16 @@ if not os.path.isdir(TMP_FOLDER):
     os.mkdir(TMP_FOLDER)
 
 #Check if repo exists
+#git pull if it does
 if not os.path.isdir(TMP_GIT):
     clone_repo(TMP_FOLDER, REPO)
 else:
-    #get up to date repo
-    print('Deleting out of date repo...')
-    os.system('rm -rf ' + str(TMP_GIT))
-    clone_repo(TMP_FOLDER, REPO)
+    try:
+        print('git pull from', REPO)
+        rep = git.Repo(TMP_GIT)
+        rep.remotes.origin.pull()
+    except:
+        print('Could not pull from', REPO)
     
 sheets = os.listdir(DATA)
 
@@ -56,11 +54,11 @@ print('Cleaning sheets...')
 cleaned_sheets = clean_sheet_names(sheets)
 
 
-'''
-For assigning date by the time sheet name
-'''
 
-def clean_last_updates(last_update):
+def clean_last_updated(last_update):
+    '''
+    convert date and time in YYYYMMDD HMS format
+    '''
     date = parse(str(last_update).split(' ')[0]).strftime("%Y-%m-%d")
     time = parse(str(last_update).split(' ')[1]).strftime('%H:%M:%S')
     parsed_date = str(date) + ' ' + str(time)
@@ -70,6 +68,8 @@ def clean_last_updates(last_update):
 def get_date(last_update):
     return parse(str(last_update).split(' ')[0]).strftime("%Y-%m-%d")
 
+def get_csv_date(file):
+    return get_date(file.split('.')[0] + ' ')    
 
 def drop_duplicates(df_raw):
     '''
@@ -98,17 +98,17 @@ def get_data(cleaned_sheets):
             tmp_df = tmp_df[keep_cols]
             tmp_df[numeric_cols] = tmp_df[numeric_cols].fillna(0)
             tmp_df[numeric_cols] = tmp_df[numeric_cols].astype(int)
-            tmp_df['Province/State'].fillna(tmp_df['Country/Region'], inplace=True)
+            tmp_df['Province/State'].fillna(tmp_df['Country/Region'], inplace=True) #If no region given, fill it with country
 
-            tmp_df['Last Update'] = tmp_df['Last Update'].apply(clean_last_updates)
+            tmp_df['Last Update'] = tmp_df['Last Update'].apply(clean_last_updated)
             tmp_df['date'] = tmp_df['Last Update'].apply(get_date)
-
+            tmp_df['file_date'] = get_csv_date(file)
             all_csv.append(tmp_df)
 
+    # concatenate all csv's into one df
     df_raw = pd.concat(all_csv, axis=0, ignore_index=True, sort=True)
     df_raw = df_raw.sort_values(by=['Last Update'])
 
-    #Get the last entry per region by date
     frames = drop_duplicates(df_raw)
     tmp = pd.concat(frames, axis=0, ignore_index=True, sort=True)
     
@@ -167,7 +167,7 @@ def get_new_cases(tmp, col):
     tmp_df_list = []
     df = tmp.copy()
 
-    for i, day in enumerate(df.date.unique()):    
+    for i, day in enumerate(df.sort_values('date').date.unique()):    
         tmp_df = df[df.date == day]
         tmp_df_list.append(tmp_df[col].sum())
         
