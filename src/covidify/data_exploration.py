@@ -1,7 +1,19 @@
+"""
+data_exploration.py - Extract data from date range and create models
+Usage:
+    data_exploration.py [options]
+    data_exploration.py -h | --help
+
+Options:
+    -h --help             Show this message.
+    --output_folder=OUT   Output folder for the data and reports to be saved
+"""
+
 from __future__ import print_function
 import pandas as pd
 import numpy as np
 import os
+import docopt
 import pickle
 import os.path
 from datetime import datetime
@@ -17,8 +29,11 @@ plt.rc('font', **font)
 #set ggplot style
 plt.style.use('ggplot')
  
+args = docopt.docopt(__doc__)
+out = args['--output_folder']
+
 # Dynamic parameters
-data_dir  = './data/' + str(datetime.date(datetime.now()))
+data_dir  = os.path.join(out,'/data/' + str(datetime.date(datetime.now())))
 agg_file  = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
 trend_file  = 'trend_{}.csv'.format(datetime.date(datetime.now()))
 
@@ -28,7 +43,8 @@ agg_df = pd.read_parquet(os.path.join(data_dir, agg_file))
 daily_df = pd.read_csv(os.path.join(data_dir, trend_file))
 
 #Create place to save diagrams
-image_dir = './reports/images/'
+image_dir =  os.path.join(out,'/reports/images/')
+
 if not os.path.exists(image_dir):
     print('Creating reports folder...')
     os.mkdir(image_dir)

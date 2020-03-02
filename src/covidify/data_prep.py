@@ -1,8 +1,19 @@
+"""
+data_prep.py - Extract data from date range and create models
+Usage:
+    data_prep.py [options]
+    data_prep.py -h | --help
+
+Options:
+    -h --help             Show this message.
+    --output_folder=OUT   Output folder for the data and reports to be saved.
+"""
 from __future__ import print_function
 import pandas as pd
 import numpy as np
 import re
 import os
+import docopt
 import sys
 import pickle
 import os.path
@@ -18,6 +29,10 @@ TMP_FOLDER = '/tmp/corona/'
 TMP_GIT = os.path.join(TMP_FOLDER, 'COVID-19')
 DATA = os.path.join(TMP_GIT, 'csse_covid_19_data/csse_covid_19_daily_reports/')
 
+args = docopt.docopt(__doc__)
+out = args['--output_folder']
+
+print('********', out, '********')
 
 def clean_sheet_names(new_ranges):
     indices = []    
@@ -218,15 +233,19 @@ current_infected['currently_infected'] = (df.groupby('date').confirmed.sum() - \
 current_infected['delta'] = (current_infected['currently_infected'] - df.groupby('date').confirmed.sum())
 daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='date')
 
+
+data_folder = str('data/' + str(datetime.date(datetime.now())))
+
 #Create date of extraction folder
-save_dir  = './data/' + str(datetime.date(datetime.now()))
+save_dir = os.path.join(out, data_folder)
+
+if not os.path.exists(save_dir):
+    os.system('mkdir ' + save_dir)
+    
 
 print('Saving to data subdirectory...')
 print('...', save_dir)
 
-if not os.path.exists(save_dir):
-    os.mkdir(save_dir)
-    
 print('Saving...')
 file_name = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
 df.astype(str).to_parquet(os.path.join(save_dir, file_name), compression='gzip')
