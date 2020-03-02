@@ -4,6 +4,10 @@
 
 This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reports. This repo will be <u>updated daily</u>.
 
+## NOTICE
+- I am currently working on some significant updates to this repo, including making this an installable package so some of the results be delayed. 
+
+
 <hr>
 
 #### <u>Data</u>
