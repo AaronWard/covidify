@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import re
 import os
+import sys
 import pickle
 import os.path
 from datetime import datetime, date, time 
@@ -46,13 +47,13 @@ else:
         rep.remotes.origin.pull()
     except:
         print('Could not pull from', REPO)
+        sys.exit()
     
 sheets = os.listdir(DATA)
 
 # Clean the result to the sheet tabs we want
 print('Cleaning sheets...')
 cleaned_sheets = clean_sheet_names(sheets)
-
 
 
 def clean_last_updated(last_update):
