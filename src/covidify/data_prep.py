@@ -34,8 +34,6 @@ DATA = os.path.join(TMP_GIT, 'csse_covid_19_data', 'csse_covid_19_daily_reports'
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
 
-print('********', out, '********')
-
 def clean_sheet_names(new_ranges):
     indices = []    
     # Remove all sheets that dont have a numeric header
