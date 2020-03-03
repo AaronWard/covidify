@@ -4,39 +4,71 @@
 
 This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reports. This repo will be <u>updated daily</u>.
 
-## NOTICE
-- I am currently working on some significant updates to this repo, including making this an installable package so some of the results be delayed. 
-
-
-<hr>
-
-#### <u>Data</u>
-- The data comes from the **Novel Coronavirus (COVID-19) Cases**, which is a live dataset provided by JHU CSSE. 
-- Data available [here](https://github.com/CSSEGISandData/2019-nCoV).
-
-#### <u>How to run</u>
-
-- `git clone covid-19-analysis` and `cd` into repository
-- run `pip install -r requirements.txt` to install dependencies
-- run `./pipeline.sh`
-- Results will be saved to `reports` folder. 
-
 
 #### <u>To-do list</u>
+- I am currently working on some significant updates to this repo, including making this an installable package so some of the results be delayed. 
 
 - checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see work in progress
 
+
+
 <hr>
 
 
-### <u>Visualization of data</u>
+### <u>Installation</u>
 
+- ```pip install covidify==0.1.0```
+
+
+**How to run:**
+
+```powershell
+Desktop $covidify
+Usage: covidify [OPTIONS] COMMAND [ARGS]...
+
+  ☣  COVIDIFY ☣
+
+   - use the most up-to-date data to generate reports of confirmed cases,
+   fatalities and recoveries.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  run
+```
+
+```powershell
+$ covidify run --help
+Usage: covidify run [OPTIONS]
+
+Options:
+  --output TEXT  Folder to output data and reports [Default:
+                 /Users/$USER/Desktop/covidify-output/]
+  --source TEXT  There are two datasources to choose from, John Hopkins github
+                 repo or wikipedia -- options are git or wiki respectively
+                 [Default: git]
+  --help         Show this message and exit.
+```
+
+**Example Command:**
+```powershell
+covidify run --output=/Users/award40/Documents/projects-folder --source=git
+```
+
+**Results:**
+- Depending on the output folder you specified, the package will pull the latest data and generate:
+    - Preprocessed time series data
+    - graph reports
+
+
+<hr>
+
+### <u>Visualization of data</u>
 This plots will be updated daily to visualize stats 3 attributes: 
 - ```confirmed cases```
 - ```deaths```
 - ```recoveries```
-
-Last updated: `2020-03-02`
 
 
 ##### Trend Line
@@ -75,6 +107,13 @@ A count for new recovories recorded on that given date, does not take past recov
 
 A count for all the people who are currently infected for a given date (confirmed cases - (recoveries + deaths))
 ![alt text](./reports/images/currently_infected_bar.jpg)
+
+
+<hr>
+
+### <u>Data Source</u>
+- The data comes from the **Novel Coronavirus (COVID-19) Cases**, which is a live dataset provided by JHU CSSE. 
+- Data available [here](https://github.com/CSSEGISandData/2019-nCoV).
 
 
 ### Appendix
