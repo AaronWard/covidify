@@ -17,7 +17,7 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 
 ### <u>Installation</u>
 
-- ```pip install covidify==0.1.0```
+- ```pip install covidify```
 
 
 **How to run:**
@@ -57,7 +57,7 @@ covidify run --output=/Users/award40/Documents/projects-folder --source=git
 ```
 
 **Results:**
-- Depending on the output folder you specified, the package will pull the latest data and generate:
+- The package will pull the latest live data and generate following in the output folder:
     - Preprocessed time series data
     - graph reports
 
