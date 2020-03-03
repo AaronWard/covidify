@@ -28,14 +28,16 @@ plt.rc('font', **font)
 
 #set ggplot style
 plt.style.use('ggplot')
- 
+
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
 
 # Dynamic parameters
-data_dir  = os.path.join(out,'/data/' + str(datetime.date(datetime.now())))
+data_dir  = os.path.join(out,'data/' + str(datetime.date(datetime.now())))
 agg_file  = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
 trend_file  = 'trend_{}.csv'.format(datetime.date(datetime.now()))
+
+print('Using data_dir: ' + str(data_dir))
 
 # import data
 print('Importing Data...')
@@ -43,11 +45,14 @@ agg_df = pd.read_parquet(os.path.join(data_dir, agg_file))
 daily_df = pd.read_csv(os.path.join(data_dir, trend_file))
 
 #Create place to save diagrams
-image_dir =  os.path.join(out,'/reports/images/')
+image_dir =  os.path.join(out,'reports/images/')
 
 if not os.path.exists(image_dir):
+try:
     print('Creating reports folder...')
-    os.mkdir(image_dir)
+    os.makedirs(image_dir)
+except FileExistsError:
+    pass # this is necessary to prevent TOCTOU vulnerabilities
 
 # Convert types
 for col in ['confirmed', 'deaths', 'recovered']:
@@ -69,7 +74,7 @@ def create_bar(tmp_df, col, rgb):
     tmp.plot.bar(ax=ax, rot=45, color=rgb)
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, '{}_bar.jpg'.format(col)))
-    
+
 def create_stacked_bar(tmp_df, col1, col2, fig_title):
     tmp_df = tmp_df.set_index('date')
     fig, ax = plt.subplots(figsize=(20,10))
@@ -79,10 +84,10 @@ def create_stacked_bar(tmp_df, col1, col2, fig_title):
                                   title=fig_title);
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, '{}_stacked_bar.jpg'.format(col2)))
-    
-    
+
+
 ##### Create Graphs #####
-    
+
 print('Creating graphs...')
 print('... Time Series Trend Line')
 # Time Series Data Plots
@@ -93,12 +98,12 @@ print('... Daily Figures')
 # Daily Figures Data Plots
 daily_figures_cols = ['new_confirmed_cases', 'new_deaths', 'new_recoveries', 'currently_infected']
 for col, rgb in zip(daily_figures_cols, ['tomato', 'lightblue', 'mediumpurple', 'green']):
-    create_bar(daily_df, col, rgb)    
-    
+    create_bar(daily_df, col, rgb)
+
 # Trend line for new cases
 create_trend_line(daily_df, 'new_confirmed_cases', 'new_deaths', 'new_recoveries')
-    
-    
+
+
 print('... Daily New Infections Differences')
 new_df = pd.DataFrame([])
 new_df['date'] = daily_df['date']
