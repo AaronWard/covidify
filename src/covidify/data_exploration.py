@@ -47,7 +47,6 @@ daily_df = pd.read_csv(os.path.join(data_dir, trend_file))
 #Create place to save diagrams
 image_dir =  os.path.join(out,'reports/images/')
 
-if not os.path.exists(image_dir):
 try:
     print('Creating reports folder...')
     os.makedirs(image_dir)
