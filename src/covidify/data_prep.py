@@ -23,6 +23,8 @@ from time import strftime
 import pyarrow
 import json
 import git
+from tqdm import tqdm
+
 
 REPO = 'https://github.com/CSSEGISandData/COVID-19.git'
 TMP_FOLDER = '/tmp/corona/'
@@ -67,7 +69,7 @@ else:
 sheets = os.listdir(DATA)
 
 # Clean the result to the sheet tabs we want
-print('Cleaning sheets...')
+print('Getting sheets...')
 cleaned_sheets = clean_sheet_names(sheets)
 
 
@@ -107,9 +109,9 @@ numeric_cols = ['Confirmed', 'Deaths', 'Recovered']
 def get_data(cleaned_sheets):
     all_csv = []
     # Import all CSV's
-    for file in sorted(sheets):
+    for file in tqdm(sorted(sheets), desc='... importing data: '):
         if 'csv' in file:
-            print('...', file)
+            # print('...', file)
             tmp_df = pd.read_csv(os.path.join(DATA, file), index_col=None, header=0, parse_dates=['Last Update'])
             tmp_df = tmp_df[keep_cols]
             tmp_df[numeric_cols] = tmp_df[numeric_cols].fillna(0)
@@ -160,7 +162,6 @@ def clean_data(tmp_df):
     tmp_df.columns = map(str.lower, tmp_df.columns) 
     return tmp_df
 
-print('Cleaning dataframes...')
 df  = clean_data(df)
 
 # sheets need to be sorted by date value
@@ -235,14 +236,13 @@ daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='dat
 
 
 #Create date of extraction folder
-
 data_folder = os.path.join('data', str(datetime.date(datetime.now())))
 save_dir = os.path.join(out, data_folder)
 
 if not os.path.exists(save_dir):
     os.system('mkdir -p ' + save_dir)
 
-print('Saving to data subdirectory...')
+print('Creating subdirectory for data...')
 print('...', save_dir)
 
 print('Saving...')
