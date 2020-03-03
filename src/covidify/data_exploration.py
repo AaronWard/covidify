@@ -33,7 +33,7 @@ args = docopt.docopt(__doc__)
 out = args['--output_folder']
 
 # Dynamic parameters
-data_dir  = os.path.join(out,'/data/' + str(datetime.date(datetime.now())))
+data_dir  = os.path.join(out, 'data', str(datetime.date(datetime.now())))
 agg_file  = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
 trend_file  = 'trend_{}.csv'.format(datetime.date(datetime.now()))
 
@@ -43,11 +43,11 @@ agg_df = pd.read_parquet(os.path.join(data_dir, agg_file))
 daily_df = pd.read_csv(os.path.join(data_dir, trend_file))
 
 #Create place to save diagrams
-image_dir =  os.path.join(out,'/reports/images/')
+image_dir =  os.path.join(out,'reports', 'images')
 
 if not os.path.exists(image_dir):
     print('Creating reports folder...')
-    os.mkdir(image_dir)
+    os.system('mkdir -p ' + image_dir)
 
 # Convert types
 for col in ['confirmed', 'deaths', 'recovered']:

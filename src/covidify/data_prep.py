@@ -27,7 +27,7 @@ import git
 REPO = 'https://github.com/CSSEGISandData/COVID-19.git'
 TMP_FOLDER = '/tmp/corona/'
 TMP_GIT = os.path.join(TMP_FOLDER, 'COVID-19')
-DATA = os.path.join(TMP_GIT, 'csse_covid_19_data/csse_covid_19_daily_reports/')
+DATA = os.path.join(TMP_GIT, 'csse_covid_19_data', 'csse_covid_19_daily_reports')
 
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
@@ -234,14 +234,13 @@ current_infected['delta'] = (current_infected['currently_infected'] - df.groupby
 daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='date')
 
 
-data_folder = str('data/' + str(datetime.date(datetime.now())))
-
 #Create date of extraction folder
+
+data_folder = os.path.join('data', str(datetime.date(datetime.now())))
 save_dir = os.path.join(out, data_folder)
 
 if not os.path.exists(save_dir):
-    os.system('mkdir ' + save_dir)
-    
+    os.system('mkdir -p ' + save_dir)
 
 print('Saving to data subdirectory...')
 print('...', save_dir)
