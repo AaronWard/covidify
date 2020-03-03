@@ -13,3 +13,5 @@ cython
 geopandas
 geoplot
 tensorflow
+beautifulsoup4
+wikipedia
