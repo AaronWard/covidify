@@ -2,7 +2,7 @@
 
 set -e
 
-function banner() {
+banner() {
     echo "###"
     echo "### $1"
     echo "###"
