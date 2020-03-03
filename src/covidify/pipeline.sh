@@ -9,7 +9,7 @@ function banner {
 }
 
 ENV="$(dirname "$(realpath "$0")")" # current directory
-OUT_FDR="${2:-/tmp/data/}"
+OUT_FDR="${1:-/tmp/data/}"
 SOURCE="${SOURCE:-github}"
 
 mkdir -p $OUT_FDR
