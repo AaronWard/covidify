@@ -16,7 +16,7 @@ def check_output_folder(var, msg):
 @click.group()
 def cli():
     '''
-    ☣ COVIDIFY ☣ \n
+    ☣  COVIDIFY ☣ \n
      - use the most up-to-date data to generate reports of confirmed cases, fatalities and recoveries. 
     '''
     pass
