@@ -143,7 +143,7 @@ image_types = get_image_types(image_dir)
 
 padding = 1 # Set padding for images in spreadsheet
 for types in set(image_types):
-    print('... readin images for:', types)
+    print('... reading images for:', types)
     type_dict = read_images(image_dir, types)
     
     # Add image to the worksheet
