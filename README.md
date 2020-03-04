@@ -55,7 +55,18 @@ Options:
   --help         Show this message and exit.
 ```
 
-**Example Command:**
+**Example Commands:**
+```powershell
+# Will default to desktop folder 
+# for output and github for datasource
+covidify run 
+```
+
+```powershell
+# Will default to desktop folder for output
+covidify run --source=wiki   
+```
+
 ```powershell
 covidify run --output=/Users/award40/Documents/projects-folder --source=git
 ```
