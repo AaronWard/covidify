@@ -13,6 +13,7 @@ from __future__ import print_function
 import pandas as pd
 import numpy as np
 import os
+import glob
 import docopt
 import pickle
 import os.path
@@ -36,6 +37,8 @@ out = args['--output_folder']
 data_dir  = os.path.join(out, 'data', str(datetime.date(datetime.now())))
 agg_file  = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
 trend_file  = 'trend_{}.csv'.format(datetime.date(datetime.now()))
+report  = 'report_{}.xlsx'.format(datetime.date(datetime.now()))
+
 
 # import data
 print('Importing Data...')
@@ -44,6 +47,7 @@ daily_df = pd.read_csv(os.path.join(data_dir, trend_file))
 
 #Create place to save diagrams
 image_dir =  os.path.join(out,'reports', 'images')
+reports_dir =  os.path.join(out,'reports')
 
 if not os.path.exists(image_dir):
     print('Creating reports folder...')
@@ -106,5 +110,49 @@ new_df['confirmed_cases'] = agg_df.groupby(['date']).confirmed.sum().values - da
 new_df['new_confirmed_cases'] = daily_df.new_confirmed_cases
 create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked bar of confirmed and new cases by day")
 
+
+
+print('Creating excel spreadsheet report...')
+workbook_writer = pd.ExcelWriter(os.path.join(reports_dir, report), engine='xlsxwriter')
+
+
+# Add daily summary to spreadsheet
+daily_df.to_excel(workbook_writer, sheet_name='daily figures')  
+
+
+workbook = workbook_writer.book
+
+def get_image_types(path):
+    # get all the possible types of images in
+    # the passed directory path
+    types = []
+    for fn in glob.glob(os.path.join(path, '*.jpg')):
+        types.append(fn.split('_',)[-1].split('.')[0])
+    
+    return types
+
+# Get all images for each type
+def read_images(path, graph_type):
+    image_list = []
+    for fn in glob.glob(os.path.join(path, '*_{}.jpg'.format(graph_type))):
+        image_list.append(fn)    
+    images = {graph_type : image_list}
+    return dict(images)
+
+image_types = get_image_types(image_dir)
+
+padding = 1 # Set padding for images in spreadsheet
+for types in set(image_types):
+    print('... readin images for:', types)
+    type_dict = read_images(image_dir, types)
+    
+    # Add image to the worksheet
+    worksheet = workbook.add_worksheet(name='{}_graphs'.format(types))
+    for image in type_dict[types]:
+        worksheet.insert_image('A' +str(padding), image) 
+        padding += 50
+    padding = 1
+    
+workbook.close()
 
 print('Done!')

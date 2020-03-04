@@ -8,6 +8,8 @@ pillow
 tensorflow 
 keras
 tqdm
+xlsxwriter
+# glob
 # fiona 
 # shapely 
 # pyproj 
