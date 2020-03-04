@@ -2,10 +2,9 @@
 
 ![alt text](https://github.com/AaronWard/coronavirus-analysis/blob/master/tableau/spread.gif "Spread of coronavirus 22nd to 29th")
 
-This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reports. This repo will be <u>updated daily</u>.
+This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reports. This repo will be **updated daily**
 
-
-#### <u>To-do list</u>
+#### To-do list
 - I am currently working on some significant updates to this repo, including making this an installable package so some of the results be delayed. 
 
 - checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see work in progress
@@ -15,7 +14,7 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 <hr>
 
 
-### <u>Installation</u>
+### Installation
 
 - ```pip install covidify```
 
@@ -64,7 +63,7 @@ covidify run --output=/Users/award40/Documents/projects-folder --source=git
 
 <hr>
 
-### <u>Visualization of data</u>
+### Visualization of data
 This plots will be updated daily to visualize stats 3 attributes: 
 - ```confirmed cases```
 - ```deaths```
@@ -111,7 +110,7 @@ A count for all the people who are currently infected for a given date (confirme
 
 <hr>
 
-### <u>Data Source</u>
+### Data Source
 - The data comes from the **Novel Coronavirus (COVID-19) Cases**, which is a live dataset provided by JHU CSSE. 
 - Data available [here](https://github.com/CSSEGISandData/2019-nCoV).
 
