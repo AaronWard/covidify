@@ -5,10 +5,7 @@
 This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reports. This repo will be **updated daily**
 
 #### To-do list
-- I am currently working on some significant updates to this repo, including making this an installable package so some of the results be delayed. 
-
 - checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see work in progress
-
 
 
 <hr>
