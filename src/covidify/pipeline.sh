@@ -14,7 +14,7 @@ mkdir -p $OUT_FDR
 banner "Job arguments:"
 echo "ENV: $ENV"
 echo "OUTPUT FOLDER: $OUT_FDR"
-echo "OUTPUT FOLDER: $SOURCE"
+echo "DATA SOURCE: $SOURCE"
 
 banner "Data Extraction"
 python $ENV/data_prep.py --output_folder $OUT_FDR
