@@ -24,12 +24,7 @@ import pyarrow
 import json
 import git
 from tqdm import tqdm
-
-
-REPO = 'https://github.com/CSSEGISandData/COVID-19.git'
-TMP_FOLDER = '/tmp/corona/'
-TMP_GIT = os.path.join(TMP_FOLDER, 'COVID-19')
-DATA = os.path.join(TMP_GIT, 'csse_covid_19_data', 'csse_covid_19_daily_reports')
+from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
