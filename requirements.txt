@@ -5,15 +5,5 @@ pandas
 docopt 
 GitPython 
 pillow
-tensorflow 
-keras
 tqdm
 xlsxwriter
-# glob
-# fiona 
-# shapely 
-# pyproj 
-# descartes 
-# cython 
-# geopandas
-# geoplot
