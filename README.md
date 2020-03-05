@@ -1,6 +1,5 @@
 # covid-19-analysis
-[![PyPi Version](https://img.shields.io/pypi/v/covidify.svg)](https://pypi.python.org/pypi/covidify/) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/covidify/)  [![Issues](https://img.shields.io/github/issues-raw/tterb/PlayMusic.svg?maxAge=25000)](https://github.com/AaronWard/covid-19-analysis/issues) [![GitHub last commit](https://img.shields.io/github/last-commit/AaronWard/covid-19-analysis.svg?style=flat)]()
-
+[![PyPi Version](https://img.shields.io/pypi/v/covidify.svg)](https://pypi.python.org/pypi/covidify/) ![PyPI - Downloads](https://img.shields.io/pypi/dm/covidify) ![PyPI - License](https://img.shields.io/pypi/l/covidify?color=yellow) [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/covidify/) ![GitHub last commit](https://img.shields.io/github/last-commit/AaronWard/covid-19-analysis?color=brown) ![GitHub issues](https://img.shields.io/github/issues/AaronWard/covid-19-analysis?color=red)
 
 
 
