@@ -10,7 +10,7 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 - Creates a time series dataset
 - Creates a daily stats dataset 
 - Generates a number of visualizations
-- Generates an excel report inluding all of the above 
+- Generates an excel report including all of the above 
 - All results are saved to the output `reports` folder
 
 #### To-do list
@@ -110,7 +110,7 @@ A count for deaths due to the virus recorded on that given date, does not take p
 
 ##### Daily Recoveries
 
-A count for new recovories recorded on that given date, does not take past recoveries into account. 
+A count for new recoveries recorded on that given date, does not take past recoveries into account. 
 ![alt text](./reports/images/new_recoveries_bar.jpg)
 
 ##### Currently Infected
