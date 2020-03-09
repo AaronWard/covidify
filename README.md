@@ -5,11 +5,13 @@
 
 ![alt text](https://github.com/AaronWard/coronavirus-analysis/blob/master/tableau/spread.gif "Spread of coronavirus 22nd to 29th")
 
+#### What does it do?
 This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reports. This repo will be **updated daily**
-
-
-
-
+- Creates a time series dataset
+- Creates a daily stats dataset 
+- Generates a number of visualizations
+- Generates an excel report inluding all of the above 
+- All results are saved to the output `reports` folder
 
 #### To-do list
 - checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see work in progress
@@ -69,12 +71,6 @@ covidify run --source=wiki
 ```powershell
 covidify run --output=/Users/award40/Documents/projects-folder --source=git
 ```
-
-**Results:**
-- The package will pull the latest live data and generate following in the output folder:
-    - Preprocessed time series data
-    - graph reports
-
 
 <hr>
 
