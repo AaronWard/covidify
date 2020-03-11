@@ -32,24 +32,32 @@ source = args['--source']
     
 if '_' in country:
     country = replace_arg_score(country)
+
 if country == 'Global':
     country = None
+# else:
+#     # append country name if given
+#     out = out + '-{}'.format(country)
 
 if source == 'git':
     df = github.get()
+    
 elif source == 'wiki':
     print('Apologies, the wikipedia source is not ready yet - getting github data')
     df = github.get()
     
+
 
 def get_similar_countries(c, country_list):
     pos_countries = get_close_matches(c, country_list)
     
     if len(pos_countries) > 0:
         print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
+        os.system('rm -rf ' + out)
         sys.exit(1)
     else:
         print('\033[1;31m'+c, 'was not listed.\033[0;0m')
+        os.system('rm -rf ' + out)
         sys.exit(1)
         
 def check_specified_country(df, country):

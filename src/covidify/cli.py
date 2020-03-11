@@ -8,7 +8,7 @@ from covidify.utils.utils import replace_arg_space
 
 USER = getpass.getuser()
 
-def check_output_folder(var, msg):
+def check_output_folder(var, country_str,  msg):
     '''
     Check if the output folder is valid, if not
     just default to dekstop 
@@ -16,7 +16,10 @@ def check_output_folder(var, msg):
     
     if not var:
         print('%sMESSAGE: %s' % (' '*5, msg))
-        return '/Users/'+ USER +'/Desktop/covidify-output/'
+        if country_str == 'Global':
+            return os.path.join('/Users', USER, 'Desktop', 'covidify-output')
+        else:
+            return os.path.join('/Users', USER, 'Desktop', 'covidify-output-{}'.format(country_str))
     else:
         return var
 
@@ -64,7 +67,7 @@ def run(output, source, country):
     
     #Do checks on args
     country_str = check_country(country, '\033[1;31m No country specified, defaulting to global cases \033[0;0m')    
-    output = check_output_folder(output, '\033[1;31m No output directory given, defaulting to /Users/' + USER + '/Desktop/covidify-output/ \033[0;0m')
+    output = check_output_folder(output, country_str, '\033[1;31m No output directory given, defaulting to /Users/' + USER + '/Desktop/ \033[0;0m')
     source = check_source_arg(source, '\033[1;31m No source given, defaulting to John Hopkin CSSE github repo \033[0;0m')
 
     #get the path of covidify in site-packages

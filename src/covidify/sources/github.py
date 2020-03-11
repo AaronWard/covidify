@@ -60,9 +60,9 @@ def get_data(cleaned_sheets):
             # print('...', file)
             tmp_df = pd.read_csv(os.path.join(DATA, file), index_col=None, 
                                  header=0, parse_dates=['Last Update'])
-            tmp_df = tmp_df[keep_cols]
-            tmp_df[numeric_cols] = tmp_df[numeric_cols].fillna(0)
-            tmp_df[numeric_cols] = tmp_df[numeric_cols].astype(int)
+            tmp_df = tmp_df[KEEP_COLS]
+            tmp_df[NUMERIC_COLS] = tmp_df[NUMERIC_COLS].fillna(0)
+            tmp_df[NUMERIC_COLS] = tmp_df[NUMERIC_COLS].astype(int)
             tmp_df['Province/State'].fillna(tmp_df['Country/Region'], inplace=True) #If no region given, fill it with country
 
             tmp_df['Last Update'] = tmp_df['Last Update'].apply(clean_last_updated)
