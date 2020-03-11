@@ -35,9 +35,6 @@ if '_' in country:
 
 if country == 'Global':
     country = None
-# else:
-#     # append country name if given
-#     out = out + '-{}'.format(country)
 
 if source == 'git':
     df = github.get()

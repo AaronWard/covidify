@@ -42,8 +42,6 @@ if '_' in country:
 
 if country == 'Global':
     country = None
-# else:
-#     out = args['--output_folder']+ '-{}'.format(country)
 
 #change report name if country specified
 def create_report_name(country):
