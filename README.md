@@ -55,7 +55,7 @@ Options:
   --source TEXT   There are two datasources to choose from, John Hopkins
                   github repo or wikipedia -- options are git or wiki
                   respectively [Default: git]
-  --country TEXT  Filter reports by a country
+  --country TEXT  Filter reports by a country [Default: Global cases]
   --help          Show this message and exit.
 ```
 
@@ -77,7 +77,7 @@ covidify run --output=/Users/award40/Documents/projects-folder --source=git
 
 ```powershell
 # Filter reports by country
-covidify run --country=Germany
+covidify run --country="South Korea"
 ```
 
 <hr>
