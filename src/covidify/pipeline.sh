@@ -18,6 +18,7 @@ banner "Job arguments:"
 echo "ENV: $ENV"
 echo "OUTPUT FOLDER: $OUT_FDR"
 echo "DATA SOURCE: $SOURCE"
+echo "COUNTRIES: $COUNTRY"
 
 banner "Data Extraction"
 python $ENV/data_prep.py --output_folder $OUT_FDR --country $COUNTRY

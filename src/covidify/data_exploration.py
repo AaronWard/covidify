@@ -34,6 +34,9 @@ args = docopt.docopt(__doc__)
 out = args['--output_folder']
 country = args['--country']
 
+if country == 'Global':
+    country = None
+
 #change report name if country specified
 def create_report_name(country):
     if country:

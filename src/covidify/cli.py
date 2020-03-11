@@ -45,7 +45,7 @@ def cli():
 @cli.command()
 @click.option('--output', help='Folder to output data and reports [Default: /Users/' + USER + '/Desktop/covidify-output/]')
 @click.option('--source', help='There are two datasources to choose from, John Hopkins github repo or wikipedia -- options are git or wiki respectively [Default: git]')
-@click.option('--country', help='Filter reports by a country', default=None)
+@click.option('--country', help='Filter reports by a country', default='Global')
 def run(output, source, country):
 
     # Do checks on args
@@ -55,5 +55,7 @@ def run(output, source, country):
     #get the path of covidify in site-packages
     env = covidify.__path__[0]
     
-    # Run the pipeline.sh and kick off the job
+
     os.system(env + SCRIPT + ' ' + env + ' ' + output + ' ' + source + ' ' + country)
+
+        

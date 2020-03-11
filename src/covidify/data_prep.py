@@ -32,6 +32,9 @@ args = docopt.docopt(__doc__)
 out = args['--output_folder']
 country = args['--country']
 
+if country == 'Global':
+    country = None
+
 def clean_sheet_names(new_ranges):
     indices = []    
     # Remove all sheets that dont have a numeric header
