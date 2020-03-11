@@ -1,10 +1,11 @@
 import os
 import sys
-import covidify
 import click
 import getpass
+import covidify
 from covidify.config import SCRIPT
 from covidify.utils.utils import replace_arg_space
+
 USER = getpass.getuser()
 
 def check_output_folder(var, msg):

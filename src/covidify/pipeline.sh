@@ -21,7 +21,7 @@ echo "DATA SOURCE: $SOURCE"
 echo "COUNTRIES: $COUNTRY"
 
 banner "Data Extraction"
-python $ENV/data_prep.py --output_folder $OUT_FDR --country $COUNTRY
+python $ENV/data_prep.py --output_folder $OUT_FDR --source $SOURCE --country $COUNTRY
 
 banner "Data Exploration"
 python $ENV/data_exploration.py --output_folder $OUT_FDR --country $COUNTRY
