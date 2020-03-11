@@ -10,8 +10,10 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 - Creates a time series dataset
 - Creates a daily stats dataset 
 - Generates a number of visualizations
+- You can also filter reports for a given country
 - Generates an excel report including all of the above 
 - All results are saved to the output `reports` folder
+
 
 #### To-do list
 - checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see work in progress
@@ -28,7 +30,7 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 **How to run:**
 
 ```powershell
-Desktop $covidify
+$ covidify
 Usage: covidify [OPTIONS] COMMAND [ARGS]...
 
   ☣  COVIDIFY ☣
@@ -48,12 +50,13 @@ $ covidify run --help
 Usage: covidify run [OPTIONS]
 
 Options:
-  --output TEXT  Folder to output data and reports [Default:
-                 /Users/$USER/Desktop/covidify-output/]
-  --source TEXT  There are two datasources to choose from, John Hopkins github
-                 repo or wikipedia -- options are git or wiki respectively
-                 [Default: git]
-  --help         Show this message and exit.
+  --output TEXT   Folder to output data and reports [Default:
+                  /Users/award40/Desktop/covidify-output/]
+  --source TEXT   There are two datasources to choose from, John Hopkins
+                  github repo or wikipedia -- options are git or wiki
+                  respectively [Default: git]
+  --country TEXT  Filter reports by a country
+  --help          Show this message and exit.
 ```
 
 **Example Commands:**
