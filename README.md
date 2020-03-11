@@ -75,6 +75,11 @@ covidify run --source=wiki
 covidify run --output=/Users/award40/Documents/projects-folder --source=git
 ```
 
+```powershell
+# Filter reports by country
+covidify run --country=Germany
+```
+
 <hr>
 
 ### Visualization of data
