@@ -92,39 +92,39 @@ This plots will be updated daily to visualize stats 3 attributes:
 ##### Trend Line
 
 This is an accumalitive sum trendline for all the confirmed cases, deaths and recoveries.
-![alt text](./reports/images/confirmed_trendline.jpg)
+![alt text](./reports/images/confirmed_trendline.png)
 
 ##### Daily Trend Line
 
 This is an daily sum trendline for all the confirmed cases, deaths and recoveries.
-![alt text](./reports/images/new_confirmed_cases_trendline.jpg)
+![alt text](./reports/images/new_confirmed_cases_trendline.png)
 
 ##### Stacked Daily Confirmed Cases
 
 This stacked bar chart shows a daily sum of people who are currently confirmed (<i>red</i>) and the number of people who have been been confirmed on that day (<i>blue</i>)
 
-![alt text](./reports/images/confirmed_cases_stacked_bar.jpg "Number of people actually with the virus for each day")
+![alt text](./reports/images/confirmed_cases_stacked_bar.png "Number of people actually with the virus for each day")
 
 
 ##### Daily Confirmed Cases
 
 A count for new cases recorded on that given date, does not take past confirmations into account. 
-![alt text](./reports/images/new_confirmed_cases_bar.jpg)
+![alt text](./reports/images/new_confirmed_cases_bar.png)
 
 ##### Daily Deaths
 
 A count for deaths due to the virus recorded on that given date, does not take past deaths into account. 
-![alt text](./reports/images/new_deaths_bar.jpg)
+![alt text](./reports/images/new_deaths_bar.png)
 
 ##### Daily Recoveries
 
 A count for new recoveries recorded on that given date, does not take past recoveries into account. 
-![alt text](./reports/images/new_recoveries_bar.jpg)
+![alt text](./reports/images/new_recoveries_bar.png)
 
 ##### Currently Infected
 
 A count for all the people who are currently infected for a given date (confirmed cases - (recoveries + deaths))
-![alt text](./reports/images/currently_infected_bar.jpg)
+![alt text](./reports/images/currently_infected_bar.png)
 
 
 <hr>
