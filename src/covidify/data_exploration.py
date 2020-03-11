@@ -20,6 +20,8 @@ import os.path
 from datetime import datetime
 import pyarrow
 import matplotlib.pyplot as plt
+from covidify.utils.utils import replace_arg_score
+
 # %matplotlib inline
 
 font = {'weight' : 'bold',
@@ -33,6 +35,10 @@ plt.style.use('ggplot')
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
 country = args['--country']
+
+
+if '_' in country:
+    country = replace_arg_score(country)
 
 if country == 'Global':
     country = None

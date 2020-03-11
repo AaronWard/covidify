@@ -27,10 +27,16 @@ import git
 from difflib import get_close_matches
 from tqdm import tqdm
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
+from covidify.utils.utils import replace_arg_score
+from string import capwords
 
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
 country = args['--country']
+
+    
+if '_' in country:
+    country = replace_arg_score(country)
 
 if country == 'Global':
     country = None
@@ -184,29 +190,30 @@ def check_specified_country(df, country):
     country_list = list(map(lambda x:x.lower().strip(), set(df.country.values)))
 
     if country:
+        
         print('Country specified')
         if country.lower() == 'china': #Mainland china china dont come up as similar
-            print(country, 'was not listed. did you mean Mainland China?')
+            print(country, 'was not listed. did you mean Mainland China??')
             sys.exit(1)
-
         # give similar option if similarity found
-        elif country.lower() not in country_list:
+        if country.lower() not in country_list:
             get_similar_countries(country, country_list)
             
         else:
             #Return filtered dataframe
             print('... filtering data for', country)
             if len(country) == 2:
+                print('LEN OF COUNTRY:', len(country))
                 df = df[df.country == country.upper()]
             else:
-                df = df[df.country == country.capitalize()]
+                df = df[df.country == capwords(country)]
             return df
     else:
         print('No specific country specified')
         return df
 
-
 df = check_specified_country(df, country)
+
 
 # sheets need to be sorted by date value
 print('Sorting by datetime...')
