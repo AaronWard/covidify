@@ -7,6 +7,7 @@ Usage:
 Options:
     -h --help             Show this message.
     --output_folder=OUT   Output folder for the data and reports to be saved.
+    --country=CNT         Arg for filtering by a specific country
 """
 from __future__ import print_function
 import pandas as pd
@@ -23,11 +24,13 @@ from time import strftime
 import pyarrow
 import json
 import git
+from difflib import get_close_matches
 from tqdm import tqdm
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
+country = args['--country']
 
 def clean_sheet_names(new_ranges):
     indices = []    
@@ -156,6 +159,51 @@ def clean_data(tmp_df):
     return tmp_df
 
 df  = clean_data(df)
+
+
+def get_similar_countries(c, country_list):
+    pos_countries = get_close_matches(c, country_list)
+    
+    if len(pos_countries) > 0:
+        print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
+        sys.exit(1)
+    else:
+        print('\033[1;31m'+c, 'was not listed.\033[0;0m')
+        sys.exit(1)
+        
+def check_specified_country(df, country):
+    '''
+    let user filter reports by country, if not found
+    then give a option if the string is similar
+    '''
+    
+    # Get all unique countries in the data
+    country_list = list(map(lambda x:x.lower().strip(), set(df.country.values)))
+
+    if country:
+        print('Country specified')
+        if country.lower() == 'china': #Mainland china china dont come up as similar
+            print(country, 'was not listed. did you mean Mainland China?')
+            sys.exit(1)
+
+        # give similar option if similarity found
+        elif country.lower() not in country_list:
+            get_similar_countries(country, country_list)
+            
+        else:
+            #Return filtered dataframe
+            print('... filtering data for', country)
+            if len(country) == 2:
+                df = df[df.country == country.upper()]
+            else:
+                df = df[df.country == country.capitalize()]
+            return df
+    else:
+        print('No specific country specified')
+        return df
+
+
+df = check_specified_country(df, country)
 
 # sheets need to be sorted by date value
 print('Sorting by datetime...')
