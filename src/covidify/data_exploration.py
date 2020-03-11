@@ -123,7 +123,7 @@ def create_stacked_bar(tmp_df, col1, col2, fig_title, country):
 print('Creating graphs...')
 print('... Time Series Trend Line')
 # Time Series Data Plots
-create_trend_line(agg_df, 'confirmed', 'deaths', 'recovered', 'Accumalitive trend', country)
+create_trend_line(agg_df, 'confirmed', 'deaths', 'recovered', 'Accumulative trend', country)
 
 
 print('... Daily Figures')
