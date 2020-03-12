@@ -50,11 +50,15 @@ def get_similar_countries(c, country_list):
     
     if len(pos_countries) > 0:
         print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
-        os.system('rm -rf ' + out)
+        
+        #Only delete if its a covidify generated folder
+        if 'Desktop/covidify-output-' in out:
+            os.system('rm -rf ' + out)
         sys.exit(1)
     else:
         print('\033[1;31m'+c, 'was not listed.\033[0;0m')
-        os.system('rm -rf ' + out)
+        if 'Desktop/covidify-output-' in out:
+            os.system('rm -rf ' + out)
         sys.exit(1)
         
 def check_specified_country(df, country):
@@ -68,7 +72,7 @@ def check_specified_country(df, country):
 
     if country:
         
-        print('Country specified')
+        print('Country specified!')
         if country.lower() == 'china': #Mainland china china dont come up as similar
             print(country, 'was not listed. did you mean Mainland China??')
             sys.exit(1)
@@ -96,10 +100,10 @@ df = check_specified_country(df, country)
 print('Sorting by datetime...')
 current_date = str(datetime.date(datetime.now()))
 
-if df.date.max() == current_date:
-    df = df[df.date != df.date.max()]
-else:
-    df = df[df.date != current_date]
+# if df.date.max() == current_date:
+#     df = df[df.date != df.date.max()]
+# else:
+#     df = df[df.date != current_date]
 
 df = df.sort_values('datetime')
 
