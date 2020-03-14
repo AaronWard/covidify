@@ -19,6 +19,12 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 - checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see work in progress
 
 
+## NOTICE:
+- You may have noticed that here are some discrepancies in the JHU data.
+- These discrepencies include rows for countries missign for some sheets, Mispelling of country names and countries being names different (South Korea, Republic of Korea for example)
+- I am doing my best to update the preprocessing code to fix these problems. Please be patient and I will release the newest version of **covidify**
+
+
 <hr>
 
 
