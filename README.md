@@ -21,7 +21,7 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 
 ## NOTICE:
 - You may have noticed that here are some discrepancies in the JHU data.
-- These discrepencies include rows for countries missign for some sheets, Mispelling of country names and countries being names different (South Korea, Republic of Korea for example)
+- These discrepancies include rows for countries missing for some sheets, misspelling of country names and countries being named differently (South Korea, Republic of Korea for example)
 - I am doing my best to update the preprocessing code to fix these problems. Please be patient and I will release the newest version of **covidify** ASAP
 
 
@@ -97,12 +97,12 @@ This plots will be updated daily to visualize stats 3 attributes:
 
 ##### Trend Line
 
-This is an accumalitive sum trendline for all the confirmed cases, deaths and recoveries.
+This is an accumulative sum trendline for all the confirmed cases, deaths and recoveries.
 ![alt text](./reports/images/confirmed_trendline.png)
 
 ##### Daily Trend Line
 
-This is an daily sum trendline for all the confirmed cases, deaths and recoveries.
+This is a daily sum trendline for all the confirmed cases, deaths and recoveries.
 ![alt text](./reports/images/new_confirmed_cases_trendline.png)
 
 ##### Stacked Daily Confirmed Cases
