@@ -22,12 +22,10 @@ import pyarrow
 import matplotlib.pyplot as plt
 from covidify.utils.utils import replace_arg_score
 
-# %matplotlib inline
 
 font = {'weight' : 'bold',
         'size'   : 22}
 plt.rc('font', **font)
-
 
 #set ggplot style
 plt.style.use('ggplot')
@@ -148,11 +146,8 @@ create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked ba
 print('Creating excel spreadsheet report...')
 workbook_writer = pd.ExcelWriter(os.path.join(reports_dir, report), engine='xlsxwriter')
 
-
 # Add daily summary to spreadsheet
 daily_df.to_excel(workbook_writer, sheet_name='daily figures')  
-
-
 workbook = workbook_writer.book
 
 def get_image_types(path):
