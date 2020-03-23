@@ -12,6 +12,7 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 - Generates a number of visualizations
 - You can also filter reports for a given country
 - Generates an excel report including all of the above 
+- List all countries affected by covid-19
 - All results are saved to the output `reports` folder
 
 
@@ -41,14 +42,15 @@ Usage: covidify [OPTIONS] COMMAND [ARGS]...
 
   ☣  COVIDIFY ☣
 
-   - use the most up-to-date data to generate reports of confirmed cases,
-   fatalities and recoveries.
+   - use the most up-to-date data to generate reports of 
+     confirmed cases, fatalities and recoveries.
 
 Options:
   --help  Show this message and exit.
 
 Commands:
-  run
+  list  List all the countries that have confirmed cases.
+  run   Generate reports for global cases or refine by country.
 ```
 
 ```powershell
@@ -73,17 +75,18 @@ covidify run
 ```
 
 ```powershell
-# Will default to desktop folder for output
-covidify run --source=wiki   
-```
-
-```powershell
+# Specify output folder and source
 covidify run --output=/Users/award40/Documents/projects-folder --source=git
 ```
 
 ```powershell
 # Filter reports by country
 covidify run --country="South Korea"
+```
+
+```powershell
+# List all countries affected 
+covidify list --countries
 ```
 
 <hr>
