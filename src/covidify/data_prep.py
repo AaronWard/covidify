@@ -29,6 +29,9 @@ out = args['--output_folder']
 country = args['--country']
 source = args['--source']
 
+
+############ DATA SELECTION ############
+
     
 if '_' in country:
     country = replace_arg_score(country)
@@ -44,6 +47,8 @@ elif source == 'wiki':
     df = github.get()
     
 
+
+############ COUNTRY SELECTION ############
 
 def get_similar_countries(c, country_list):
     pos_countries = get_close_matches(c, country_list)
@@ -71,10 +76,9 @@ def check_specified_country(df, country):
     country_list = list(map(lambda x:x.lower().strip(), set(df.country.values)))
 
     if country:
-        
         print('Country specified!')
-        if country.lower() == 'china': #Mainland china china dont come up as similar
-            print(country, 'was not listed. did you mean Mainland China??')
+        if country.lower() == 'Mainland China': #Mainland china and china doesn't come up as similar
+            print(country, 'was not listed. did you mean China?')
             sys.exit(1)
         # give similar option if similarity found
         if country.lower() not in country_list:
@@ -95,17 +99,13 @@ def check_specified_country(df, country):
 
 df = check_specified_country(df, country)
 
+############ DAILY CASES ############
 
 # sheets need to be sorted by date value
-print('Sorting by datetime...')
+# print('Sorting by datetime...')
+# df = df.sort_values('datetime')
+
 current_date = str(datetime.date(datetime.now()))
-
-# if df.date.max() == current_date:
-#     df = df[df.date != df.date.max()]
-# else:
-#     df = df[df.date != current_date]
-
-df = df.sort_values('datetime')
 
 '''
 Get the difference of the sum totals for each
