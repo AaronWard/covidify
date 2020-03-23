@@ -90,9 +90,9 @@ def create_save_file(col, country, graph_type):
         return '{}_{}.png'.format(col, graph_type)
 
 # Plot and save trendline graph
-def create_trend_line(tmp_df, col, col2, col3, fig_title, country):
+def create_trend_line(tmp_df, date_col, col, col2, col3, fig_title, country):
     fig, ax = plt.subplots(figsize=(20,10))
-    tmp_df.groupby(['date'])[[col, col2, col3]].sum().plot(ax=ax, marker='o')
+    tmp_df.groupby([date_col])[[col, col2, col3]].sum().plot(ax=ax, marker='o')
     ax.set_title(create_title(fig_title, country))
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'trendline')))
@@ -104,7 +104,7 @@ def create_bar(tmp_df, col, rgb, country):
     tmp.plot.bar(ax=ax, rot=45, color=rgb)
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'bar')))
-    
+
 def create_stacked_bar(tmp_df, col1, col2, fig_title, country):
     tmp_df = tmp_df.set_index('date')
     fig, ax = plt.subplots(figsize=(20,10))
@@ -114,30 +114,30 @@ def create_stacked_bar(tmp_df, col1, col2, fig_title, country):
                                   stacked=True);
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col2, country, 'stacked_bar')))
-    
-    
+
+
 ##### Create Graphs #####
-    
+
 print('Creating graphs...')
 print('... Time Series Trend Line')
 # Time Series Data Plots
-create_trend_line(agg_df, 'confirmed', 'deaths', 'recovered', 'Accumulative trend', country)
+create_trend_line(agg_df, 'file_date', 'confirmed', 'deaths', 'recovered', 'Accumulative trend', country)
 
 
 print('... Daily Figures')
 # Daily Figures Data Plots
 daily_figures_cols = ['new_confirmed_cases', 'new_deaths', 'new_recoveries', 'currently_infected']
 for col, rgb in zip(daily_figures_cols, ['tomato', 'lightblue', 'mediumpurple', 'green']):
-    create_bar(daily_df, col, rgb, country)    
-    
+    create_bar(daily_df, col, rgb, country)
+
 # Trend line for new cases
-create_trend_line(daily_df, 'new_confirmed_cases', 'new_deaths', 'new_recoveries', 'Daily trendline', country)
-    
-    
+create_trend_line(daily_df, 'date', 'new_confirmed_cases', 'new_deaths', 'new_recoveries', 'Daily trendline', country)
+
+
 print('... Daily New Infections Differences')
 new_df = pd.DataFrame([])
 new_df['date'] = daily_df['date']
-new_df['confirmed_cases'] = agg_df.groupby(['date']).confirmed.sum().values - daily_df.new_confirmed_cases
+new_df['confirmed_cases'] = agg_df.groupby(['file_date']).confirmed.sum().values - daily_df.new_confirmed_cases
 new_df['new_confirmed_cases'] = daily_df.new_confirmed_cases
 create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked bar of confirmed and new cases by day", country)
 

@@ -116,15 +116,18 @@ def get_new_cases(tmp, col):
     tmp_df_list = []
     df = tmp.copy()
 
-    for i, day in enumerate(df.sort_values('date').date.unique()):    
-        tmp_df = df[df.date == day]
+    for i, day in enumerate(df.sort_values('date').date.unique()):
+        tmp_df = df[df.file_date == day]
         tmp_df_list.append(tmp_df[col].sum())
-        
+
         if i == 0:
             diff_list.append(tmp_df[col].sum())
         else:
             diff_list.append(tmp_df[col].sum() - tmp_df_list[i-1])
-        
+
+        # if i > 0:
+        #     print(day, tmp_df[col].sum(), tmp_df[col].sum() - tmp_df_list[i-1])
+
     return diff_list
 
 def get_moving_average(tmp, col):
@@ -141,7 +144,7 @@ daily_cases_df = pd.DataFrame([])
 daily_cases_df['new_confirmed_cases'] = get_new_cases(df, 'confirmed')
 daily_cases_df['new_deaths'] = get_new_cases(df, 'deaths')
 daily_cases_df['new_recoveries'] = get_new_cases(df, 'recovered')
-daily_cases_df['date'] = df.date.unique()
+daily_cases_df['date'] = df.file_date.unique()
 
 #Moving average
 daily_cases_df['confirmed_MA'] = get_moving_average(daily_cases_df, 'new_confirmed_cases')
@@ -161,9 +164,10 @@ ex: 5 = 10 - (4 - 1)
 
 '''
 current_infected = pd.DataFrame([])
-current_infected['currently_infected'] = (df.groupby('date').confirmed.sum() - \
-                                          (df.groupby('date').deaths.sum() + df.groupby('date').recovered.sum()))
-current_infected['delta'] = (current_infected['currently_infected'] - df.groupby('date').confirmed.sum())
+current_infected['currently_infected'] = (df.groupby('file_date').confirmed.sum() - \
+                                          (df.groupby('file_date').deaths.sum() + df.groupby('file_date').recovered.sum()))
+current_infected['delta'] = (current_infected['currently_infected'] - df.groupby('file_date').confirmed.sum())
+current_infected.index.rename('date', inplace=True)
 daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='date')
 
 

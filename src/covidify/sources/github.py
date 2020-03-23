@@ -123,7 +123,7 @@ def get_data(cleaned_sheets):
     df_raw = pd.concat(all_csv, axis=0, ignore_index=True, sort=True)  # concatenate all csv's into one df
     df_raw = fix_country_names(df_raw)    # Fix mispelled country names
     df_raw = df_raw.sort_values(by=['datetime'])
-    df_raw = drop_duplicate_countries(df_raw)
+    # df_raw = drop_duplicate_countries(df_raw)
 
     return df_raw
 
