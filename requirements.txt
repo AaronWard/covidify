@@ -7,3 +7,4 @@ GitPython
 pillow
 tqdm
 xlsxwriter
+numpy
