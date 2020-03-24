@@ -40,15 +40,27 @@ def fix_country_names(tmp_df):
     tmp_df['country'] = np.where((tmp_df['country']  == 'Taiwan*'),'Taiwan', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Macao SAR'),'Macau', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Iran (Islamic Republic of)'),'Iran', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Viet Nam'),'Vietnam', tmp_df['country'])
 
     #European Countries
     tmp_df['country'] = np.where((tmp_df['country']  == 'UK'),'United Kingdom', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == ' Azerbaijan'),'Azerbaijan', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Bosnia and Herzegovina'),'Bosnia', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Czech Republic'),'Czechia', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Republic of Ireland'),'Ireland', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Republic of Moldova'),'Moldova', tmp_df['country'])
+
+    #African Countries
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Congo (Brazzaville)'),'Congo', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Congo (Kinshasa)'),'Congo', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Republic of the Congo'),'Congo', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Gambia, The'),'Gambia', tmp_df['country'])
 
     # Western Countries
     tmp_df['country'] = np.where((tmp_df['country']  == 'USA'),'America', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'US'),'America', tmp_df['country'])
-    tmp_df['country'] = np.where((tmp_df['country']  == 'United States of America'),'America', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Bahamas, The'),'The Bahamas', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Bahamas'),'The Bahamas', tmp_df['country'])
 
     # Others
     tmp_df['country'] = np.where((tmp_df['country']  == 'Cruise Ship'),'Others', tmp_df['country'])
@@ -86,46 +98,48 @@ def clean_data(df):
     #Lower case all col names
     tmp_df.columns = map(str.lower, tmp_df.columns) 
 
-    # Remove unwanted columns
-    tmp_df = tmp_df[KEEP_COLS]
-
     for col in tmp_df[NUMERIC_COLS]:
         tmp_df[col] = tmp_df[col].fillna(0)
         tmp_df[col] = tmp_df[col].astype(int)
 
     return tmp_df
 
-def drop_duplicate_countries(df_raw):
-    '''
-    Some countries are listed in a sheet but could have had their numbers last 
-    updates one of two days previous - so ake the max date value for each 
-    province for a given date
+# def drop_duplicate_countries(df_raw):
+#     '''
+#     Some countries are listed in a sheet but could have had their numbers last 
+#     updates one of two days previous - so ake the max date value for each 
+#     province for a given date
 
-    EXAMPLE:
-    Thailand	1/31/2020 10:37	   19 (02-01-2020.csv)
-    Thailand	1/31/2020 23:59	   19 (01-31-2020.csv)
+#     EXAMPLE:
+#     Thailand	1/31/2020 10:37	   19 (02-01-2020.csv)
+#     Thailand	1/31/2020 23:59	   19 (01-31-2020.csv)
 
-    We dont want to double count, so keep the latest
-    '''
-    days_list = []
+#     We dont want to double count, so keep the latest
+#     '''
+#     days_list = []
     
-    for d in df_raw.date.unique():
-        tmp_df = df_raw[df_raw.date == d]
-        tmp_df = tmp_df.sort_values(['date']).drop_duplicates(['country','province'], keep='last')
-        days_list.append(tmp_df)
+#     for d in df_raw.date.unique():
+#         tmp_df = df_raw[df_raw.date == d]
+#         tmp_df = tmp_df.sort_values(['date']).drop_duplicates(['country','province'], keep='last')
+#         days_list.append(tmp_df)
 
-    return pd.concat(days_list, axis=0, ignore_index=True, sort=True)
+#     return pd.concat(days_list, axis=0, ignore_index=True, sort=True)
 
 def get_data(cleaned_sheets):
     all_csv = []
     # Import all CSV's
     for f in tqdm(sorted(cleaned_sheets), desc='... importing data: '):
         if 'csv' in f:
-            # print('...', f)
-            tmp_df = pd.read_csv(os.path.join(DATA, f), index_col=None,header=0, parse_dates=['Last Update'])                    
-            tmp_df['date'] = tmp_df['Last Update'].apply(get_date) # remove time to get date
-            tmp_df['file_date'] = get_csv_date(f) #Get date of csv from file name
+            try:
+                tmp_df = pd.read_csv(os.path.join(DATA, f), index_col=None,header=0, parse_dates=['Last Update'])  
+            except:
+                # Temporary fix for JHU's bullshit data management
+                tmp_df = pd.read_csv(os.path.join(DATA, f), index_col=None,header=0, parse_dates=['Last_Update'])  
+
             tmp_df = clean_data(tmp_df)
+            tmp_df['date'] = tmp_df['datetime'].apply(get_date) # remove time to get date
+            tmp_df['file_date'] = get_csv_date(f) #Get date of csv from file name
+            tmp_df = tmp_df[KEEP_COLS]
             tmp_df['province'].fillna(tmp_df['country'], inplace=True) #If no region given, fill it with country
             all_csv.append(tmp_df)
 
