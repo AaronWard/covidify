@@ -63,16 +63,25 @@ def clean_data(df):
     tmp_df = df.copy()
 
     if 'Demised' in tmp_df.columns:
-        tmp_df.rename(columns={'Demised':'Deaths'}, inplace=True)
+        tmp_df.rename(columns={'Demised':'deaths'}, inplace=True)
 
     if 'Country/Region' in tmp_df.columns:
         tmp_df.rename(columns={'Country/Region':'country'}, inplace=True)
+
+    if 'Country_Region' in tmp_df.columns:
+        tmp_df.rename(columns={'Country_Region':'country'}, inplace=True)
     
     if 'Province/State' in tmp_df.columns:
         tmp_df.rename(columns={'Province/State':'province'}, inplace=True)
-        
+
+    if 'Province_State' in tmp_df.columns:
+        tmp_df.rename(columns={'Province_State':'province'}, inplace=True)
+
     if 'Last Update' in tmp_df.columns:
         tmp_df.rename(columns={'Last Update':'datetime'}, inplace=True)
+
+    if 'Last_Update' in tmp_df.columns:
+        tmp_df.rename(columns={'Last_Update':'datetime'}, inplace=True)
 
     #Lower case all col names
     tmp_df.columns = map(str.lower, tmp_df.columns) 
