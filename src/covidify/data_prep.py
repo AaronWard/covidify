@@ -103,7 +103,7 @@ df = check_specified_country(df, country)
 
 # sheets need to be sorted by date value
 # print('Sorting by datetime...')
-# df = df.sort_values('datetime')
+df = df.sort_values('datetime')
 
 current_date = str(datetime.date(datetime.now()))
 
@@ -141,10 +141,11 @@ def get_exp_moving_average(tmp, col):
 
 print('Calculating dataframe for new cases...')
 daily_cases_df = pd.DataFrame([])
+daily_cases_df['date'] = df.file_date.unique()
+daily_cases_df = daily_cases_df.sort_values('date')
 daily_cases_df['new_confirmed_cases'] = get_new_cases(df, 'confirmed')
 daily_cases_df['new_deaths'] = get_new_cases(df, 'deaths')
 daily_cases_df['new_recoveries'] = get_new_cases(df, 'recovered')
-daily_cases_df['date'] = df.file_date.unique()
 
 
 
@@ -166,10 +167,11 @@ ex: 5 = 10 - (4 - 1)
 
 '''
 current_infected = pd.DataFrame([])
-current_infected['currently_infected'] = (df.groupby('file_date').confirmed.sum() - \
-                                          (df.groupby('file_date').deaths.sum() + df.groupby('file_date').recovered.sum()))
+
+current_infected['currently_infected'] = (df.groupby('file_date').confirmed.sum() - (df.groupby('file_date').deaths.sum() + df.groupby('file_date').recovered.sum()))
 current_infected['delta'] = (current_infected['currently_infected'] - df.groupby('file_date').confirmed.sum())
 current_infected.index.rename('date', inplace=True)
+
 daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='date')
 
 
