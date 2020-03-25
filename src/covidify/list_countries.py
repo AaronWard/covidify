@@ -7,9 +7,8 @@ This is so you can decide which country to make a report for.
 import os
 import sys
 import click
-import numpy as np
 import covidify
-from tabulate import tabulate
+import numpy as np
 from covidify.sources import github
 from covidify.config import SCRIPT
 

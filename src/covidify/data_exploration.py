@@ -10,24 +10,22 @@ Options:
     --country=CNT         Arg for filtering by a specific country
 """
 from __future__ import print_function
-import pandas as pd
-import numpy as np
 import os
 import glob
 import docopt
 import pickle
 import os.path
-from datetime import datetime
 import pyarrow
+import numpy as np
+import pandas as pd
+from datetime import datetime
 import matplotlib.pyplot as plt
 from covidify.utils.utils import replace_arg_score
 
-
+# plt settings
 font = {'weight' : 'bold',
         'size'   : 22}
 plt.rc('font', **font)
-
-#set ggplot style
 plt.style.use('ggplot')
  
 args = docopt.docopt(__doc__)
@@ -142,7 +140,6 @@ new_df['new_confirmed_cases'] = daily_df.new_confirmed_cases
 create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked bar of confirmed and new cases by day", country)
 
 
-
 print('Creating excel spreadsheet report...')
 workbook_writer = pd.ExcelWriter(os.path.join(reports_dir, report), engine='xlsxwriter')
 
@@ -182,5 +179,4 @@ for types in set(image_types):
     padding = 1
     
 workbook.close()
-
 print('Done!')

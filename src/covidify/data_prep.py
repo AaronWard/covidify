@@ -32,7 +32,6 @@ source = args['--source']
 
 ############ DATA SELECTION ############
 
-    
 if '_' in country:
     country = replace_arg_score(country)
 
@@ -125,9 +124,6 @@ def get_new_cases(tmp, col):
         else:
             diff_list.append(tmp_df[col].sum() - tmp_df_list[i-1])
 
-        # if i > 0:
-        #     print(day, tmp_df[col].sum(), tmp_df[col].sum() - tmp_df_list[i-1])
-
     return diff_list
 
 def get_moving_average(tmp, col):
@@ -167,7 +163,6 @@ ex: 5 = 10 - (4 - 1)
 
 '''
 current_infected = pd.DataFrame([])
-
 current_infected['currently_infected'] = (df.groupby('file_date').confirmed.sum() - (df.groupby('file_date').deaths.sum() + df.groupby('file_date').recovered.sum()))
 current_infected['delta'] = (current_infected['currently_infected'] - df.groupby('file_date').confirmed.sum())
 current_infected.index.rename('date', inplace=True)
@@ -175,6 +170,7 @@ current_infected.index.rename('date', inplace=True)
 daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='date')
 
 
+############ SAVE DATA ############
 #Create date of extraction folder
 data_folder = os.path.join('data', str(datetime.date(datetime.now())))
 save_dir = os.path.join(out, data_folder)
