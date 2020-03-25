@@ -8,3 +8,4 @@ pillow
 tqdm
 xlsxwriter
 numpy
+tabulate
