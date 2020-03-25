@@ -48,6 +48,7 @@ def fix_country_names(tmp_df):
     tmp_df['country'] = np.where((tmp_df['country']  == 'Bosnia and Herzegovina'),'Bosnia', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Czech Republic'),'Czechia', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Republic of Ireland'),'Ireland', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'North Ireland'),'Ireland', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Republic of Moldova'),'Moldova', tmp_df['country'])
 
     #African Countries
