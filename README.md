@@ -139,3 +139,4 @@ A count for all the people who are currently infected for a given date (confirme
 ### Appendix
 - Written by me (Aaron Ward  - https://www.linkedin.com/in/aaronjward/)
 - A special thank you to the [JHU CSSE](https://systems.jhu.edu/) team for maintaining the data
+- Also a special thank you to @ajaymaity for bug fixes 🎉
