@@ -1,5 +1,5 @@
-# covid-19-analysis
-[![PyPi Version](https://img.shields.io/pypi/v/covidify.svg)](https://pypi.python.org/pypi/covidify/) ![PyPI - Downloads](https://img.shields.io/pypi/dm/covidify) ![PyPI - License](https://img.shields.io/pypi/l/covidify?color=yellow) [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/covidify/) ![GitHub last commit](https://img.shields.io/github/last-commit/AaronWard/covid-19-analysis?color=brown) ![GitHub issues](https://img.shields.io/github/issues/AaronWard/covid-19-analysis?color=red)
+# covidify
+[![PyPi Version](https://img.shields.io/pypi/v/covidify.svg)](https://pypi.python.org/pypi/covidify/) ![PyPI - Downloads](https://img.shields.io/pypi/dm/covidify) ![PyPI - License](https://img.shields.io/pypi/l/covidify?color=yellow) [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/covidify/) ![GitHub last commit](https://img.shields.io/github/last-commit/AaronWard/covidify?color=brown) ![GitHub issues](https://img.shields.io/github/issues/AaronWard/covidify?color=red)
 
 
 
@@ -17,7 +17,7 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 
 
 #### To-do list
-- checkout the [kanban boards](https://github.com/AaronWard/covid-19-analysis/projects) to see work in progress
+- checkout the [kanban boards](https://github.com/AaronWard/covidify/projects) to see work in progress
 
 <hr>
 
