@@ -1,5 +1,7 @@
 # covidify  [![PyPi Version](https://img.shields.io/pypi/v/covidify.svg)](https://pypi.python.org/pypi/covidify/) ![PyPI - Downloads](https://img.shields.io/pypi/dm/covidify) ![PyPI - License](https://img.shields.io/pypi/l/covidify?color=yellow) [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/covidify/)
-![logo](./resources/default.png "logo")
+<!-- ![logo](./resources/cover.png "logo") -->
+
+<img src="./resources/cover.png" height="275" align="middle"/>
 
 <p align="center">
   <a href="#features">Features</a> •
