@@ -4,6 +4,7 @@
 <p align="center">
   <a href="#features">Features</a> •
   <a href="#how-to-use">How To Use</a> •
+  <a href="#install">Install</a> •
   <a href="#visualizations">Visualizations</a> •
   <a href="https://github.com/CSSEGISandData/COVID-19">Data Source</a> •
   <a href="#credits">Credits</a> •
@@ -28,7 +29,7 @@ Covidify downloads the latest [covid-19](https://www.who.int/health-topics/coron
 <hr>
 
 
-## Installation
+## Install
 
 - ```pip install covidify```
 
