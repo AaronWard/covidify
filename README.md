@@ -4,9 +4,10 @@
 <p align="center">
   <a href="#features">Features</a> •
   <a href="#how-to-use">How To Use</a> •
-  <a href="#download">Installation</a> •
-  <a href="#download">Data Source</a> •
+  <a href="#visualizations">Visualizations</a> •
+  <a href="https://github.com/CSSEGISandData/COVID-19">Data Source</a> •
   <a href="#credits">Credits</a> •
+  <a href="https://github.com/AaronWard/covidify/projects">To-Do List</a> 
 </p>
 <hr>
 
@@ -16,8 +17,9 @@ Covidify downloads the latest [covid-19](https://www.who.int/health-topics/coron
 - Creates a time series dataset
 - Creates a daily stats dataset 
 - Generate visualizations
-- Filter reports by country
+- Filter by country
 - List all countries affected
+- Shows number of people currently infected
 - Generates an excel report including all of the above 
 
 ![logo](./resources/run.gif "logo")
@@ -65,16 +67,21 @@ Options:
 
 
 **Example Commands:**
+
 ```powershell
-# Will default to desktop folder 
-# for output and github for datasource
+# List all countries affected 
+covidify list --countries
+```
+
+```powershell
+# Will default to desktop folder for output and github for datasource
 covidify run 
 ```
 
 
 ```powershell
 # Specify output folder and source
-covidify run --output=/Users/award40/Documents/projects-folder --source=git
+covidify run --output=/Users/award40/Documents/projects-folder
 ```
 
 ```powershell
@@ -82,71 +89,55 @@ covidify run --output=/Users/award40/Documents/projects-folder --source=git
 covidify run --country="South Korea"
 ```
 
-```powershell
-# List all countries affected 
-covidify list --countries
-```
-
 <hr>
 
-### Visualization of data
-This plots will be updated daily to visualize stats 3 attributes: 
-- ```confirmed cases```
-- ```deaths```
-- ```recoveries```
+## Visualizations
+A number of visualization and an excel report spreadsheet are generated.
+
+![logo](./resources/report.gif "logo")
 
 
-##### Trend Line
+##### Accumalitive Trend
 
 This is an accumulative sum trendline for all the confirmed cases, deaths and recoveries.
 ![alt text](./reports/images/confirmed_trendline.png)
 
-##### Daily Trend Line
+##### Daily Trendline
 
 This is a daily sum trendline for all the confirmed cases, deaths and recoveries.
 ![alt text](./reports/images/new_confirmed_cases_trendline.png)
 
 ##### Stacked Daily Confirmed Cases
 
-This stacked bar chart shows a daily sum of people who are currently confirmed (<i>red</i>) and the number of people who have been been confirmed on that day (<i>blue</i>)
+This stacked bar chart shows a daily sum of people who are alread confirmed (<i>red</i>) and the people who have been been confirmed on that date (<i>blue</i>)
 
 ![alt text](./reports/images/confirmed_cases_stacked_bar.png "Number of people actually with the virus for each day")
 
 
 ##### Daily Confirmed Cases
 
-A count for new cases recorded on that given date, does not take past confirmations into account. 
+A count for new cases on a given date, does not take past confirmations into account. 
 ![alt text](./reports/images/new_confirmed_cases_bar.png)
 
 ##### Daily Deaths
 
-A count for deaths due to the virus recorded on that given date, does not take past deaths into account. 
+A count for deaths on a given date, does not take past deaths into account. 
 ![alt text](./reports/images/new_deaths_bar.png)
 
 ##### Daily Recoveries
 
-A count for new recoveries recorded on that given date, does not take past recoveries into account. 
+A count for new recoveries on a given date, does not take past recoveries into account. 
 ![alt text](./reports/images/new_recoveries_bar.png)
 
 ##### Currently Infected
 
-A count for all the people who are currently infected for a given date (confirmed cases - (recoveries + deaths))
+A count for all the people who are currently infected for a given date.
 ![alt text](./reports/images/currently_infected_bar.png)
 
 
 <hr>
 
-### Data Source
-- The data comes from the **Novel Coronavirus (COVID-19) Cases**, which is a live dataset provided by JHU CSSE. 
-- Data available [here](https://github.com/CSSEGISandData/2019-nCoV).
-
-
-### Credits
+## Credits
 - Written by me (Aaron Ward  - https://www.linkedin.com/in/aaronjward/)
 - A special thank you to the [JHU CSSE](https://systems.jhu.edu/) team for maintaining the data
 - Also a special thank you to @ajaymaity for bug fixes 🎉
-
-
-
-#### To-do list
-- checkout the [kanban boards](https://github.com/AaronWard/covidify/projects) to see work in progress
