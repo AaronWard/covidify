@@ -92,7 +92,7 @@ covidify run --country="South Korea"
 <hr>
 
 ## Visualizations
-A excel spreadsheet is generated with a number of visualizations and statistics.
+An excel spreadsheet is generated with a number of visualizations and statistics.
 
 ![logo](./resources/report.gif "logo")
 
