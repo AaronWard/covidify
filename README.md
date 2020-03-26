@@ -1,33 +1,36 @@
-# covidify
-[![PyPi Version](https://img.shields.io/pypi/v/covidify.svg)](https://pypi.python.org/pypi/covidify/) ![PyPI - Downloads](https://img.shields.io/pypi/dm/covidify) ![PyPI - License](https://img.shields.io/pypi/l/covidify?color=yellow) [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/covidify/) ![GitHub last commit](https://img.shields.io/github/last-commit/AaronWard/covidify?color=brown) ![GitHub issues](https://img.shields.io/github/issues/AaronWard/covidify?color=red)
+# covidify  [![PyPi Version](https://img.shields.io/pypi/v/covidify.svg)](https://pypi.python.org/pypi/covidify/) ![PyPI - Downloads](https://img.shields.io/pypi/dm/covidify) ![PyPI - License](https://img.shields.io/pypi/l/covidify?color=yellow) [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/covidify/)
+![logo](./resources/cov_logo.png "logo")
+
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#download">Installation</a> •
+  <a href="#download">Data Source</a> •
+  <a href="#credits">Credits</a> •
+</p>
+<hr>
 
 
-
-![alt text](https://github.com/AaronWard/coronavirus-analysis/blob/master/tableau/spread.gif "Spread of coronavirus 22nd to 29th")
-
-#### What does it do?
-This repo is for analysis on the [corona virus / covid-19](https://www.who.int/health-topics/coronavirus) that will extract the latest data and generate reports. This repo will be **updated daily**
+## Features
+Covidify downloads the latest [covid-19](https://www.who.int/health-topics/coronavirus) data for confirmed cases, deaths and recoveries. 
 - Creates a time series dataset
 - Creates a daily stats dataset 
-- Generates a number of visualizations
-- You can also filter reports for a given country
+- Generate visualizations
+- Filter reports by country
+- List all countries affected
 - Generates an excel report including all of the above 
-- List all countries affected by covid-19
-- All results are saved to the output `reports` folder
 
+![logo](./resources/run.gif "logo")
 
-#### To-do list
-- checkout the [kanban boards](https://github.com/AaronWard/covidify/projects) to see work in progress
 
 <hr>
 
 
-### Installation
+## Installation
 
 - ```pip install covidify```
 
-
-**How to run:**
+## How to use
 
 ```powershell
 $ covidify
@@ -60,12 +63,14 @@ Options:
   --help          Show this message and exit.
 ```
 
+
 **Example Commands:**
 ```powershell
 # Will default to desktop folder 
 # for output and github for datasource
 covidify run 
 ```
+
 
 ```powershell
 # Specify output folder and source
@@ -136,7 +141,12 @@ A count for all the people who are currently infected for a given date (confirme
 - Data available [here](https://github.com/CSSEGISandData/2019-nCoV).
 
 
-### Appendix
+### Credits
 - Written by me (Aaron Ward  - https://www.linkedin.com/in/aaronjward/)
 - A special thank you to the [JHU CSSE](https://systems.jhu.edu/) team for maintaining the data
 - Also a special thank you to @ajaymaity for bug fixes 🎉
+
+
+
+#### To-do list
+- checkout the [kanban boards](https://github.com/AaronWard/covidify/projects) to see work in progress
