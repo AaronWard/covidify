@@ -58,7 +58,7 @@ Usage: covidify run [OPTIONS]
 
 Options:
   --output TEXT   Folder to output data and reports [Default:
-                  /Users/award40/Desktop/covidify-output/]
+                  /Users/<USER>/Desktop/covidify-output/]
   --source TEXT   There are two datasources to choose from, John Hopkins
                   github repo or wikipedia -- options are git or wiki
                   respectively [Default: git]
@@ -82,7 +82,7 @@ covidify run
 
 ```powershell
 # Specify output folder and source
-covidify run --output=/Users/award40/Documents/projects-folder
+covidify run --output=<PATH TO DESIRED OUTPUT FOLDER>
 ```
 
 ```powershell
