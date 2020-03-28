@@ -1,8 +1,8 @@
 """
-data_exploration.py - Extract data from date range and create models
+data_visualization.py - Extract data from date range and create models
 Usage:
-    data_exploration.py [options]
-    data_exploration.py -h | --help
+    data_visualization.py [options]
+    data_visualization.py -h | --help
 
 Options:
     -h --help             Show this message.
@@ -72,7 +72,6 @@ for col in ['confirmed', 'deaths', 'recovered']:
 
 
 ##### Define Graphs #####
-
 #Change titles and saved file names if country
 #is specified
 def create_title(fig_title, country):
@@ -109,13 +108,12 @@ def create_stacked_bar(tmp_df, col1, col2, fig_title, country):
     ax.set_title(create_title(fig_title, country))
     tmp_df[[col2, col1]].plot.bar(ax=ax,
                                   rot=45,
-                                  stacked=True);
+                                  stacked=True)
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col2, country, 'stacked_bar')))
 
 
 ##### Create Graphs #####
-
 print('Creating graphs...')
 print('... Time Series Trend Line')
 # Time Series Data Plots
@@ -140,6 +138,7 @@ new_df['new_confirmed_cases'] = daily_df.new_confirmed_cases
 create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked bar of confirmed and new cases by day", country)
 
 
+### Create Excel Spreadsheet ###
 print('Creating excel spreadsheet report...')
 workbook_writer = pd.ExcelWriter(os.path.join(reports_dir, report), engine='xlsxwriter')
 
@@ -148,8 +147,10 @@ daily_df.to_excel(workbook_writer, sheet_name='daily figures')
 workbook = workbook_writer.book
 
 def get_image_types(path):
-    # get all the possible types of images in
-    # the passed directory path
+    '''
+    get all the possible types of images in
+    the passed directory path
+    '''
     types = []
     for fn in glob.glob(os.path.join(path, '*.png')):
         types.append(fn.split('_',)[-1].split('.')[0])
