@@ -1,5 +1,6 @@
 #!/bin/bash
 function banner {
+    # echo ""
     echo "###"
     echo "### $1"
     echo "###"
@@ -15,16 +16,16 @@ set -e
 mkdir -p $OUT_FDR
 
 banner "Job arguments:"
-echo "ENV: $ENV"
-echo "OUTPUT FOLDER: $OUT_FDR"
-echo "DATA SOURCE: $SOURCE"
-echo "COUNTRIES: $COUNTRY"
+echo "... ENV: $ENV"
+echo "... OUTPUT FOLDER: $OUT_FDR"
+echo "... DATA SOURCE: $SOURCE"
+echo "... COUNTRIES: $COUNTRY"
 
 banner "Data Extraction"
 python $ENV/data_prep.py --output_folder $OUT_FDR --source $SOURCE --country $COUNTRY
 
-banner "Data Exploration"
-python $ENV/data_exploration.py --output_folder $OUT_FDR --country $COUNTRY
+banner "Data Visualization"
+python $ENV/data_visualization.py --output_folder $OUT_FDR --country $COUNTRY
 
 banner "Complete!"
-echo "* Results in: $OUT_FDR" 
+echo "* Results in: $OUT_FDR"
