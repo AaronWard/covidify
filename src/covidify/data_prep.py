@@ -38,7 +38,7 @@ if '_' in country:
 if country == 'Global':
     country = None
 
-if source == 'git':
+if source == 'JHU':
     df = github.get()
     
 elif source == 'wiki':
@@ -93,7 +93,7 @@ def check_specified_country(df, country):
                 df = df[df.country == capwords(country)]
             return df
     else:
-        print('No specific country specified')
+        print('... No specific country specified')
         return df
 
 df = check_specified_country(df, country)
@@ -135,7 +135,7 @@ def get_exp_moving_average(tmp, col):
     return df[col].ewm(span=2, adjust=True).mean()
 
 
-print('Calculating dataframe for new cases...')
+print('... Calculating dataframe for new cases')
 daily_cases_df = pd.DataFrame([])
 daily_cases_df['date'] = df.file_date.unique()
 daily_cases_df = daily_cases_df.sort_values('date')
