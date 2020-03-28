@@ -56,6 +56,7 @@ def fix_country_names(tmp_df):
     tmp_df['country'] = np.where((tmp_df['country']  == 'Congo (Kinshasa)'),'Congo', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Republic of the Congo'),'Congo', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Gambia, The'),'Gambia', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'The Gambia'),'Gambia', tmp_df['country'])
 
     # Western Countries
     tmp_df['country'] = np.where((tmp_df['country']  == 'USA'),'America', tmp_df['country'])
@@ -105,31 +106,10 @@ def clean_data(df):
 
     return tmp_df
 
-# def drop_duplicate_countries(df_raw):
-#     '''
-#     Some countries are listed in a sheet but could have had their numbers last 
-#     updates one of two days previous - so ake the max date value for each 
-#     province for a given date
-
-#     EXAMPLE:
-#     Thailand	1/31/2020 10:37	   19 (02-01-2020.csv)
-#     Thailand	1/31/2020 23:59	   19 (01-31-2020.csv)
-
-#     We dont want to double count, so keep the latest
-#     '''
-#     days_list = []
-    
-#     for d in df_raw.date.unique():
-#         tmp_df = df_raw[df_raw.date == d]
-#         tmp_df = tmp_df.sort_values(['date']).drop_duplicates(['country','province'], keep='last')
-#         days_list.append(tmp_df)
-
-#     return pd.concat(days_list, axis=0, ignore_index=True, sort=True)
-
 def get_data(cleaned_sheets):
     all_csv = []
     # Import all CSV's
-    for f in tqdm(sorted(cleaned_sheets), desc='... importing data: '):
+    for f in tqdm(sorted(cleaned_sheets), desc='... loading data: '):
         if 'csv' in f:
             try:
                 tmp_df = pd.read_csv(os.path.join(DATA, f), index_col=None,header=0, parse_dates=['Last Update'])  
@@ -147,8 +127,6 @@ def get_data(cleaned_sheets):
     df_raw = pd.concat(all_csv, axis=0, ignore_index=True, sort=True)  # concatenate all csv's into one df
     df_raw = fix_country_names(df_raw)    # Fix mispelled country names
     df_raw = df_raw.sort_values(by=['datetime'])
-    # df_raw = drop_duplicate_countries(df_raw)
-
     return df_raw
 
 
