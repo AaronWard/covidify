@@ -35,8 +35,8 @@ def check_source_arg(var, msg):
 
     if var is None:
         print('%sMESSAGE: %s' % (' '*5, msg))
-        return 'git'
-    elif 'wiki' in var or 'git' in var:
+        return 'JHU'
+    elif 'wiki' in var or 'JHU' in var:
         return var
     else:
         print('%sMESSAGE: %s' % (' '*5, 'invalid source given'))
@@ -75,7 +75,7 @@ def cli():
 
 @cli.command()
 @click.option('--output',  help='Folder to output data and reports [Default: /Users/' + USER + '/Desktop/covidify-output/]')
-@click.option('--source',  help='There are two datasources to choose from, John Hopkins github repo or wikipedia -- options are git or wiki respectively [Default: git]')
+@click.option('--source',  help='There are two datasources to choose from, John Hopkins github repo or wikipedia -- options are JHU or wiki respectively [Default: JHU]')
 @click.option('--country', help='Filter reports by a country', multiple=True, type=str)
 def run(output, source, country):
     '''
