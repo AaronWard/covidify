@@ -114,7 +114,7 @@ def create_bar(tmp_df, col, rgb, country, province):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'bar', province)))
 
-def create_stacked_bar(tmp_df, col1, col2, fig_title, country, ovincepr):
+def create_stacked_bar(tmp_df, col1, col2, fig_title, country, province):
     tmp_df = tmp_df.set_index('date')
     fig, ax = plt.subplots(figsize=(20,10))
     ax.set_title(create_title(fig_title, country, province))
