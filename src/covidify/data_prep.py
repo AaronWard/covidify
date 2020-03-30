@@ -9,6 +9,7 @@ Options:
     --output_folder=OUT   Output folder for the data and reports to be saved.
     --source=SRC          Datasource for where the data will be downloaded from.
     --country=CNT         Arg for filtering by a specific country
+    --province=PRV        Arg for filtering by a specific province or state
 """
 from __future__ import print_function
 import os
@@ -22,12 +23,14 @@ from datetime import datetime, date, time
 from covidify.sources import github, wiki
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
+from covidify.utils.utils import valid_province
 
 
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
 country = args['--country']
 source = args['--source']
+province = args['--province']
 
 
 ############ DATA SELECTION ############
@@ -96,7 +99,20 @@ def check_specified_country(df, country):
         print('... No specific country specified')
         return df
 
+def check_specified_province(df, province):
+
+    if valid_province(province):
+        #Return filtered dataframe
+        print('... filtering data for', province)
+        df = df[df.province == capwords(province)]
+        return df
+    else:
+        print('No specific province specified')
+        return df
+
 df = check_specified_country(df, country)
+if valid_province(province):
+    df = check_specified_province(df, province)
 
 ############ DAILY CASES ############
 

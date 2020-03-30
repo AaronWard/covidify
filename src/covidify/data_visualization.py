@@ -8,6 +8,7 @@ Options:
     -h --help             Show this message.
     --output_folder=OUT   Output folder for the data and reports to be saved.
     --country=CNT         Arg for filtering by a specific country
+    --province=PRV        Arg for filtering by a specific province or state
 """
 from __future__ import print_function
 import os
@@ -21,6 +22,7 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 from covidify.utils.utils import replace_arg_score
+from covidify.utils.utils import valid_province
 
 # plt settings
 font = {'weight' : 'bold',
@@ -31,6 +33,7 @@ plt.style.use('ggplot')
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
 country = args['--country']
+province = args['--province']
 
 
 if '_' in country:
@@ -40,9 +43,12 @@ if country == 'Global':
     country = None
 
 #change report name if country specified
-def create_report_name(country):
+def create_report_name(country, province):
     if country:
-        return '{}_report_{}.xlsx'.format(country, datetime.date(datetime.now()))
+        if valid_province(province):
+            return '{}_{}_report_{}.xlsx'.format(country, province, datetime.date(datetime.now()))
+        else:
+            return '{}_report_{}.xlsx'.format(country, datetime.date(datetime.now()))
     else:
         return 'report_{}.xlsx'.format(datetime.date(datetime.now()))
 
@@ -50,7 +56,7 @@ def create_report_name(country):
 data_dir  = os.path.join(out, 'data', str(datetime.date(datetime.now())))
 agg_file  = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
 trend_file  = 'trend_{}.csv'.format(datetime.date(datetime.now()))
-report  = create_report_name(country)
+report  = create_report_name(country, province)
 
 
 # import data
@@ -74,60 +80,66 @@ for col in ['confirmed', 'deaths', 'recovered']:
 ##### Define Graphs #####
 #Change titles and saved file names if country
 #is specified
-def create_title(fig_title, country):
+def create_title(fig_title, country, province):
     if country:
-        return fig_title + ' for ' + country
+        if valid_province(province):
+            return fig_title + ' for ' + province +','+ country
+        else: 
+            return fig_title + ' for ' + country
     else:
         return fig_title
-    
-def create_save_file(col, country, graph_type):
+
+def create_save_file(col, country, province, graph_type):
     if country:
-        return '{}_{}_{}.png'.format(country, col, graph_type)
+        if valid_province(province):
+            return '{}_{}_{}_{}.png'.format(country, province, col, graph_type)
+        else:
+            return '{}_{}_{}.png'.format(country, col, graph_type)
     else:
         return '{}_{}.png'.format(col, graph_type)
 
 # Plot and save trendline graph
-def create_trend_line(tmp_df, date_col, col, col2, col3, fig_title, country):
+def create_trend_line(tmp_df, date_col, col, col2, col3, fig_title, country, province):
     fig, ax = plt.subplots(figsize=(20,10))
     tmp_df.groupby([date_col])[[col, col2, col3]].sum().plot(ax=ax, marker='o')
-    ax.set_title(create_title(fig_title, country))
+    ax.set_title(create_title(fig_title, country, province))
     fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'trendline')))
+    fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'trendline', province)))
 
-def create_bar(tmp_df, col, rgb, country):
+def create_bar(tmp_df, col, rgb, country, province):
     fig, ax = plt.subplots(figsize=(20,10))
     tmp = tmp_df.groupby(['date'])[[col]].sum()
-    ax.set_title(create_title(col, country))
+    ax.set_title(create_title(col, country, province))
     tmp.plot.bar(ax=ax, rot=45, color=rgb)
     fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'bar')))
+    fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'bar', province)))
 
-def create_stacked_bar(tmp_df, col1, col2, fig_title, country):
+def create_stacked_bar(tmp_df, col1, col2, fig_title, country, ovincepr):
     tmp_df = tmp_df.set_index('date')
     fig, ax = plt.subplots(figsize=(20,10))
-    ax.set_title(create_title(fig_title, country))
+    ax.set_title(create_title(fig_title, country, province))
     tmp_df[[col2, col1]].plot.bar(ax=ax,
                                   rot=45,
                                   stacked=True)
     fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, create_save_file(col2, country, 'stacked_bar')))
+    fig.savefig(os.path.join(image_dir, create_save_file(col2, country, 'stacked_bar', province)))
 
 
 ##### Create Graphs #####
 print('Creating graphs...')
 print('... Time Series Trend Line')
 # Time Series Data Plots
-create_trend_line(agg_df, 'file_date', 'confirmed', 'deaths', 'recovered', 'Accumulative trend', country)
+create_trend_line(agg_df, 'file_date', 'confirmed', 'deaths', 'recovered', 'Accumulative trend', country, province)
 
 
 print('... Daily Figures')
 # Daily Figures Data Plots
 daily_figures_cols = ['new_confirmed_cases', 'new_deaths', 'new_recoveries', 'currently_infected']
 for col, rgb in zip(daily_figures_cols, ['tomato', 'lightblue', 'mediumpurple', 'green']):
-    create_bar(daily_df, col, rgb, country)
+    create_bar(daily_df, col, rgb, country, province)
 
 # Trend line for new cases
-create_trend_line(daily_df, 'date', 'new_confirmed_cases', 'new_deaths', 'new_recoveries', 'Daily trendline', country)
+create_trend_line(daily_df, 'date', 'new_confirmed_cases', 'new_deaths', 'new_recoveries', 'Daily trendline', country, province)
 
 
 print('... Daily New Infections Differences')
@@ -135,7 +147,7 @@ new_df = pd.DataFrame([])
 new_df['date'] = daily_df['date']
 new_df['confirmed_cases'] = agg_df.groupby(['file_date']).confirmed.sum().values - daily_df.new_confirmed_cases
 new_df['new_confirmed_cases'] = daily_df.new_confirmed_cases
-create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked bar of confirmed and new cases by day", country)
+create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked bar of confirmed and new cases by day", country, province)
 
 
 ### Create Excel Spreadsheet ###

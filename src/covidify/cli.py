@@ -6,6 +6,7 @@ import covidify
 from covidify.config import SCRIPT
 from covidify.utils.utils import replace_arg_space
 from covidify.list_countries import get_countries
+from covidify.utils.utils import valid_province
 
 USER = getpass.getuser()
 
@@ -53,7 +54,18 @@ def check_country(country, msg):
         return 'Global'
     else:
         country_str = replace_arg_space(country[0])
-        return country_str
+        return "'" + country_str + "'"
+
+def check_province(province, msg):
+
+    if not province:
+        print('%sMESSAGE: %s' % (' '*5, msg))
+        return None
+    else:
+        province_str = province
+        print('Province = %s' % ( province_str))
+
+        return "'" + province_str + "'"
 
 def check_list_flag(flag, msg):
 
@@ -77,7 +89,8 @@ def cli():
 @click.option('--output',  help='Folder to output data and reports [Default: /Users/' + USER + '/Desktop/covidify-output/]')
 @click.option('--source',  help='There are two datasources to choose from, John Hopkins github repo or wikipedia -- options are JHU or wiki respectively [Default: JHU]')
 @click.option('--country', help='Filter reports by a country', multiple=True, type=str)
-def run(output, source, country):
+@click.option('--province', default='NO_PROV', help='Filter reports by a province', type=str)
+def run(output, source, country, province):
     '''
     Generate reports for global cases or refine by country.
     '''
@@ -86,8 +99,9 @@ def run(output, source, country):
     country_str = check_country(country, '\033[1;31m No country specified, defaulting to global cases \033[0;0m')    
     output = check_output_folder(output, country_str, '\033[1;31m No output directory given, defaulting to /Users/' + USER + '/Desktop/ \033[0;0m')
     source = check_source_arg(source, '\033[1;31m No source given, defaulting to John Hopkin CSSE github repo \033[0;0m')
-    
-    os.system(env + SCRIPT + ' ' + env + ' ' + output + ' ' + source + ' ' + country_str)
+    province_str = check_province(province, '\033[1;31m No province given, No default.\033[0;0m')
+
+    os.system(env + SCRIPT + ' ' + env + ' ' + output + ' ' + source + ' ' + country_str + ' ' + province_str )
 
 
 @click.option('--countries', help='List countries that have had confirmed cases.', is_flag=True)

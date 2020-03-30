@@ -14,3 +14,6 @@ def replace_arg_space(country_str):
 
 def replace_arg_score(country_str):
     return country_str.replace('_', ' ')
+
+def valid_province(province):
+	return (province and province != 'NO_PROV')
