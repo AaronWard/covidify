@@ -35,6 +35,7 @@ out = args['--output_folder']
 country = args['--country']
 province = args['--province']
 
+images = []
 
 if '_' in country:
     country = replace_arg_score(country)
@@ -89,14 +90,19 @@ def create_title(fig_title, country, province):
     else:
         return fig_title
 
-def create_save_file(col, country, province, graph_type):
+def create_save_file(col, country, graph_type, province):
+    global images
+
     if country:
         if valid_province(province):
-            return '{}_{}_{}_{}.png'.format(country, province, col, graph_type)
+            filename = '{}_{}_{}_{}.png'.format( country, province, col, graph_type)
         else:
-            return '{}_{}_{}.png'.format(country, col, graph_type)
+            filename = '{}_{}_{}.png'.format(country, col, graph_type)
     else:
-        return '{}_{}.png'.format(col, graph_type)
+        filename = '{}_{}.png'.format(col, graph_type)
+
+    images.append(filename)
+    return filename
 
 # Plot and save trendline graph
 def create_trend_line(tmp_df, date_col, col, col2, col3, fig_title, country, province):
@@ -158,13 +164,13 @@ workbook_writer = pd.ExcelWriter(os.path.join(reports_dir, report), engine='xlsx
 daily_df.to_excel(workbook_writer, sheet_name='daily figures')  
 workbook = workbook_writer.book
 
-def get_image_types(path):
+def get_image_types():
     '''
     get all the possible types of images in
     the passed directory path
     '''
     types = []
-    for fn in glob.glob(os.path.join(path, '*.png')):
+    for fn in images:
         types.append(fn.split('_',)[-1].split('.')[0])
     
     return types
@@ -172,16 +178,17 @@ def get_image_types(path):
 # Get all images for each type
 def read_images(path, graph_type):
     image_list = []
-    for fn in glob.glob(os.path.join(path, '*_{}.png'.format(graph_type))):
-        image_list.append(fn)    
-    images = {graph_type : image_list}
-    return dict(images)
+    for fn in images:
+        if graph_type in fn:
+            image_list.append(os.path.join(path, fn))
 
-image_types = get_image_types(image_dir)
+    image_dict = {graph_type : image_list}
+    return dict(image_dict)
+
+image_types = get_image_types()
 
 padding = 1 # Set padding for images in spreadsheet
 for types in set(image_types):
-    print('... reading images for:', types)
     type_dict = read_images(image_dir, types)
     
     # Add image to the worksheet

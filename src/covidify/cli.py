@@ -89,7 +89,7 @@ def cli():
 @click.option('--output',  help='Folder to output data and reports [Default: /Users/' + USER + '/Desktop/covidify-output/]')
 @click.option('--source',  help='There are two datasources to choose from, John Hopkins github repo or wikipedia -- options are JHU or wiki respectively [Default: JHU]')
 @click.option('--country', help='Filter reports by a country', multiple=True, type=str)
-@click.option('--province', default='NO_PROV', help='Filter reports by a province', type=str)
+@click.option('--province',  help='Filter reports by a province', type=str)
 def run(output, source, country, province):
     '''
     Generate reports for global cases or refine by country.
@@ -101,7 +101,10 @@ def run(output, source, country, province):
     source = check_source_arg(source, '\033[1;31m No source given, defaulting to John Hopkin CSSE github repo \033[0;0m')
     province_str = check_province(province, '\033[1;31m No province given, No default.\033[0;0m')
 
-    os.system(env + SCRIPT + ' ' + env + ' ' + output + ' ' + source + ' ' + country_str + ' ' + province_str )
+    if province_str:
+        os.system(env + SCRIPT + ' ' + env + ' ' + output + ' ' + source + ' ' + country_str + ' ' + province_str )
+    else:
+        os.system(env + SCRIPT + ' ' + env + ' ' + output + ' ' + source + ' ' + country_str)
 
 
 @click.option('--countries', help='List countries that have had confirmed cases.', is_flag=True)
