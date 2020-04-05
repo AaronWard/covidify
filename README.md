@@ -98,6 +98,12 @@ An excel spreadsheet is generated with a number of visualizations and statistics
 ![logo](./resources/report.gif "logo")
 
 
+##### Logarithmic Plot
+
+This plot shows the top `N` infected countries on a logarithmic scale.
+![alt text](./reports/images/confirmed_log.png)
+
+
 ##### Accumalitive Trend
 
 This is an accumulative sum trendline for all the confirmed cases, deaths and recoveries.
