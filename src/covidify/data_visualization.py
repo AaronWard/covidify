@@ -8,6 +8,7 @@ Options:
     -h --help             Show this message.
     --output_folder=OUT   Output folder for the data and reports to be saved.
     --country=CNT         Arg for filtering by a specific country
+    --top=top             Top number of countries in the log plot
 """
 from __future__ import print_function
 import os
@@ -31,6 +32,7 @@ plt.style.use('ggplot')
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
 country = args['--country']
+top = int(args['--top'])
 
 
 if '_' in country:
@@ -50,6 +52,7 @@ def create_report_name(country):
 data_dir  = os.path.join(out, 'data', str(datetime.date(datetime.now())))
 agg_file  = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
 trend_file  = 'trend_{}.csv'.format(datetime.date(datetime.now()))
+log_file  = 'log_{}.csv'.format(datetime.date(datetime.now()))
 report  = create_report_name(country)
 
 
@@ -57,6 +60,7 @@ report  = create_report_name(country)
 print('Importing Data...')
 agg_df = pd.read_parquet(os.path.join(data_dir, agg_file))
 daily_df = pd.read_csv(os.path.join(data_dir, trend_file))
+log_df = pd.read_csv(os.path.join(data_dir, log_file))
 
 #Create place to save diagrams
 image_dir =  os.path.join(out,'reports', 'images')
@@ -112,7 +116,26 @@ def create_stacked_bar(tmp_df, col1, col2, fig_title, country):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col2, country, 'stacked_bar')))
 
-
+def log_plot(tmp, col, fig_title):
+    '''
+    Plot on a logarithmic scale for comparing
+    countries infection rates
+    
+    '''
+    cm = plt.get_cmap('gist_rainbow')
+    fig = plt.figure(figsize = (20,10))
+    ax = fig.add_subplot(111)
+    ax.set_prop_cycle('color', [cm(1.*i/top) for i in range(top)])
+    for country in tmp.country.unique():
+        new_col = country.lower() + '_' + col
+        tmp[country.lower() + '_' + col] = tmp[[col]]
+        tmp.rename(columns={col: new_col})
+        tmp[tmp.country == country].groupby(['day'])[[new_col]].sum().plot(ax=ax)
+        ax.set_yscale('log', basey=10)
+    ax.set_title(fig_title)
+    fig = ax.get_figure()
+    fig.savefig(os.path.join(image_dir, create_save_file(col, country=None, graph_type='log')))
+    
 ##### Create Graphs #####
 print('Creating graphs...')
 print('... Time Series Trend Line')
@@ -137,6 +160,9 @@ new_df['confirmed_cases'] = agg_df.groupby(['file_date']).confirmed.sum().values
 new_df['new_confirmed_cases'] = daily_df.new_confirmed_cases
 create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked bar of confirmed and new cases by day", country)
 
+
+print('... Logarithmic plots')
+log_plot(log_df, 'confirmed', 'Logarithmic plots for top {} most infected countries\nStarting from days since first 500 confirmed cases.'.format(top))
 
 ### Create Excel Spreadsheet ###
 print('Creating excel spreadsheet report...')
