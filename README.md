@@ -58,11 +58,12 @@ Usage: covidify run [OPTIONS]
 
 Options:
   --output TEXT   Folder to output data and reports [Default:
-                  /Users/<USER>/Desktop/covidify-output/]
+                  /Users/award40/Desktop/covidify-output/]
   --source TEXT   There are two datasources to choose from, John Hopkins
-                  github repo or wikipedia -- options are git or wiki
-                  respectively [Default: git]
-  --country TEXT  Filter reports by a country [Default: Global cases]
+                  github repo or wikipedia -- options are JHU or wiki
+                  respectively [Default: JHU]
+  --country TEXT  Filter reports by a country
+  --top TEXT      Top N infected countries for log plot. [Default: 10]
   --help          Show this message and exit.
 ```
 
@@ -88,6 +89,11 @@ covidify run --output=<PATH TO DESIRED OUTPUT FOLDER>
 ```powershell
 # Filter reports by country
 covidify run --country="South Korea"
+```
+
+```powershell
+# Show top 20 infected countries on a logarithmic scale
+covidify run --top=20
 ```
 
 <hr>
