@@ -9,11 +9,13 @@ Options:
     --output_folder=OUT   Output folder for the data and reports to be saved.
     --source=SRC          Datasource for where the data will be downloaded from.
     --country=CNT         Arg for filtering by a specific country
+    --top=top             Top number of countries in the log plot
 """
 from __future__ import print_function
 import os
 import sys
 import docopt
+import numpy as np
 import pandas as pd
 from string import capwords
 from difflib import get_close_matches
@@ -28,6 +30,7 @@ args = docopt.docopt(__doc__)
 out = args['--output_folder']
 country = args['--country']
 source = args['--source']
+top = int(args['--top'])
 
 
 ############ DATA SELECTION ############
@@ -169,6 +172,47 @@ current_infected.index.rename('date', inplace=True)
 
 daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='date')
 
+############ LOG DATA ############
+
+print('Calculating data for logarithmic plotting...')
+print('...Top infected countries: {}'.format(top))
+# Get top 10 infected countries
+
+def get_top_countries(data):
+    tmp_df = data.copy()
+    tmp_df = tmp_df[tmp_df.file_date == df.file_date.max()]
+    return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index 
+        
+TOP_N_COUNTRIES = get_top_countries(df)    
+
+tmp_df = df[df.country.isin(TOP_N_COUNTRIES)].copy()
+
+def get_day_counts(d, country):
+    '''
+    For each country, get the days of the spread since 500
+    cases
+    '''
+    data = d.copy()
+    result_df = pd.DataFrame([])
+    result_df = data.groupby(['file_date']).agg({'confirmed': 'sum',
+                                                'recovered': 'sum',
+                                                'deaths': 'sum'})
+    result_df['date'] = data['file_date'].unique()
+    result_df['country'] = country
+        
+    result_df = result_df[result_df.confirmed >= 500]
+    result_df.insert(loc=0, column='day', value=np.arange(len(result_df)))
+    return result_df
+
+df_list = []
+
+for country in TOP_N_COUNTRIES:
+    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) & 
+                                                 (tmp_df.country == country)].confirmed.sum()))
+    df_list.append(get_day_counts(tmp_df[tmp_df.country == country], country))
+    
+log_df = pd.concat(df_list, axis=0, ignore_index=True)
+
 
 ############ SAVE DATA ############
 #Create date of extraction folder
@@ -195,5 +239,9 @@ print('...', csv_file_name)
 daily_cases_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
 daily_cases_df.astype(str).to_csv(os.path.join(save_dir, daily_cases_file_name))
 print('...', daily_cases_file_name)
+
+log_file_name = 'log_{}.csv'.format(datetime.date(datetime.now()))
+log_df.astype(str).to_csv(os.path.join(save_dir, log_file_name))
+print('...', log_file_name)
 
 print('Done!')
