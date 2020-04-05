@@ -50,6 +50,7 @@ def fix_country_names(tmp_df):
     tmp_df['country'] = np.where((tmp_df['country']  == 'Republic of Ireland'),'Ireland', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'North Ireland'),'Ireland', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Republic of Moldova'),'Moldova', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'Russian Federation'),'Russia', tmp_df['country'])
 
     #African Countries
     tmp_df['country'] = np.where((tmp_df['country']  == 'Congo (Brazzaville)'),'Congo', tmp_df['country'])
@@ -63,6 +64,7 @@ def fix_country_names(tmp_df):
     tmp_df['country'] = np.where((tmp_df['country']  == 'US'),'America', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Bahamas, The'),'The Bahamas', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Bahamas'),'The Bahamas', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'st. Martin'),'Saint Martin', tmp_df['country'])
 
     # Others
     tmp_df['country'] = np.where((tmp_df['country']  == 'Cruise Ship'),'Others', tmp_df['country'])
