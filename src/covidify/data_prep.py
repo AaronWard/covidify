@@ -90,7 +90,6 @@ def check_specified_country(df, country):
             #Return filtered dataframe
             print('... filtering data for', country)
             if len(country) == 2:
-                print('LEN OF COUNTRY:', len(country))
                 df = df[df.country == country.upper()]
             else:
                 df = df[df.country == capwords(country)]
@@ -145,18 +144,18 @@ daily_cases_df = daily_cases_df.sort_values('date')
 daily_cases_df['new_confirmed_cases'] = get_new_cases(df, 'confirmed')
 daily_cases_df['new_deaths'] = get_new_cases(df, 'deaths')
 daily_cases_df['new_recoveries'] = get_new_cases(df, 'recovered')
-
-
+daily_cases_df['cumulative_cases'] = daily_cases_df.new_confirmed_cases.cumsum()
+daily_cases_df.insert(loc=0, column='day', value=np.arange(0, len(daily_cases_df)))
 
 #Moving average
-daily_cases_df['confirmed_MA'] = get_moving_average(daily_cases_df, 'new_confirmed_cases')
-daily_cases_df['deaths_MA'] = get_moving_average(daily_cases_df, 'new_deaths')
-daily_cases_df['recovered_MA'] = get_moving_average(daily_cases_df, 'new_recoveries')
+# daily_cases_df['confirmed_MA'] = get_moving_average(daily_cases_df, 'new_confirmed_cases')
+# daily_cases_df['deaths_MA'] = get_moving_average(daily_cases_df, 'new_deaths')
+# daily_cases_df['recovered_MA'] = get_moving_average(daily_cases_df, 'new_recoveries')
 
 #Exponential moving average
-daily_cases_df['confirmed_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_confirmed_cases')
-daily_cases_df['deaths_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_deaths')
-daily_cases_df['recovered_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_recoveries')
+# daily_cases_df['confirmed_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_confirmed_cases')
+# daily_cases_df['deaths_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_deaths')
+# daily_cases_df['recovered_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_recoveries')
 
 
 '''
@@ -175,10 +174,11 @@ daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='dat
 ############ LOG DATA ############
 
 print('Calculating data for logarithmic plotting...')
-print('...Top infected countries: {}'.format(top))
-# Get top 10 infected countries
+if not country:
+    print('... top infected countries: {}'.format(top))
 
 def get_top_countries(data):
+    # Get top N infected countries
     tmp_df = data.copy()
     tmp_df = tmp_df[tmp_df.file_date == df.file_date.max()]
     return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index 
