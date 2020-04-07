@@ -17,6 +17,7 @@
 Covidify downloads the latest [covid-19](https://www.who.int/health-topics/coronavirus) data for confirmed cases, deaths and recoveries. 
 - Creates a time series dataset
 - Creates a daily stats dataset 
+- Forecast global and country confirmed cases 
 - Generate visualizations
 - Filter by country
 - List all countries affected
@@ -57,14 +58,16 @@ $ covidify run --help
 Usage: covidify run [OPTIONS]
 
 Options:
-  --output TEXT   Folder to output data and reports [Default:
-                  /Users/award40/Desktop/covidify-output/]
-  --source TEXT   There are two datasources to choose from, John Hopkins
-                  github repo or wikipedia -- options are JHU or wiki
-                  respectively [Default: JHU]
-  --country TEXT  Filter reports by a country
-  --top TEXT      Top N infected countries for log plot. [Default: 10]
-  --help          Show this message and exit.
+  --output TEXT    Folder to output data and reports [Default:
+                   /Users/award40/Desktop/covidify-output/]
+  --source TEXT    There are two datasources to choose from, John Hopkins
+                   github repo or wikipedia -- options are JHU or wiki
+                   respectively [Default: JHU]
+  --country TEXT   Filter reports by a country
+  --top TEXT       Top N infected countries for log plot. [Default: 10]
+  --forecast TEXT  Number of days to forecast cumulative cases in the future.
+                   [Default: 15]
+  --help           Show this message and exit.
 ```
 
 
@@ -96,6 +99,11 @@ covidify run --country="South Korea"
 covidify run --top=20
 ```
 
+```powershell
+# Forecast cumulative cases in America for 14 days into the future
+covidify run --country=America --forecast=14
+```
+
 <hr>
 
 ## Visualizations
@@ -108,6 +116,13 @@ An excel spreadsheet is generated with a number of visualizations and statistics
 
 This plot shows the top `N` infected countries on a logarithmic scale.
 ![alt text](./reports/images/confirmed_log.png)
+
+##### Forecasting
+
+An ARIMA model is trained and used to forecast the cumulative cases for `N` number of days
+into the future
+![alt text](./reports/images/cumulative_forecasts.png)
+
 
 
 ##### Accumalitive Trend
