@@ -65,6 +65,8 @@ def fix_country_names(tmp_df):
     tmp_df['country'] = np.where((tmp_df['country']  == 'Bahamas, The'),'The Bahamas', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'Bahamas'),'The Bahamas', tmp_df['country'])
     tmp_df['country'] = np.where((tmp_df['country']  == 'st. Martin'),'Saint Martin', tmp_df['country'])
+    tmp_df['country'] = np.where((tmp_df['country']  == 'St. Martin'),'Saint Martin', tmp_df['country'])
+    
 
     # Others
     tmp_df['country'] = np.where((tmp_df['country']  == 'Cruise Ship'),'Others', tmp_df['country'])
