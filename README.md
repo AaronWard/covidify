@@ -120,9 +120,8 @@ This plot shows the top `N` infected countries on a logarithmic scale.
 ##### Forecasting
 
 An ARIMA model is trained and used to forecast the cumulative cases for `N` number of days
-into the future
+into the future (DISCLAIMER: the forecast is a ballpark figure, and should not be taken as gospel)
 ![alt text](./reports/images/cumulative_forecasts.png)
-
 
 
 ##### Accumalitive Trend
