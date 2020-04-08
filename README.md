@@ -60,7 +60,7 @@ Usage: covidify run [OPTIONS]
 Options:
   --output TEXT    Folder to output data and reports [Default:
                    /Users/award40/Desktop/covidify-output/]
-  --source TEXT    There are two datasources to choose from, John Hopkins
+  --source TEXT    There are two datasources to choose from, Johns Hopkins
                    github repo or wikipedia -- options are JHU or wiki
                    respectively [Default: JHU]
   --country TEXT   Filter reports by a country
@@ -124,7 +124,7 @@ into the future (DISCLAIMER: the forecast is a ballpark figure, and should not b
 ![alt text](./reports/images/cumulative_forecasts.png)
 
 
-##### Accumalitive Trend
+##### Accumulative Trend
 
 This is an accumulative sum trendline for all the confirmed cases, deaths and recoveries.
 ![alt text](./reports/images/confirmed_trendline.png)
@@ -136,7 +136,7 @@ This is a daily sum trendline for all the confirmed cases, deaths and recoveries
 
 ##### Stacked Daily Confirmed Cases
 
-This stacked bar chart shows a daily sum of people who are alread confirmed (<i>red</i>) and the people who have been been confirmed on that date (<i>blue</i>)
+This stacked bar chart shows a daily sum of people who are already confirmed (<i>red</i>) and the people who have been confirmed on that date (<i>blue</i>)
 
 ![alt text](./reports/images/confirmed_cases_stacked_bar.png "Number of people actually with the virus for each day")
 
