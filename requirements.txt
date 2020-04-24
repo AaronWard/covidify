@@ -9,3 +9,6 @@ tqdm
 xlsxwriter
 numpy
 pmdarima
+folium
+altair
+seaborn
