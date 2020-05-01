@@ -14,6 +14,52 @@ This repo is for analysis on the [corona virus / covid-19](https://www.who.int/h
 - The data comes from the **Novel Coronavirus (COVID-19) Cases**, which is a live dataset provided by JHU CSSE. 
 - Data available [here](https://github.com/CSSEGISandData/2019-nCoV).
 
+#### <u>How to install for Mac</u>
+
+Introduction
+
+Welcome to the Covidify Quick Start Guide. We are definitely glad you found us and we hope that you find our code useful and worthy of your contribution. The following documentation will help you get started on your contribution to our project. If you are an experienced developer you may want to skip these steps but hopefully you will find it useful.
+
+GitHub
+
+You've clearly found the URL address for the Covidify project, so how do you contribute? I would recommend you start by downloading the GitHub Desktop.
+
+Once you find the project you want, you will want to locate the fork button in the upper right corner to clone a copy in your online profile or you can select the green "Clone or download" button and select "Open in Desktop" (Fig. 1). Regardless of the option you choose you will most likely want files on your computer so that you can get the code up and running on your machine.
+
+ 
+Fig. 1
+
+Lastly, if you don't really care to follow the instructions listed here you can also find them at GitHub.
+
+Mac Set-up
+
+Now that you have the repository downloaded and all of the files you need we just need to install the actual program on your machine so you can test functionality, and hopefully make contributions based on your observations.
+
+The easiest solution would be to open terminal, then navigate to the folder you have your Covidify program files by using the "cd" function (Fig. 2). Once you are in the folder you can try running the command "pip install covidify". If you find yourself receiving an error then you may want to try updating your versions of Python and the package manager PIP. 
+
+ 
+Fig. 2
+
+If you continue receiving an error I recommend you download a program called Anaconda. This will allow you to manage environments and will be a huge benefit if you decide to continue your open source contributions. I recommend selecting the "64-Bit Graphic Installer" for Python 3.7 (Fig. 3).
+
+ 
+Fig. 3
+
+Once the file is downloaded and you open it you should see a setup wizard. As you are going through there will be an option for download location, you are welcome to place it wherever you like. If you want to install in the user but it’s now allowing (Fig. 4) just select MAC HD then select user again and it should be corrected (Fig 5).
+
+ 
+Fig. 4
+
+ 
+Fig. 5
+
+Once everything is installed then you can go ahead and install pip using the code "sudo easy_install pip" or you can upgrade using "sudo pip install --upgrade pip".  If this does not get pip up and running then you may want to pursue other troubleshooting steps.
+
+Hopefully by now you have read up on Anaconda and understand that you can manage multiple environments. We can set up the environment by navigating to our Covidify folder in terminal then running the code "conda create --name [name of program] [environment]", in my case I called it "conda create --name Covidify Python 3.6". Now that your environment is set up try running the "pip install covidify" code one more time. It should be successful, if not you may want to pursue additional trouble shooting steps. 
+
+Please see the "How to use" section to efficiently use the Covidify program. Enjoy.
+
+
 #### <u>How to run</u>
 
 - `git clone covid-19-analysis` and `cd` into repository
