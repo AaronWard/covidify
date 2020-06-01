@@ -226,10 +226,6 @@ print('Creating subdirectory for data...')
 print('...', save_dir)
 
 print('Saving...')
-file_name = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
-df.astype(str).to_parquet(os.path.join(save_dir, file_name), compression='gzip')
-print('...', file_name)
-
 
 csv_file_name = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
 df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
