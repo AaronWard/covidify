@@ -50,7 +50,7 @@ def create_report_name(country):
 
 # Dynamic parameters
 data_dir  = os.path.join(out, 'data', str(datetime.date(datetime.now())))
-agg_file  = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
+agg_file  = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
 trend_file  = 'trend_{}.csv'.format(datetime.date(datetime.now()))
 log_file  = 'log_{}.csv'.format(datetime.date(datetime.now()))
 report  = create_report_name(country)
@@ -58,7 +58,7 @@ report  = create_report_name(country)
 
 # import data
 print('Importing Data...')
-agg_df = pd.read_parquet(os.path.join(data_dir, agg_file))
+agg_df = pd.read_csv(os.path.join(data_dir, agg_file))
 daily_df = pd.read_csv(os.path.join(data_dir, trend_file))
 log_df = pd.read_csv(os.path.join(data_dir, log_file))
 
@@ -99,19 +99,21 @@ def create_trend_line(tmp_df, date_col, col, col2, col3, fig_title, country):
     fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'trendline')))
 
 def create_bar(tmp_df, col, rgb, country):
+    tmp_df = tmp_df.tail(120)
     fig, ax = plt.subplots(figsize=(20,10))
     tmp = tmp_df.groupby(['date'])[[col]].sum()
     ax.set_title(create_title(col, country))
-    tmp.plot.bar(ax=ax, rot=45, color=rgb)
+    tmp.plot.bar(ax=ax, rot=90, color=rgb)
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'bar')))
 
 def create_stacked_bar(tmp_df, col1, col2, fig_title, country):
+    tmp_df = tmp_df.tail(120)
     tmp_df = tmp_df.set_index('date')
     fig, ax = plt.subplots(figsize=(20,10))
     ax.set_title(create_title(fig_title, country))
     tmp_df[[col2, col1]].plot.bar(ax=ax,
-                                  rot=45,
+                                  rot=90,
                                   stacked=True)
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col2, country, 'stacked_bar')))
