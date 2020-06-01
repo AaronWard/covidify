@@ -1,4 +1,4 @@
-# covidify  [![PyPi Version](https://img.shields.io/pypi/v/covidify.svg)](https://pypi.python.org/pypi/covidify/) ![PyPI - Downloads](https://img.shields.io/pypi/dm/covidify) ![PyPI - License](https://img.shields.io/pypi/l/covidify?color=yellow) [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/covidify/)
+# covidify  [![PyPi Version](https://img.shields.io/pypi/v/covidify.svg)](https://pypi.python.org/pypi/covidify/) ![PyPI - Downloads](https://img.shields.io/pypi/dm/covidify) ![PyPI - License](https://img.shields.io/pypi/l/covidify?color=yellow) [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/covidify/) <a href='https://ko-fi.com/M4M11RWBF' target='_blank'><img height='36' style='border:0px;height:30px;' src='https://cdn.ko-fi.com/cdn/kofi3.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 <img src="./resources/default.png"/>
 
 <p align="center">
