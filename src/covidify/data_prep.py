@@ -147,17 +147,6 @@ daily_cases_df['new_recoveries'] = get_new_cases(df, 'recovered')
 daily_cases_df['cumulative_cases'] = daily_cases_df.new_confirmed_cases.cumsum()
 daily_cases_df.insert(loc=0, column='day', value=np.arange(0, len(daily_cases_df)))
 
-#Moving average
-# daily_cases_df['confirmed_MA'] = get_moving_average(daily_cases_df, 'new_confirmed_cases')
-# daily_cases_df['deaths_MA'] = get_moving_average(daily_cases_df, 'new_deaths')
-# daily_cases_df['recovered_MA'] = get_moving_average(daily_cases_df, 'new_recoveries')
-
-#Exponential moving average
-# daily_cases_df['confirmed_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_confirmed_cases')
-# daily_cases_df['deaths_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_deaths')
-# daily_cases_df['recovered_exp_MA'] = get_exp_moving_average(daily_cases_df, 'new_recoveries')
-
-
 '''
 Calculate the number of people that are ACTUALLY infected on a given day
 currently infected = sum of people date - (recovored + died)
@@ -226,15 +215,9 @@ print('Creating subdirectory for data...')
 print('...', save_dir)
 
 print('Saving...')
-file_name = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
-df.astype(str).to_parquet(os.path.join(save_dir, file_name), compression='gzip')
-print('...', file_name)
-
-
 csv_file_name = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
 df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
 print('...', csv_file_name)
-
 
 daily_cases_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
 daily_cases_df.astype(str).to_csv(os.path.join(save_dir, daily_cases_file_name))
