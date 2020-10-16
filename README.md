@@ -21,7 +21,7 @@ Covidify downloads the latest [covid-19](https://www.who.int/health-topics/coron
 - Generate visualizations
 - Filter by country
 - List all countries affected
-- Shows number of people currently infected
+- Shows the number of people currently infected
 - Generates an excel report including all of the above 
 
 ![logo](./resources/run.gif "logo")
@@ -60,7 +60,7 @@ Usage: covidify run [OPTIONS]
 Options:
   --output TEXT    Folder to output data and reports [Default:
                    /Users/award40/Desktop/covidify-output/]
-  --source TEXT    There are two datasources to choose from, Johns Hopkins
+  --source TEXT    There are two data sources to choose from, Johns Hopkins
                    github repo or wikipedia -- options are JHU or wiki
                    respectively [Default: JHU]
   --country TEXT   Filter reports by a country
@@ -79,7 +79,7 @@ covidify list --countries
 ```
 
 ```powershell
-# Will default to desktop folder for output and github for datasource
+# Will default to the desktop folder for output and github for data source
 covidify run 
 ```
 
