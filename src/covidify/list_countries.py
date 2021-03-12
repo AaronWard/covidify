@@ -1,7 +1,6 @@
 '''
 This script is for listing countries that have cases of corona virus.
 This is so you can decide which country to make a report for. 
-
 '''
 
 import os
@@ -13,6 +12,16 @@ from covidify.sources import github
 from covidify.config import SCRIPT
 
 def get_countries():
+    """PRINTS LIST OF COUNTRIES WITH CONFIRMED COVID CASES
+
+    precondition:
+       # none
+
+    postcondition:
+       # obtains sorted list of all the countries with more than 0 confirmed cases 
+       # number of infected countries is less than or equal to total number of countries globally
+       # prints number of areas and countries affected
+    """
     print('Getting available countries...')
     df = github.get()
     df = df[df.confirmed > 0]
