@@ -62,9 +62,6 @@ agg_df = pd.read_csv(os.path.join(data_dir, agg_file))
 daily_df = pd.read_csv(os.path.join(data_dir, trend_file))
 log_df = pd.read_csv(os.path.join(data_dir, log_file))
 
-#Create place to save diagrams
-image_dir =  os.path.join(out,'reports', 'images')
-reports_dir =  os.path.join(out,'reports')
 
 if not os.path.exists(image_dir):
     print('Creating reports folder...')
