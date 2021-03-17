@@ -6,8 +6,8 @@ import github
 import wiki
 import pandas as pd
 
-class data_sources:
-    
+class dataSources:
+
     def __init__(self):
         pass
 

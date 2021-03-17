@@ -9,11 +9,11 @@ import sys
 import click
 import covidify
 import numpy as np
-from covidify.sources import data_sources
+from covidify.sources import dataSources
 from covidify.config import SCRIPT
 
 #Create instance of data_sources
-data = data_sources()
+data = dataSources()
 
 def get_countries():
     print('Getting available countries...')
