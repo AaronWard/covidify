@@ -53,54 +53,60 @@ elif source == 'wiki':
 
 
 ############ COUNTRY SELECTION ############
+class countrySelection():
 
-def get_similar_countries(c, country_list):
-    pos_countries = get_close_matches(c, country_list)
+    def __init__(self):
+        pass
 
-    if len(pos_countries) > 0:
-        print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
+    def get_similar_countries(c, country_list):
+        pos_countries = get_close_matches(c, country_list)
 
-        #Only delete if its a covidify generated folder
-        if 'Desktop/covidify-output-' in out:
-            os.system('rm -rf ' + out)
-        sys.exit(1)
-    else:
-        print('\033[1;31m'+c, 'was not listed.\033[0;0m')
-        if 'Desktop/covidify-output-' in out:
-            os.system('rm -rf ' + out)
-        sys.exit(1)
+        if len(pos_countries) > 0:
+            print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
 
-def check_specified_country(df, country):
-    '''
-    let user filter reports by country, if not found
-    then give a option if the string is similar
-    '''
-
-    # Get all unique countries in the data
-    country_list = list(map(lambda x:x.lower().strip(), set(df.country.values)))
-
-    if country:
-        print('Country specified!')
-        if country.lower() == 'Mainland China': #Mainland china and china doesn't come up as similar
-            print(country, 'was not listed. did you mean China?')
+            #Only delete if its a covidify generated folder
+            if 'Desktop/covidify-output-' in out:
+                os.system('rm -rf ' + out)
             sys.exit(1)
-        # give similar option if similarity found
-        if country.lower() not in country_list:
-            get_similar_countries(country, country_list)
-
         else:
-            #Return filtered dataframe
-            print('... filtering data for', country)
-            if len(country) == 2:
-                df = df[df.country == country.upper()]
-            else:
-                df = df[df.country == capwords(country)]
-            return df
-    else:
-        print('... No specific country specified')
-        return df
+            print('\033[1;31m'+c, 'was not listed.\033[0;0m')
+            if 'Desktop/covidify-output-' in out:
+                os.system('rm -rf ' + out)
+            sys.exit(1)
 
-df = check_specified_country(df, country)
+    def check_specified_country(df, country):
+        '''
+        let user filter reports by country, if not found
+        then give a option if the string is similar
+        '''
+
+        # Get all unique countries in the data
+        country_list = list(map(lambda x:x.lower().strip(), set(df.country.values)))
+
+        if country:
+            print('Country specified!')
+            if country.lower() == 'Mainland China': #Mainland china and china doesn't come up as similar
+                print(country, 'was not listed. did you mean China?')
+                sys.exit(1)
+                # give similar option if similarity found
+            if country.lower() not in country_list:
+                get_similar_countries(country, country_list)
+
+            else:
+                #Return filtered dataframe
+                print('... filtering data for', country)
+                if len(country) == 2:
+                    df = df[df.country == country.upper()]
+                else:
+                    df = df[df.country == capwords(country)]
+                return df
+        else:
+            print('... No specific country specified')
+            return df
+
+#Create instance of countrySelection
+country_sel = countrySelection()
+df = country_sel.check_specified_country(df, country)
 
 ############ DAILY CASES ############
 
