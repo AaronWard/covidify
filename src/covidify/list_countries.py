@@ -9,12 +9,12 @@ import sys
 import click
 import covidify
 import numpy as np
-from covidify.sources import github
+from covidify.sources import agg_data_sources as sourceData
 from covidify.config import SCRIPT
 
 def get_countries():
     print('Getting available countries...')
-    df = github.get()
+    df = sourceData.getData()
     df = df[df.confirmed > 0]
 
     countries = sorted(list(set(df.country.values)))
