@@ -14,10 +14,10 @@ from covidify.config import SCRIPT
 
 def get_countries():
     print('Getting available countries...')
-    df = sourceData.getData()
-    df = df[df.confirmed > 0]
+    dataFetch = sourceData.getData()
+    dataFetch = dataFetch[dataFetch.confirmed > 0]
 
-    countries = sorted(list(set(df.country.values)))
+    countries = sorted(list(set(dataFetch.country.values)))
 
     for a,b,c in zip(countries[::3],countries[1::3],countries[2::3]):
         print('{:<30}{:<30}{:<}'.format(a,b,c))
