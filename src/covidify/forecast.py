@@ -61,7 +61,7 @@ if not os.path.exists(image_dir):
     os.system('mkdir -p ' + image_dir)
 
 class Forecast:
-    #Aggregate root
+    #Aggregate root for ref
     __init__ (tmp_df, train, index_forecast, forecast, confint, days_in_future):
         self.tmp_df = tmp_df
         self.train = train
