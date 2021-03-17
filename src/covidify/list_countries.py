@@ -13,6 +13,12 @@ from covidify.sources import github
 from covidify.config import SCRIPT
 
 def get_countries():
+    precondition:
+        #Arg1: get a list of countries accross the world that have a current cases of covid-19
+        #Arg2: Get a list of all countires with no active cases of covid-19
+        #Arg3: Get a list of countires that were hit the most by covid-19 cases
+     postcondition:
+        #Arg1: display all the countires with active cases of covid-19, countires with no cases and countries with most hit by
     print('Getting available countries...')
     df = github.get()
     df = df[df.confirmed > 0]
