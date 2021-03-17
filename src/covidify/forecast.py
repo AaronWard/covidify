@@ -69,7 +69,7 @@ class Forecast:
         self.forecast = forecast
         self.confint = confint
         self.days_in_future = days_in_future
-        #please let me make another pull request 
+        #please let me make another pull request adfasdfadfs
     def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
         '''
         Plot the values of train and test, the predictions from ARIMA and the shadowing
