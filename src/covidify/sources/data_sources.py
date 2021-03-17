@@ -2,11 +2,12 @@
 Aggregate root class for wiki and github scripts
 
 '''
-class data_sources:
-    import github
-    import wiki
-    import pandas as pd
+import github
+import wiki
+import pandas as pd
 
+class data_sources:
+    
     def __init__(self):
         pass
 
