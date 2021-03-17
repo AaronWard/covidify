@@ -9,11 +9,14 @@ import sys
 import click
 import covidify
 import numpy as np
-from covidify.sources import agg_data_sources as sourceData
+#import/use aggregate root instead of git itself
+from covidify.sources import agg_data_sources as sourceData 
+
 from covidify.config import SCRIPT
 
 def get_countries():
     print('Getting available countries...')
+    #use reference dataFetch to access root to fetch data
     dataFetch = sourceData.getData()
     dataFetch = dataFetch[dataFetch.confirmed > 0]
 
