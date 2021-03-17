@@ -24,12 +24,12 @@ def get_countries():
         
     print('\n\033[1;31mNUMBER OF COUNTRIES/AREAS INFECTED:\033[0;0m', len(countries))
 #Aggregrate Root    
- def get_top_countires(countries):
-    df = github.get(countries)
-    df = df[df.countries > 5000] #gets countires that have cases greater then 5,000 and returns that top countires 
-   
-    countries = sorted(list(set(df.country.values)))
-    return countries = get_top_countires(df)
+ def get_top_countires(countries, msg):
+   if not countries:
+        print('%sMESSAGE: %s' % (' '*5,msg))
+        return LOG_TOP_N_COUNTRIES
+    else:
+        return countries
     
     
     
