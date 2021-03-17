@@ -26,7 +26,7 @@ def get_countries():
 #Aggregrate Root    
  def get_top_countires(countries):
     df = github.get(countries)
-    df = df[df.countries > 5000] #gets countires that have cases greater then 1,000,000 and returns that top countires 
+    df = df[df.countries > 5000] #gets countires that have cases greater then 5,000 and returns that top countires 
    
     countries = sorted(list(set(df.country.values)))
     return countries = get_top_countires(df)
