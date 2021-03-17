@@ -13,6 +13,10 @@ from covidify.sources import github
 from covidify.config import SCRIPT
 
 def get_countries():
+    #obtain a list of all countries that have no cases of covid-19
+    #obtain a list of countries that have higher or lower number of covid-19 case
+    #obtain a list of all countries that have been affected the most with covid-19 
+    #plot all the countries that have no cases, few cases or the most hit in a graph for users to see
     print('Getting available countries...')
     df = github.get()
     df = df[df.confirmed > 0]
