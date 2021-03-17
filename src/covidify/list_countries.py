@@ -11,6 +11,7 @@ import covidify
 import numpy as np
 from covidify.sources import github
 from covidify.config import SCRIPT
+from covidify.config import LOG_TOP_N_COUNTRIES
 
 def get_countries():
     print('Getting available countries...')
