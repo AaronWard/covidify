@@ -21,6 +21,7 @@ from string import capwords
 from difflib import get_close_matches
 from datetime import datetime, date, time 
 
+#import/use aggregate root instead of git and wiki itself
 from covidify.sources import agg_data_sources as sourceData 
 
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
@@ -41,13 +42,13 @@ if '_' in country:
 
 if country == 'Global':
     country = None
-
+#use reference dataFetch to access root to fetch Git data
 if source == 'JHU':
-    df = github.get()
-    
+    dataFetch = sourceData.getDataGit()
+#use reference dataFetch to access root to fetch Wiki data    
 elif source == 'wiki':
     print('Apologies, the wikipedia source is not ready yet - getting github data')
-    df = github.get()
+    dataFetch = sourceData.getDataWiki()
     
 
 
