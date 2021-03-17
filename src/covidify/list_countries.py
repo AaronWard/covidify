@@ -9,15 +9,19 @@ import sys
 import click
 import covidify
 import numpy as np
-from covidify.sources import github
+
+#import/use aggregate root instead of git and wiki itself
+from covidify.sources import agg_data_sources as sourceData 
+
 from covidify.config import SCRIPT
 
 def get_countries():
     print('Getting available countries...')
-    df = github.get()
-    df = df[df.confirmed > 0]
+    #use reference dataFetch to access root to fetch Git data
+    dataFetch = sourceData.getDataGit()
+    dataFetch = dataFetch[dataFetch.confirmed > 0]
 
-    countries = sorted(list(set(df.country.values)))
+    countries = sorted(list(set(dataFetch.country.values)))
 
     for a,b,c in zip(countries[::3],countries[1::3],countries[2::3]):
         print('{:<30}{:<30}{:<}'.format(a,b,c))
