@@ -13,6 +13,7 @@ from covidify.sources import github
 from covidify.config import SCRIPT
 
 def get_countries():
+preconditions
     print('Getting available countries...')
     df = github.get()
     df = df[df.confirmed > 0]
