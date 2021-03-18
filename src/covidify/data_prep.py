@@ -51,7 +51,7 @@ elif source == 'wiki':
 
 
 ############ COUNTRY SELECTION ############
-
+#Aggregrate Pattern root
 class GetSimilarCountries:
     def get_similar_countries(c, country_list):
         pos_countries = get_close_matches(c, country_list)

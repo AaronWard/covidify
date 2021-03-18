@@ -11,6 +11,7 @@ USER = getpass.getuser()
 #get the path of covidify in site-packages
 env = covidify.__path__[0]
 
+#Aggregate Pattern
 class CheckOutputFolder:
 	def check_output_folder(var, country_str,  msg):
 	    '''
