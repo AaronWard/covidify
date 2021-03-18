@@ -107,7 +107,7 @@ class countrySelection:
 
 #Create instance of countrySelection
 country_sel = countrySelection()
-df = country_sel.check_specified_country(df, country)
+df = country_sel.check_country(df, country)
 
 ############ DAILY CASES ############
 
