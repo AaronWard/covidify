@@ -22,9 +22,6 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 from covidify.utils.utils import replace_arg_score
-from covidify.output_destination import output_diagram_folder
-from covidify.config import FIG_SIZE
-from covidify.forecast import days_in_future
 
 # plt settings
 font = {'weight' : 'bold',
@@ -69,7 +66,9 @@ log_df = pd.read_csv(os.path.join(data_dir, log_file))
 image_dir =  os.path.join(out,'reports', 'images')
 reports_dir =  os.path.join(out,'reports')
 
-output_diagram_folder(image_dir)
+if not os.path.exists(image_dir):
+    print('Creating reports folder...')
+    os.system('mkdir -p ' + image_dir)
 
 # Convert types
 for col in ['confirmed', 'deaths', 'recovered']:
@@ -139,32 +138,6 @@ def log_plot(tmp, col, fig_title):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col, country=None, graph_type='log')))
     
-def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
-    '''
-    Plot the values of train and test, the predictions from ARIMA and the shadowing
-    for the confidence interval.
-    '''
-
-    # For shadowing
-    lower_series = pd.Series(confint[:, 0], index=index_forecast)
-    upper_series = pd.Series(confint[:, 1], index=index_forecast)
-    
-    print('... saving graph')
-    fig, ax = plt.subplots(figsize=FIG_SIZE)
-    plt.title('ARIMA - Prediction for cumalitive case counts {} days in the future'.format(days_in_future))    
-    plt.plot(tmp_df.cumulative_cases, label='Train',marker='o')
-    plt.plot(tmp_df.pred, label='Forecast', marker='o')
-    tmp_df.groupby('date')[['']].sum().plot(ax=ax)
-    plt.fill_between(index_forecast, 
-                     upper_series, 
-                     lower_series, 
-                     color='k', alpha=.1)
-    plt.ylabel('Infections')
-    plt.xlabel('Date')
-    fig.legend().set_visible(True)
-    fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, 'cumulative_forecasts.png'))
-
 ##### Create Graphs #####
 print('Creating graphs...')
 print('... Time Series Trend Line')
