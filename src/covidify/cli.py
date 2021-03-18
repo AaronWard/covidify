@@ -98,9 +98,20 @@ def cli():
 @click.option('--country', help='Filter reports by a country', multiple=True, type=str)
 @click.option('--top',     help='Top N infected countries for log plot. [Default: '+ str(LOG_TOP_N_COUNTRIES) + ']')
 @click.option('--forecast',help='Number of days to forecast cumulative cases in the future. [Default: ' + str(DAYS_IN_FUTURE) + ']')
+
 def run(output, source, country, top, forecast):
     '''
     Generate reports for global cases or refine by country.
+    precondition:
+        # argument 1 'output' must be a string of a valid output folder
+        # argument 2 'source' must be a string of 2 given datasources
+        # argument 3 'country' must be a string that holds a valid country
+        # argument 4 'top' must be an integer that holds the max number of infected countries to plot for
+        # argument 5 'forecast' must be an integer of number of days to forecast for
+
+    precondition:
+        # outputs default data if arguments are minimum or not specified
+        # prints all data pertaining to arguments passed to system console
     '''
     
     #Do checks on args
@@ -115,9 +126,15 @@ def run(output, source, country, top, forecast):
 
 @click.option('--countries', help='List countries that have had confirmed cases.', is_flag=True)
 @cli.command()
+
 def list(countries):
     '''
     List all the countries that have confirmed cases.
+    precondition:
+        # 'countries' is an iterable of any type
+
+    postcondition:
+        # a list of all items in 'countries' is created and printed/output
     '''
     countries = check_list_flag(countries, '\033[1;31m Invalid flag passed. Make sure to use --countries\033[0;0m')
 
