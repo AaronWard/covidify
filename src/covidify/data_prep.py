@@ -52,23 +52,25 @@ elif source == 'wiki':
 
 ############ COUNTRY SELECTION ############
 
-def get_similar_countries(c, country_list):
-    pos_countries = get_close_matches(c, country_list)
-    
-    if len(pos_countries) > 0:
-        print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
+class GetSimilarCountries:
+    def get_similar_countries(c, country_list):
+        pos_countries = get_close_matches(c, country_list)
         
-        #Only delete if its a covidify generated folder
-        if 'Desktop/covidify-output-' in out:
-            os.system('rm -rf ' + out)
-        sys.exit(1)
-    else:
-        print('\033[1;31m'+c, 'was not listed.\033[0;0m')
-        if 'Desktop/covidify-output-' in out:
-            os.system('rm -rf ' + out)
-        sys.exit(1)
-        
-def check_specified_country(df, country):
+        if len(pos_countries) > 0:
+            print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
+            
+            #Only delete if its a covidify generated folder
+            if 'Desktop/covidify-output-' in out:
+                os.system('rm -rf ' + out)
+            sys.exit(1)
+        else:
+            print('\033[1;31m'+c, 'was not listed.\033[0;0m')
+            if 'Desktop/covidify-output-' in out:
+                os.system('rm -rf ' + out)
+            sys.exit(1)
+
+class CheckSpecifiedCountry:         
+    def check_specified_country(df, country):
     '''
     let user filter reports by country, if not found
     then give a option if the string is similar
@@ -112,29 +114,32 @@ current_date = str(datetime.date(datetime.now()))
 Get the difference of the sum totals for each
 date and plot them on a trendline graph
 '''
-def get_new_cases(tmp, col):
-    diff_list = []
-    tmp_df_list = []
-    df = tmp.copy()
+class GetNewCases: 
+    def get_new_cases(tmp, col):
+        diff_list = []
+        tmp_df_list = []
+        df = tmp.copy()
 
-    for i, day in enumerate(df.sort_values('file_date').file_date.unique()):
-        tmp_df = df[df.file_date == day]
-        tmp_df_list.append(tmp_df[col].sum())
+        for i, day in enumerate(df.sort_values('file_date').file_date.unique()):
+            tmp_df = df[df.file_date == day]
+            tmp_df_list.append(tmp_df[col].sum())
 
-        if i == 0:
-            diff_list.append(tmp_df[col].sum())
-        else:
-            diff_list.append(tmp_df[col].sum() - tmp_df_list[i-1])
+            if i == 0:
+                diff_list.append(tmp_df[col].sum())
+            else:
+                diff_list.append(tmp_df[col].sum() - tmp_df_list[i-1])
 
-    return diff_list
+        return diff_list
 
-def get_moving_average(tmp, col):
-    df = tmp.copy()
-    return df[col].rolling(window=2).mean()
+class GetMovingAverage:
+    def get_moving_average(tmp, col):
+        df = tmp.copy()
+        return df[col].rolling(window=2).mean()
 
-def get_exp_moving_average(tmp, col):
-    df = tmp.copy()
-    return df[col].ewm(span=2, adjust=True).mean()
+class GetExpMovingAverage: 
+    def get_exp_moving_average(tmp, col):
+        df = tmp.copy()
+        return df[col].ewm(span=2, adjust=True).mean()
 
 
 print('... Calculating dataframe for new cases')
@@ -166,65 +171,67 @@ print('Calculating data for logarithmic plotting...')
 if not country:
     print('... top infected countries: {}'.format(top))
 
-def get_top_countries(data):
-    # Get top N infected countries
-    tmp_df = data.copy()
-    tmp_df = tmp_df[tmp_df.file_date == df.file_date.max()]
-    return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index 
+class GetTopCountries: 
+    def get_top_countries(data):
+        # Get top N infected countries
+        tmp_df = data.copy()
+        tmp_df = tmp_df[tmp_df.file_date == df.file_date.max()]
+        return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index 
+            
+    TOP_N_COUNTRIES = get_top_countries(df)    
+
+    tmp_df = df[df.country.isin(TOP_N_COUNTRIES)].copy()
+
+class GetDayCounts:
+    def get_day_counts(d, country):
+        '''
+        For each country, get the days of the spread since 500
+        cases
+        '''
+        data = d.copy()
+        result_df = pd.DataFrame([])
+        result_df = data.groupby(['file_date']).agg({'confirmed': 'sum',
+                                                    'recovered': 'sum',
+                                                    'deaths': 'sum'})
+        result_df['date'] = data['file_date'].unique()
+        result_df['country'] = country
+            
+        result_df = result_df[result_df.confirmed >= 500]
+        result_df.insert(loc=0, column='day', value=np.arange(len(result_df)))
+        return result_df
+
+    df_list = []
+
+    for country in TOP_N_COUNTRIES:
+        print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) & 
+                                                     (tmp_df.country == country)].confirmed.sum()))
+        df_list.append(get_day_counts(tmp_df[tmp_df.country == country], country))
         
-TOP_N_COUNTRIES = get_top_countries(df)    
-
-tmp_df = df[df.country.isin(TOP_N_COUNTRIES)].copy()
-
-def get_day_counts(d, country):
-    '''
-    For each country, get the days of the spread since 500
-    cases
-    '''
-    data = d.copy()
-    result_df = pd.DataFrame([])
-    result_df = data.groupby(['file_date']).agg({'confirmed': 'sum',
-                                                'recovered': 'sum',
-                                                'deaths': 'sum'})
-    result_df['date'] = data['file_date'].unique()
-    result_df['country'] = country
-        
-    result_df = result_df[result_df.confirmed >= 500]
-    result_df.insert(loc=0, column='day', value=np.arange(len(result_df)))
-    return result_df
-
-df_list = []
-
-for country in TOP_N_COUNTRIES:
-    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) & 
-                                                 (tmp_df.country == country)].confirmed.sum()))
-    df_list.append(get_day_counts(tmp_df[tmp_df.country == country], country))
-    
-log_df = pd.concat(df_list, axis=0, ignore_index=True)
+    log_df = pd.concat(df_list, axis=0, ignore_index=True)
 
 
-############ SAVE DATA ############
-#Create date of extraction folder
-data_folder = os.path.join('data', str(datetime.date(datetime.now())))
-save_dir = os.path.join(out, data_folder)
+    ############ SAVE DATA ############
+    #Create date of extraction folder
+    data_folder = os.path.join('data', str(datetime.date(datetime.now())))
+    save_dir = os.path.join(out, data_folder)
 
-if not os.path.exists(save_dir):
-    os.system('mkdir -p ' + save_dir)
+    if not os.path.exists(save_dir):
+        os.system('mkdir -p ' + save_dir)
 
-print('Creating subdirectory for data...')
-print('...', save_dir)
+    print('Creating subdirectory for data...')
+    print('...', save_dir)
 
-print('Saving...')
-csv_file_name = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
-df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
-print('...', csv_file_name)
+    print('Saving...')
+    csv_file_name = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
+    df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
+    print('...', csv_file_name)
 
-daily_cases_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
-daily_cases_df.astype(str).to_csv(os.path.join(save_dir, daily_cases_file_name))
-print('...', daily_cases_file_name)
+    daily_cases_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
+    daily_cases_df.astype(str).to_csv(os.path.join(save_dir, daily_cases_file_name))
+    print('...', daily_cases_file_name)
 
-log_file_name = 'log_{}.csv'.format(datetime.date(datetime.now()))
-log_df.astype(str).to_csv(os.path.join(save_dir, log_file_name))
-print('...', log_file_name)
+    log_file_name = 'log_{}.csv'.format(datetime.date(datetime.now()))
+    log_df.astype(str).to_csv(os.path.join(save_dir, log_file_name))
+    print('...', log_file_name)
 
-print('Done!')
+    print('Done!')
