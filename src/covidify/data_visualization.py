@@ -22,6 +22,7 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 from covidify.utils.utils import replace_arg_score
+from covidify.src.covidify.output_destination import output_diagram_folder
 
 # plt settings
 font = {'weight' : 'bold',
@@ -66,9 +67,7 @@ log_df = pd.read_csv(os.path.join(data_dir, log_file))
 image_dir =  os.path.join(out,'reports', 'images')
 reports_dir =  os.path.join(out,'reports')
 
-if not os.path.exists(image_dir):
-    print('Creating reports folder...')
-    os.system('mkdir -p ' + image_dir)
+output_diagram_folder(image_dir)
 
 # Convert types
 for col in ['confirmed', 'deaths', 'recovered']:
