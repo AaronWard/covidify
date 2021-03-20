@@ -27,13 +27,13 @@ echo "... FORECAST PERIOD: $FRCST_DAYS"
 
 
 banner "Data Extraction"
-python $ENV/data_prep.py --output_folder $OUT_FDR --source $SOURCE --country $COUNTRY --top $TOP_CNT
+python $ENV/new_data_prep.py --output_folder $OUT_FDR --source $SOURCE --country $COUNTRY --top $TOP_CNT
 
-banner "Training Forecasting Model"
-python $ENV/forecast.py --output_folder $OUT_FDR --num_days $FRCST_DAYS
+# banner "Training Forecasting Model"
+# python $ENV/forecast.py --output_folder $OUT_FDR --num_days $FRCST_DAYS
 
-banner "Data Visualization"
-python $ENV/data_visualization.py --output_folder $OUT_FDR --country $COUNTRY --top $TOP_CNT
+# banner "Data Visualization"
+# python $ENV/data_visualization.py --output_folder $OUT_FDR --country $COUNTRY --top $TOP_CNT
 
 banner "Complete!"
 echo "* Results in: $OUT_FDR"

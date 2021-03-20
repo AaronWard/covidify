@@ -115,6 +115,15 @@ def get_top_countries(data):
     tmp_df = tmp_df[tmp_df.file_date == df.file_date.max()]
     return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index 
         
+def create_new_case(name, df, col):
+    return Case(name, get_new_cases(df, col))
+
+def create_new_country(df, country):
+  if country == None:
+    return Country('global', check_specified_country(df, country))
+  else:
+    return Country(country, check_specified_country(df, country))
+
 ############ DATA SELECTION ############
 
 if '_' in country:
@@ -130,80 +139,33 @@ elif source == 'wiki':
     print('Apologies, the wikipedia source is not ready yet - getting github data')
     df = github.get()
     
-df = check_specified_country(df, country)
+
+country_ = create_new_country(df, country)
+
+# df = check_specified_country(df, country)
 
 ############ DAILY CASES ############
 
 # sheets need to be sorted by date value
 # print('Sorting by datetime...')
+
 df = df.sort_values('datetime')
+
+daily_cases_df = pd.DataFrame([])
 
 current_date = str(datetime.date(datetime.now()))
 
 print('... Calculating dataframe for new cases')
-daily_cases_df = pd.DataFrame([])
-daily_cases_df['date'] = df.file_date.unique()
-daily_cases_df = daily_cases_df.sort_values('date')
-daily_cases_df['new_confirmed_cases'] = get_new_cases(df, 'confirmed')
-daily_cases_df['new_deaths'] = get_new_cases(df, 'deaths')
-daily_cases_df['new_recoveries'] = get_new_cases(df, 'recovered')
-daily_cases_df['cumulative_cases'] = daily_cases_df.new_confirmed_cases.cumsum()
-daily_cases_df.insert(loc=0, column='day', value=np.arange(0, len(daily_cases_df)))
 
-'''
-Calculate the number of people that are ACTUALLY infected on a given day
-currently infected = sum of people date - (recovored + died)
-ex: 5 = 10 - (4 - 1)
-'''
+country_.add(Case('date', df.file_date.unique()))
+country_.add(create_new_case('new_confirmed_cases', df, 'confirmed'))
+country_.add(create_new_case('new_deaths', df, 'deaths'))
+country_.add(create_new_case('new_recoveries', df, 'recovered'))
 
-current_infected = pd.DataFrame([])
-current_infected['currently_infected'] = (df.groupby('file_date').confirmed.sum() - (df.groupby('file_date').deaths.sum() + df.groupby('file_date').recovered.sum()))
-current_infected['delta'] = (current_infected['currently_infected'] - df.groupby('file_date').confirmed.sum())
-current_infected.index.rename('date', inplace=True)
+r = Report(str(datetime.date(datetime.now())), 'trend')
 
-daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='date')
+r.add(country_)
 
-############ LOG DATA ############
+r.combine()
 
-print('Calculating data for logarithmic plotting...')
-if not country:
-    print('... top infected countries: {}'.format(top))
-
-TOP_N_COUNTRIES = get_top_countries(df)    
-
-tmp_df = df[df.country.isin(TOP_N_COUNTRIES)].copy()
-
-df_list = []
-
-for country in TOP_N_COUNTRIES:
-    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) & 
-                                                (tmp_df.country == country)].confirmed.sum()))
-    df_list.append(get_day_counts(tmp_df[tmp_df.country == country], country))
-    
-log_df = pd.concat(df_list, axis=0, ignore_index=True)
-
-############ SAVE DATA ############
-#Create date of extraction folder
-data_folder = os.path.join('data', str(datetime.date(datetime.now())))
-save_dir = os.path.join(out, data_folder)
-
-if not os.path.exists(save_dir):
-    os.system('mkdir -p ' + save_dir)
-
-print('Creating subdirectory for data...')
-print('...', save_dir)
-
-print('Saving...')
-csv_file_name = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
-df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
-print('...', csv_file_name)
-
-daily_cases_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
-daily_cases_df.astype(str).to_csv(os.path.join(save_dir, daily_cases_file_name))
-print('...', daily_cases_file_name)
-
-log_file_name = 'log_{}.csv'.format(datetime.date(datetime.now()))
-log_df.astype(str).to_csv(os.path.join(save_dir, log_file_name))
-print('...', log_file_name)
-
-print('Done!')
+r.save(out)
