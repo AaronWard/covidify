@@ -34,7 +34,23 @@ source = args['--source']
 top = int(args['--top'])
 
 ############ COUNTRY SELECTION ############
-
+def get_day_counts(d, country):
+    '''
+    For each country, get the days of the spread since 500
+    cases
+    '''
+    data = d.copy()
+    result_df = pd.DataFrame([])
+    result_df = data.groupby(['file_date']).agg({'confirmed': 'sum',
+                                                'recovered': 'sum',
+                                                'deaths': 'sum'})
+    result_df['date'] = data['file_date'].unique()
+    result_df['country'] = country
+        
+    result_df = result_df[result_df.confirmed >= 500]
+    result_df.insert(loc=0, column='day', value=np.arange(len(result_df)))
+    return result_df
+    
 def get_similar_countries(c, country_list):
     pos_countries = get_close_matches(c, country_list)
     

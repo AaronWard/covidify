@@ -10,22 +10,18 @@ class Case:
   values: list
 
 class Country:
-  def __init__(self, name: str, cases) -> None:
+  def __init__(self, name: str, cases=[], dataframe=pd.DataFrame([])) -> None:
     self.name = name
-    self.cases = []
-    self.dataframe = pd.DataFrame([])
-
-  def can_add(self):
-    return True
+    self.cases = cases
+    self.dataframe = dataframe
 
   def add(self, case):
-    if self.can_add():
       self.cases.append(case)
   
   def combine(self):
     for c in self.cases:
-      print(c.name)
       self.dataframe[c.name] = c.values
+
     self.dataframe = self.dataframe.sort_values('date')
     self.dataframe['cumulative_cases'] = self.dataframe.new_confirmed_cases.cumsum()
     self.dataframe.insert(loc=0, column='day', value=np.arange(0, len(self.dataframe)))

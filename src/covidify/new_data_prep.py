@@ -34,7 +34,23 @@ source = args['--source']
 top = int(args['--top'])
 
 ############ COUNTRY SELECTION ############
-
+def get_day_counts(d, country):
+    '''
+    For each country, get the days of the spread since 500
+    cases
+    '''
+    data = d.copy()
+    result_df = pd.DataFrame([])
+    result_df = data.groupby(['file_date']).agg({'confirmed': 'sum',
+                                                'recovered': 'sum',
+                                                'deaths': 'sum'})
+    result_df['date'] = data['file_date'].unique()
+    result_df['country'] = country
+        
+    result_df = result_df[result_df.confirmed >= 500]
+    result_df.insert(loc=0, column='day', value=np.arange(len(result_df)))
+    return result_df
+    
 def get_similar_countries(c, country_list):
     pos_countries = get_close_matches(c, country_list)
     
@@ -120,9 +136,9 @@ def create_new_case(name, df, col):
 
 def create_new_country(df, country):
   if country == None:
-    return Country('global', check_specified_country(df, country))
+    return Country('global', dataframe=check_specified_country(df, country))
   else:
-    return Country(country, check_specified_country(df, country))
+    return Country(country, dataframe=check_specified_country(df, country))
 
 ############ DATA SELECTION ############
 
@@ -169,3 +185,24 @@ r.add(country_)
 r.combine()
 
 r.save(out)
+
+print('Calculating data for logarithmic plotting...')
+if not country:
+    print('... top infected countries: {}'.format(top))
+
+TOP_N_COUNTRIES = get_top_countries(df)    
+
+tmp_df = df[df.country.isin(TOP_N_COUNTRIES)].copy()
+
+df_list = []
+
+r2 = Report(str(datetime.date(datetime.now())), 'log')
+
+for country in TOP_N_COUNTRIES:
+    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) & 
+                                                (tmp_df.country == country)].confirmed.sum()))
+    df = get_day_counts(tmp_df[tmp_df.country == country], country)
+    r2.add(Country(country, dataframe=df))
+
+r2.combine()
+r2.save(out)
