@@ -11,6 +11,7 @@ from time import strftime
 from dateutil.parser import parse
 from datetime import datetime, date, time 
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA, KEEP_COLS, NUMERIC_COLS
+from covidify.file_error_handler import DIRManager
 
 def clean_sheet_names(new_ranges):
     # Remove all sheets that dont have a numeric header
@@ -136,15 +137,16 @@ def get_data(cleaned_sheets):
 
 # use this function to fetch the data
 def get():
-        
     # Create Tmp Folder
     if not os.path.isdir(TMP_FOLDER):
         print('Creating folder...')
         print('...', TMP_FOLDER)
-        os.mkdir(TMP_FOLDER)
 
-    #Check if repo exists
-    #git pull if it does
+        dirmanager = DIRManager(TMP_FOLDER)
+        dirmanager.create_folder('Creating temp folder, if failed to create, please create a folder /tmp/corona')
+
+    # Check if repo exists
+    # git pull if it does
     if not os.path.isdir(TMP_GIT):
         clone_repo(TMP_FOLDER, REPO)
     else:
@@ -157,13 +159,13 @@ def get():
             sys.exit(1)
 
     sheets = os.listdir(DATA)
-    
+
     # Clean the result to the sheet tabs we want
     print('Getting sheets...')
     cleaned_sheets = clean_sheet_names(sheets)
 
     # Aggregate all the data from sheets
     df = get_data(cleaned_sheets)
-    
-    #Clean the column names
+
+    # Clean the column names
     return df
