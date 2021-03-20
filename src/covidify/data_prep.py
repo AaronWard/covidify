@@ -21,7 +21,7 @@ from string import capwords
 from difflib import get_close_matches
 from datetime import datetime, date, time 
 
-from covidify.sources import github, wiki
+from src.covidify.sources import data_root as ds
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
 
@@ -42,11 +42,11 @@ if country == 'Global':
     country = None
 
 if source == 'JHU':
-    df = github.get()
+    df = ds.get_github_data()
     
 elif source == 'wiki':
     print('Apologies, the wikipedia source is not ready yet - getting github data')
-    df = github.get()
+    df = ds.get_wiki_data()
     
 
 

@@ -9,8 +9,8 @@ import numpy as np
 from tqdm import tqdm
 from time import strftime
 from dateutil.parser import parse
-from datetime import datetime, date, time 
-from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA, KEEP_COLS, NUMERIC_COLS
+from datetime import datetime, date, time
+from src.covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA, KEEP_COLS, NUMERIC_COLS
 
 def clean_sheet_names(new_ranges):
     # Remove all sheets that dont have a numeric header

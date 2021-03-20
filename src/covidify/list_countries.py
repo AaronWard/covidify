@@ -4,17 +4,22 @@ This is so you can decide which country to make a report for.
 
 '''
 
-import os
+ import os
 import sys
 import click
 import covidify
 import numpy as np
-from covidify.sources import github
+
+#importing the created data root
+from src.covidify.sources import data_root as ds
+
 from covidify.config import SCRIPT
 
 def get_countries():
     print('Getting available countries...')
-    df = github.get()
+
+    #
+    df = ds.get_github_data()
     df = df[df.confirmed > 0]
 
     countries = sorted(list(set(df.country.values)))
