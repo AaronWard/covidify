@@ -21,7 +21,10 @@ from string import capwords
 from difflib import get_close_matches
 from datetime import datetime, date, time 
 
-from covidify.sources import github, wiki
+#from covidify.sources import github, wiki
+
+# this is could be the best case, if we import aggregate root instead of github and wiki, as 
+from covidify import covid_data
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
 
