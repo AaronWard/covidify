@@ -12,4 +12,3 @@ pmdarima
 folium
 altair
 seaborn
-gavish
