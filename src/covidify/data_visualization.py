@@ -79,9 +79,9 @@ for col in ['confirmed', 'deaths', 'recovered']:
 #Change titles and saved file names if country
 #is specified
 def create_title(fig_title, country):
-    if country:
+     if country:
         return fig_title + ' for ' + country
-    else:
+     else:
         return fig_title
     
 def create_save_file(col, country, graph_type):

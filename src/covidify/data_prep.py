@@ -21,9 +21,10 @@ from string import capwords
 from difflib import get_close_matches
 from datetime import datetime, date, time 
 
-from covidify.sources import github, wiki
+#from covidify.sources import github, wiki
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
+from covidify.db_sources import Database
 
 
 args = docopt.docopt(__doc__)
@@ -41,14 +42,9 @@ if '_' in country:
 if country == 'Global':
     country = None
 
-if source == 'JHU':
-    df = github.get()
+df = Database()
+df.get_data(source)
     
-elif source == 'wiki':
-    print('Apologies, the wikipedia source is not ready yet - getting github data')
-    df = github.get()
-    
-
 
 ############ COUNTRY SELECTION ############
 

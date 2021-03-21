@@ -9,12 +9,14 @@ import sys
 import click
 import covidify
 import numpy as np
-from covidify.sources import github
+#from covidify.sources import github
 from covidify.config import SCRIPT
+from covidify.db_sources import Database
 
 def get_countries():
     print('Getting available countries...')
-    df = github.get()
+    df = Database()
+    df.get_data(source)
     df = df[df.confirmed > 0]
 
     countries = sorted(list(set(df.country.values)))
