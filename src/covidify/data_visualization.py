@@ -22,6 +22,7 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 from covidify.utils.utils import replace_arg_score
+from .report import Report
 
 # plt settings
 font = {'weight' : 'bold',
