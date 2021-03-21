@@ -115,4 +115,6 @@ if __name__ == '__main__':
 
     train = trend_df[trend_df.date.isin(train_period)].cumulative_cases
     index_forecast = [x for x in range(train.index[-1]+1, train.index[-1] + days_in_future+1)]
-    CreateForecast.forecast(trend_df, train, index_forecast, days_in_future)
+    newForecast = CreateForecast()
+    newForecast.forecast(trend_df, train, index_forecast, days_in_future)
+
