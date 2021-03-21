@@ -24,6 +24,7 @@ from datetime import datetime, date, time
 from covidify.sources import github, wiki
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
+from .country import Country
 
 
 args = docopt.docopt(__doc__)
