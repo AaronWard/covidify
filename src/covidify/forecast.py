@@ -60,7 +60,7 @@ if not os.path.exists(image_dir):
     print('Creating reports folder...')
     os.system('mkdir -p ' + image_dir)
 
-
+class Plot_Forcast:
 def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
     '''
     Plot the values of train and test, the predictions from ARIMA and the shadowing
@@ -88,10 +88,11 @@ def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, 'cumulative_forecasts.png'))
 
-
+class Forcast:
 def forecast(tmp_df, train, index_forecast, days_in_future):
     
     # Fit model with training data
+    # this is test
     model = auto_arima(train, trace=False, error_action='ignore', suppress_warnings=True)
     model_fit = model.fit(train)
         
@@ -114,3 +115,4 @@ if __name__ == '__main__':
     train = trend_df[trend_df.date.isin(train_period)].cumulative_cases
     index_forecast = [x for x in range(train.index[-1]+1, train.index[-1] + days_in_future+1)]
     forecast(trend_df, train, index_forecast, days_in_future)
+

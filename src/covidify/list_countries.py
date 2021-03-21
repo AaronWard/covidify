@@ -9,14 +9,19 @@ import sys
 import click
 import covidify
 import numpy as np
-from covidify.sources import github
+#from covidify.sources import github
+form covidify.sources import data_root as covid_data
 from covidify.config import SCRIPT
 
 def get_countries():
     print('Getting available countries...')
-    df = github.get()
-    df = df[df.confirmed > 0]
+    #df = github.get()
+    #df = df[df.confirmed > 0]
 
+    #using refernce access root(data)
+    df = covid_data.get_github_data()
+    df = df[df.confirmed > 0 ]
+    
     countries = sorted(list(set(df.country.values)))
 
     for a,b,c in zip(countries[::3],countries[1::3],countries[2::3]):
