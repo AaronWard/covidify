@@ -60,7 +60,7 @@ if not os.path.exists(image_dir):
     print('Creating reports folder...')
     os.system('mkdir -p ' + image_dir)
 
-
+class Plot_Forcast:
 def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
     '''
     Plot the values of train and test, the predictions from ARIMA and the shadowing
@@ -88,7 +88,7 @@ def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, 'cumulative_forecasts.png'))
 
-
+class Forcast:
 def forecast(tmp_df, train, index_forecast, days_in_future):
     
     # Fit model with training data
