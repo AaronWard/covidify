@@ -24,7 +24,7 @@ from datetime import datetime, date, time
 #from covidify.sources import github, wiki
 
 # this is could be the best case, if we import aggregate root instead of github and wiki, as 
-from covidify import covid_data
+from covidify import data_root as covid_data 
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
 
@@ -45,11 +45,11 @@ if country == 'Global':
     country = None
 
 if source == 'JHU':
-    df = github.get()
+    df = covid_data.get_github_data()
     
 elif source == 'wiki':
     print('Apologies, the wikipedia source is not ready yet - getting github data')
-    df = github.get()
+    df = covid_data.get_wiki_data()
     
 
 
@@ -169,6 +169,9 @@ print('Calculating data for logarithmic plotting...')
 if not country:
     print('... top infected countries: {}'.format(top))
 
+
+class Top_Countries:
+    #changing def to class for reference, aggregate
 def get_top_countries(data):
     # Get top N infected countries
     tmp_df = data.copy()
@@ -179,6 +182,9 @@ TOP_N_COUNTRIES = get_top_countries(df)
 
 tmp_df = df[df.country.isin(TOP_N_COUNTRIES)].copy()
 
+
+
+class Days_Count:
 def get_day_counts(d, country):
     '''
     For each country, get the days of the spread since 500
