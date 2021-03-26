@@ -92,6 +92,7 @@ def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
 def forecast(tmp_df, train, index_forecast, days_in_future):
     
     # Fit model with training data
+    # this is test
     model = auto_arima(train, trace=False, error_action='ignore', suppress_warnings=True)
     model_fit = model.fit(train)
         
@@ -114,3 +115,4 @@ if __name__ == '__main__':
     train = trend_df[trend_df.date.isin(train_period)].cumulative_cases
     index_forecast = [x for x in range(train.index[-1]+1, train.index[-1] + days_in_future+1)]
     forecast(trend_df, train, index_forecast, days_in_future)
+
