@@ -21,7 +21,7 @@ class Github(DataInterface):
 
     def __init__(self):
         '''
-        This is a singleton class. To initialize an instance or to get and instance, use the
+        This is a singleton class. To initialize an instance or to get an instance, use the
         get_instance function
         '''
 
@@ -191,10 +191,3 @@ class Github(DataInterface):
     # use this function to fetch the data
     def get(self):
         return Github.data
-
-def main():
-    data=github()
-    df = data.get()
-    print(df.head())
-if __name__ == "__main__":
-    main()
