@@ -88,6 +88,19 @@ def create_save_file(col, country, graph_type):
         return '{}_{}.png'.format(col, graph_type)
 
 # Plot and save trendline graph
+
+#Using Builder to build and create paams to pass to 
+    #create_trend_line
+    #create_bar
+    #create_stacked_bar
+
+PARAMS = Director.construct_Vis()
+createTrenLine = PARAMS.paramParts[0]
+createBar = PARAMS.paramParts[1]
+createStackedBar = PARAMS.paramParts[2]
+
+
+#Inject createTrendLine into the parameters using a dictionary and parcing
 def create_trend_line(tmp_df, date_col, col, col2, col3, fig_title, country):
     fig, ax = plt.subplots(figsize=(20,10))
     tmp_df.groupby([date_col])[[col, col2, col3]].sum().plot(ax=ax, marker='o')
@@ -95,6 +108,7 @@ def create_trend_line(tmp_df, date_col, col, col2, col3, fig_title, country):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'trendline')))
 
+#Inject createBar into the parameters using a dictionary and parcing
 def create_bar(tmp_df, col, rgb, country):
     tmp_df = tmp_df.tail(120)
     fig, ax = plt.subplots(figsize=(20,10))
@@ -104,6 +118,7 @@ def create_bar(tmp_df, col, rgb, country):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'bar')))
 
+#Inject createStackedBar into the parameters using a dictionary and parcing
 def create_stacked_bar(tmp_df, col1, col2, fig_title, country):
     tmp_df = tmp_df.tail(120)
     tmp_df = tmp_df.set_index('date')
@@ -135,6 +150,7 @@ def log_plot(tmp, col, fig_title):
     fig = ax.get_figure()
     fig.savefig(os.path.join(image_dir, create_save_file(col, country=None, graph_type='log')))
     
+
 ##### Create Graphs #####
 print('Creating graphs...')
 print('... Time Series Trend Line')
