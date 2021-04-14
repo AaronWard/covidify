@@ -11,76 +11,83 @@ USER = getpass.getuser()
 #get the path of covidify in site-packages
 env = covidify.__path__[0]
 
-def check_output_folder(var, country_str,  msg):
-    '''
-    Check if the output folder is valid, if not
-    just default to dekstop 
-    '''
-    
-    if not var:
-        print('%sMESSAGE: %s' % (' '*5, msg))
-        if country_str == 'Global':
-            return os.path.join('/Users', USER, 'Desktop', 'covidify-output')
-        else:
-            return os.path.join('/Users', USER, 'Desktop', 'covidify-output-{}'.format(country_str))
-    else:
-        return var
-    
-def check_forecast_days(var, msg):
-    '''
-    Default days for forecasting
-    '''
-    if not var:
-        return DAYS_IN_FUTURE
-    else:
-        return var
+#Aggregate Pattern
+class CheckOutputFolder:
+	def check_output_folder(var, country_str,  msg):
+	    '''
+	    Check if the output folder is valid, if not
+	    just default to dekstop 
+	    '''
+	    
+	    if not var:
+	        print('%sMESSAGE: %s' % (' '*5, msg))
+	        if country_str == 'Global':
+	            return os.path.join('/Users', USER, 'Desktop', 'covidify-output')
+	        else:
+	            return os.path.join('/Users', USER, 'Desktop', 'covidify-output-{}'.format(country_str))
+	    else:
+	        return var
 
-def check_top_countries(var, msg):
-    '''
-    Check number of countries for the log plot
-    '''
-    
-    if not var:
-        print('%sMESSAGE: %s' % (' '*5, msg))
-        return LOG_TOP_N_COUNTRIES
-    else:
-        return var
-    
-def check_source_arg(var, msg):
-    '''
-    Check if the datasource is valid, if not then just
-    default to the john hopkin github repo
-    '''
+class CheckForcastDays:
+	def check_forecast_days(var, msg):
+	    '''
+	    Default days for forecasting
+	    '''
+	    if not var:
+	        return DAYS_IN_FUTURE
+	    else:
+	        return var
 
-    if var is None:
-        print('%sMESSAGE: %s' % (' '*5, msg))
-        return 'JHU'
-    elif 'wiki' in var or 'JHU' in var:
-        return var
-    else:
-        print('%sMESSAGE: %s' % (' '*5, 'invalid source given'))
-        sys.exit()
-        
-def check_country(country, msg):
-    '''
-    Do some regex work on passed country string
-    because multi word args are not supported
-    '''
-    
-    if not country:
-        print('%sMESSAGE: %s' % (' '*5, msg))
-        return 'Global'
-    else:
-        country_str = replace_arg_space(country[0])
-        return country_str
+class CheckTopCountries:
+	def check_top_countries(var, msg):
+	    '''
+	    Check number of countries for the log plot
+	    '''
+	    
+	    if not var:
+	        print('%sMESSAGE: %s' % (' '*5, msg))
+	        return LOG_TOP_N_COUNTRIES
+	    else:
+	        return var
 
-def check_list_flag(flag, msg):
+class CheckSourceArg:	    
+	def check_source_arg(var, msg):
+	    '''
+	    Check if the datasource is valid, if not then just
+	    default to the john hopkin github repo
+	    '''
 
-    if not flag:
-        print('%sMESSAGE: %s' % (' '*5, msg))
-        sys.exit(1)
-    else:
-        return flag
+	    if var is None:
+	        print('%sMESSAGE: %s' % (' '*5, msg))
+	        return 'JHU'
+	    elif 'wiki' in var or 'JHU' in var:
+	        return var
+	    else:
+	        print('%sMESSAGE: %s' % (' '*5, 'invalid source given'))
+	        sys.exit()
+
+class CheckCountry:        
+	def check_country(country, msg):
+	    '''
+	    Do some regex work on passed country string
+	    because multi word args are not supported
+	    '''
+	    
+	    if not country:
+	        print('%sMESSAGE: %s' % (' '*5, msg))
+	        return 'Global'
+	    else:
+	        country_str = replace_arg_space(country[0])
+	        return country_str
+
+class CheckListFlag:
+	def check_list_flag(flag, msg):
+
+	    if not flag:
+	        print('%sMESSAGE: %s' % (' '*5, msg))
+	        sys.exit(1)
+	    else:
+	        return flag
 
 ############################################################
 
@@ -115,11 +122,12 @@ def run(output, source, country, top, forecast):
 
 @click.option('--countries', help='List countries that have had confirmed cases.', is_flag=True)
 @cli.command()
-def list(countries):
-    '''
-    List all the countries that have confirmed cases.
-    '''
-    countries = check_list_flag(countries, '\033[1;31m Invalid flag passed. Make sure to use --countries\033[0;0m')
+class List:
+	def list(countries):
+	    '''
+	    List all the countries that have confirmed cases.
+	    '''
+	    countries = check_list_flag(countries, '\033[1;31m Invalid flag passed. Make sure to use --countries\033[0;0m')
 
     if countries:
         get_countries()
