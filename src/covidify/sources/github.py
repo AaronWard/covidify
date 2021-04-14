@@ -14,6 +14,9 @@ from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA, KEEP_COLS, NUMERIC_
 from data_sources_interface import DataInterface
 
 class Github(DataInterface):
+    '''
+    Do not create instances of this class. Instead use GithubProxy class
+    '''
 
     data = None
 
