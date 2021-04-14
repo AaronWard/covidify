@@ -48,6 +48,21 @@ elif source == 'wiki':
     print('Apologies, the wikipedia source is not ready yet - getting github data')
     df = github.get()
     
+#Single Pattern
+class SingletonPattern:
+   __instance = None
+   @staticmethod 
+   def retrieveInstance():
+      """ Static access method. """
+      if SingletonPattern.__instance == None:
+         SingletonPattern()
+      return SingletonPattern.__instance
+   def _init_(self):
+      """ Virtually private constructor. """
+      if SingletonPattern.__instance != None:
+         raise Exception("This is a singleton pattern class!")
+      else:
+         SingletonPattern.__instance = self
 
 
 ############ COUNTRY SELECTION ############
