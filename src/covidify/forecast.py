@@ -60,57 +60,66 @@ if not os.path.exists(image_dir):
     print('Creating reports folder...')
     os.system('mkdir -p ' + image_dir)
 
-
-def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
-    '''
-    Plot the values of train and test, the predictions from ARIMA and the shadowing
-    for the confidence interval.
-    
-    '''
-
-    # For shadowing
-    lower_series = pd.Series(confint[:, 0], index=index_forecast)
-    upper_series = pd.Series(confint[:, 1], index=index_forecast)
-    
-    print('... saving graph')
-    fig, ax = plt.subplots(figsize=FIG_SIZE)
-    plt.title('ARIMA - Prediction for cumalitive case counts {} days in the future'.format(days_in_future))    
-    plt.plot(tmp_df.cumulative_cases, label='Train',marker='o')
-    plt.plot(tmp_df.pred, label='Forecast', marker='o')
-    tmp_df.groupby('date')[['']].sum().plot(ax=ax)
-    plt.fill_between(index_forecast, 
-                     upper_series, 
-                     lower_series, 
-                     color='k', alpha=.1)
-    plt.ylabel('Infections')
-    plt.xlabel('Date')
-    fig.legend().set_visible(True)
-    fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, 'cumulative_forecasts.png'))
-
-
-def forecast(tmp_df, train, index_forecast, days_in_future):
-    
-    # Fit model with training data
-    model = auto_arima(train, trace=False, error_action='ignore', suppress_warnings=True)
-    model_fit = model.fit(train)
+class Forecast:
+    #Aggregate root for ref
+    __init__ (tmp_df, train, index_forecast, forecast, confint, days_in_future):
+        self.tmp_df = tmp_df
+        self.train = train
+        self.index_forecast = index_forecast
+        self.forecast = forecast
+        self.confint = confint
+        self.days_in_future = days_in_future
+        #please let me make another pull request adfasdfadfs
+    def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
+        '''
+        Plot the values of train and test, the predictions from ARIMA and the shadowing
+        for the confidence interval.
         
-    forecast, confint = model_fit.predict(n_periods=len(index_forecast), return_conf_int=True)
+        '''
 
-    forecast_df = pd.concat([tmp_df, pd.DataFrame(forecast, index = index_forecast, columns=['pred'])], axis=1, sort=False)
-    date_range = [d.strftime('%Y-%m-%d') for d in pd.date_range(train_start, forecast_end)]
-    forecast_df['date'] = pd.Series(date_range).astype(str)
-    forecast_df[''] = None # Dates get messed up, so need to use pandas plotting
+        # For shadowing
+        lower_series = pd.Series(confint[:, 0], index=index_forecast)
+        upper_series = pd.Series(confint[:, 1], index=index_forecast)
         
-    # Save Model and file
-    print('... saving file:', forecast_file)
-    forecast_df.to_csv(os.path.join(data_dir, forecast_file))
-        
-    plot_forecast(forecast_df, train, index_forecast, forecast, confint)
-    
-if __name__ == '__main__':
-    print('Training forecasting model...')
+        print('... saving graph')
+        fig, ax = plt.subplots(figsize=FIG_SIZE)
+        plt.title('ARIMA - Prediction for cumalitive case counts {} days in the future'.format(days_in_future))    
+        plt.plot(tmp_df.cumulative_cases, label='Train',marker='o')
+        plt.plot(tmp_df.pred, label='Forecast', marker='o')
+        tmp_df.groupby('date')[['']].sum().plot(ax=ax)
+        plt.fill_between(index_forecast, 
+                         upper_series, 
+                         lower_series, 
+                         color='k', alpha=.1)
+        plt.ylabel('Infections')
+        plt.xlabel('Date')
+        fig.legend().set_visible(True)
+        fig = ax.get_figure()
+        fig.savefig(os.path.join(image_dir, 'cumulative_forecasts.png'))
 
-    train = trend_df[trend_df.date.isin(train_period)].cumulative_cases
-    index_forecast = [x for x in range(train.index[-1]+1, train.index[-1] + days_in_future+1)]
-    forecast(trend_df, train, index_forecast, days_in_future)
+
+    def forecast(tmp_df, train, index_forecast, days_in_future):
+        
+        # Fit model with training data
+        model = auto_arima(train, trace=False, error_action='ignore', suppress_warnings=True)
+        model_fit = model.fit(train)
+            
+        forecast, confint = model_fit.predict(n_periods=len(index_forecast), return_conf_int=True)
+
+        forecast_df = pd.concat([tmp_df, pd.DataFrame(forecast, index = index_forecast, columns=['pred'])], axis=1, sort=False)
+        date_range = [d.strftime('%Y-%m-%d') for d in pd.date_range(train_start, forecast_end)]
+        forecast_df['date'] = pd.Series(date_range).astype(str)
+        forecast_df[''] = None # Dates get messed up, so need to use pandas plotting
+            
+        # Save Model and file
+        print('... saving file:', forecast_file)
+        forecast_df.to_csv(os.path.join(data_dir, forecast_file))
+            
+        plot_forecast(forecast_df, train, index_forecast, forecast, confint)
+        
+    if __name__ == '__main__':
+        print('Training forecasting model...')
+
+        train = trend_df[trend_df.date.isin(train_period)].cumulative_cases
+        index_forecast = [x for x in range(train.index[-1]+1, train.index[-1] + days_in_future+1)]
+        forecast(trend_df, train, index_forecast, days_in_future)
