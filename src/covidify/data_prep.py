@@ -19,11 +19,12 @@ import numpy as np
 import pandas as pd
 from string import capwords
 from difflib import get_close_matches
-from datetime import datetime, date, time 
+from datetime import datetime, date, time
 
-from covidify.sources import github, wiki
+from covidify.sources.data_adapter import PandasDataAdapter
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
+
 
 
 args = docopt.docopt(__doc__)
@@ -34,6 +35,9 @@ top = int(args['--top'])
 
 
 ############ DATA SELECTION ############
+#Initialize an instance of the adapter
+github_data = PandasDataAdapter()
+
 
 if '_' in country:
     country = replace_arg_score(country)
@@ -42,22 +46,22 @@ if country == 'Global':
     country = None
 
 if source == 'JHU':
-    df = github.get()
-    
+    df = github_data.get()
+
 elif source == 'wiki':
     print('Apologies, the wikipedia source is not ready yet - getting github data')
-    df = github.get()
-    
+    df = github_data.get()
+
 
 
 ############ COUNTRY SELECTION ############
 
 def get_similar_countries(c, country_list):
     pos_countries = get_close_matches(c, country_list)
-    
+
     if len(pos_countries) > 0:
         print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
-        
+
         #Only delete if its a covidify generated folder
         if 'Desktop/covidify-output-' in out:
             os.system('rm -rf ' + out)
@@ -67,13 +71,13 @@ def get_similar_countries(c, country_list):
         if 'Desktop/covidify-output-' in out:
             os.system('rm -rf ' + out)
         sys.exit(1)
-        
+
 def check_specified_country(df, country):
     '''
     let user filter reports by country, if not found
     then give a option if the string is similar
     '''
-    
+
     # Get all unique countries in the data
     country_list = list(map(lambda x:x.lower().strip(), set(df.country.values)))
 
@@ -85,7 +89,7 @@ def check_specified_country(df, country):
         # give similar option if similarity found
         if country.lower() not in country_list:
             get_similar_countries(country, country_list)
-            
+
         else:
             #Return filtered dataframe
             print('... filtering data for', country)
@@ -170,9 +174,9 @@ def get_top_countries(data):
     # Get top N infected countries
     tmp_df = data.copy()
     tmp_df = tmp_df[tmp_df.file_date == df.file_date.max()]
-    return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index 
-        
-TOP_N_COUNTRIES = get_top_countries(df)    
+    return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index
+
+TOP_N_COUNTRIES = get_top_countries(df)
 
 tmp_df = df[df.country.isin(TOP_N_COUNTRIES)].copy()
 
@@ -188,7 +192,7 @@ def get_day_counts(d, country):
                                                 'deaths': 'sum'})
     result_df['date'] = data['file_date'].unique()
     result_df['country'] = country
-        
+
     result_df = result_df[result_df.confirmed >= 500]
     result_df.insert(loc=0, column='day', value=np.arange(len(result_df)))
     return result_df
@@ -196,10 +200,10 @@ def get_day_counts(d, country):
 df_list = []
 
 for country in TOP_N_COUNTRIES:
-    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) & 
+    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) &
                                                  (tmp_df.country == country)].confirmed.sum()))
     df_list.append(get_day_counts(tmp_df[tmp_df.country == country], country))
-    
+
 log_df = pd.concat(df_list, axis=0, ignore_index=True)
 
 
