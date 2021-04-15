@@ -86,6 +86,10 @@ if __name__ == '__main__':
     index_forecast = [x for x in range(train.index[-1]+1, train.index[-1] + days_in_future+1)]
     forecast(trend_df, train, index_forecast, days_in_future)
 
+# Using the Builder pattern makes sense only when your products
+# are quite complex and require extensive configuration. The
+# following two products are related, although they don't have
+# a common interface.
 
 class ForcastBuilder(Createbuilder):
     def __init__(self):
