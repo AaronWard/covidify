@@ -14,6 +14,9 @@ from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA, KEEP_COLS, NUMERIC_
 from data_sources_interface import DataInterface
 
 class Github(DataInterface):
+    '''
+    Grabs Covid data from John Hopkins University Github repo, and stores data as a CSV
+    '''
 
     data_sheet = None
 

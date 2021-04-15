@@ -14,7 +14,10 @@ from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA, KEEP_COLS, NUMERIC_
 from data_sources_interface import DataInterface
 from github import Github
 
-class DataAdapter(DataInterface):
+class PandasDataAdapter(DataInterface):
+    '''
+    Transforms the CSV data sheets into a pandas dataframe and cleans the data
+    '''
 
     def __init__(self):
         pass
@@ -144,3 +147,4 @@ class DataAdapter(DataInterface):
         github = Github()
         cleaned_sheets = clean_sheet_names(github.get())
         df = get_data(cleaned_sheets)
+        return df
