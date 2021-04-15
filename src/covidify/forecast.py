@@ -26,6 +26,8 @@ from pmdarima.arima import auto_arima
 from datetime import datetime, date, time 
 from sklearn.metrics import mean_squared_error
 from covidify.config import PERC_SPLIT, FIG_SIZE
+from abc import ABCMeta, abstractclassmethod
+
 
 font = {'weight' : 'bold',
         'size'   : 22}
@@ -61,7 +63,35 @@ if not os.path.exists(image_dir):
     os.system('mkdir -p ' + image_dir)
 
 
-def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
+
+
+
+class Createbuilder(metaclass = ABCMeta):
+    @staticmethod
+    def plot_forecast():
+        #plot - forecast into file
+
+    @staticmethod
+    def forecast():
+        #saving data
+    
+
+
+
+
+if __name__ == '__main__':
+    print('Training forecasting model...')
+
+    train = trend_df[trend_df.date.isin(train_period)].cumulative_cases
+    index_forecast = [x for x in range(train.index[-1]+1, train.index[-1] + days_in_future+1)]
+    forecast(trend_df, train, index_forecast, days_in_future)
+
+
+class ForcastBuilder(Createbuilder):
+    def __init__(self):
+        self.result = Result()
+
+    def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
     '''
     Plot the values of train and test, the predictions from ARIMA and the shadowing
     for the confidence interval.
@@ -89,7 +119,7 @@ def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
     fig.savefig(os.path.join(image_dir, 'cumulative_forecasts.png'))
 
 
-def forecast(tmp_df, train, index_forecast, days_in_future):
+    def forecast(tmp_df, train, index_forecast, days_in_future):
     
     # Fit model with training data
     model = auto_arima(train, trace=False, error_action='ignore', suppress_warnings=True)
@@ -108,9 +138,18 @@ def forecast(tmp_df, train, index_forecast, days_in_future):
         
     plot_forecast(forecast_df, train, index_forecast, forecast, confint)
     
-if __name__ == '__main__':
-    print('Training forecasting model...')
 
-    train = trend_df[trend_df.date.isin(train_period)].cumulative_cases
-    index_forecast = [x for x in range(train.index[-1]+1, train.index[-1] + days_in_future+1)]
-    forecast(trend_df, train, index_forecast, days_in_future)
+
+class Result():
+    def __init__(self):
+        #this will reset
+    self.forecast = pd.DataFrame()
+
+
+class Main():
+    @staticmethod
+    def construct();
+        return ForcastBuilder().
+        /forecast(pd.DataFrame(),train, index_forecast, days_in_future)
+
+Result = Main.construct():
