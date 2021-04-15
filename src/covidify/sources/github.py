@@ -166,8 +166,3 @@ def get():
     
     #Clean the column names
     return df
-
-Director()
-{
-    #fetches the builder
-}
