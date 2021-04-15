@@ -23,11 +23,13 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 from covidify.utils.utils import replace_arg_score
 
+
 # plt settings
 font = {'weight' : 'bold',
         'size'   : 22}
 plt.rc('font', **font)
 plt.style.use('ggplot')
+
  
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
