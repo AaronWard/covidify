@@ -21,7 +21,7 @@ from string import capwords
 from difflib import get_close_matches
 from datetime import datetime, date, time 
 
-from covidify.sources import github, wiki
+from covidify.sources import gitHub_GHU_Builder
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
 
@@ -228,3 +228,8 @@ log_df.astype(str).to_csv(os.path.join(save_dir, log_file_name))
 print('...', log_file_name)
 
 print('Done!')
+
+
+
+Class IBuilder(metaclass = ABCMeta)
+    df = github.get()

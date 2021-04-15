@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from __future__ import print_function
 import pandas as pd
 import re
@@ -12,7 +11,9 @@ from dateutil.parser import parse
 from datetime import datetime, date, time 
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA, KEEP_COLS, NUMERIC_COLS
 
-def clean_sheet_names(new_ranges):
+class gitHub_GHU_Builder(githubSourceBuilder)
+{
+    def clean_sheet_names(new_ranges):
     # Remove all sheets that dont have a numeric header
     return [x for x in new_ranges if re.search(r'\d', x)]
 
@@ -166,8 +167,4 @@ def get():
     
     #Clean the column names
     return df
-
-Director()
-{
-    #fetches the builder
 }
