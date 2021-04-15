@@ -49,7 +49,21 @@ elif source == 'wiki':
     df = github.get()
     
 
+def total_get_new_cases(tmp, col):
+    diff_list = []
+    tmp_df_list = []
+    df = tmp.copy()
 
+    for i, day in enumerate(df.sort_values('file_date').file_date.unique()):
+        tmp_df = df[df.file_date == day]
+        tmp_df_list.append(tmp_df[col].sum())
+
+        if i == 0:
+            diff_list.append(tmp_df[col].sum())
+        else:
+            diff_list.append(tmp_df[col].sum() - tmp_df_list[i-1])
+
+    return diff_list
 ############ COUNTRY SELECTION ############
 
 def get_similar_countries(c, country_list):
@@ -112,7 +126,7 @@ current_date = str(datetime.date(datetime.now()))
 Get the difference of the sum totals for each
 date and plot them on a trendline graph
 '''
-def get_new_cases(tmp, col):
+def total_get_new_cases(tmp, col):
     diff_list = []
     tmp_df_list = []
     df = tmp.copy()
@@ -136,6 +150,35 @@ def get_exp_moving_average(tmp, col):
     df = tmp.copy()
     return df[col].ewm(span=2, adjust=True).mean()
 
+def filter_data_by_country(df, country):
+    '''
+    let user filter reports by country, if not found
+    then give a option if the string is similar
+    '''
+    
+    # Get all unique countries in the data
+    country_list = list(map(lambda x:x.lower().strip(), set(df.country.values)))
+
+    if country:
+        print('Country specified!')
+        if country.lower() == 'Mainland China': #Mainland china and china doesn't come up as similar
+            print(country, 'was not listed. did you mean China?')
+            sys.exit(1)
+        # give similar option if similarity found
+        if country.lower() not in country_list:
+            get_similar_countries(country, country_list)
+            
+        else:
+            #Return filtered dataframe
+            print('... filtering data for', country)
+            if len(country) == 2:
+                df = df[df.country == country.upper()]
+            else:
+                df = df[df.country == capwords(country)]
+            return df
+    else:
+        print('... No specific country specified')
+        return df
 
 print('... Calculating dataframe for new cases')
 daily_cases_df = pd.DataFrame([])
