@@ -215,33 +215,7 @@ if not os.path.exists(save_dir):
 print('Creating subdirectory for data...')
 print('...', save_dir)
 
-# class Report():
-#     """
-#     """
-#     def __init__(self, data, report_type, save_dir) -> None:
-#         self.df = data
-#         self.save_dir = save_dir
-#         self.report_type = report_type
-#         self.filename = self.create_filename()
-
-#     def create_filename(self):
-#         self.filename = '{}_{}.csv'.format(self.report_type, datetime.date(datetime.now()))
-
-#     def save_file(self):
-#         self.create_filename()
-#         self.df.astype(str).to_csv(os.path.join(self.save_dir, self.filename))
-#         print('...', self.filename)
-
 # print('Saving...')
-
-# agg_report = Report(data=df, report_type="agg", save_dir=save_dir)
-# agg_report.save_file()
-
-# trend_report = Report(data=daily_cases_df, report_type="trend", save_dir=save_dir)
-# trend_report.save_file()
-
-# log_report = Report(data=log_df, report_type="log", save_dir=save_dir)
-# log_report.save_file()
 
 # csv_file_name = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
 # df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
@@ -339,3 +313,16 @@ create_report(AggReportCreator(df=df))
 create_report(TrendReportCreator(df=daily_cases_df))
 create_report(LogReportCreator(df=log_df))
 print('Done!')
+
+class Adaptee:
+    def save_json(self):
+        self.filename = 'agg_data_{}.json'.format(datetime.date(datetime.now()))
+        self.df.astype(str).to_json(os.path.join(save_dir, self.filename))
+        print('...', self.filename)
+
+class Adapter(AggReport, Adaptee):
+    def save_csv(self):
+        self.save_json()
+
+aggReportJsonAdapter = Adapter(df=df)
+aggReportJsonAdapter.save_csv() # but saves as json
