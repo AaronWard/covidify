@@ -157,7 +157,6 @@ def get():
             sys.exit(1)
 
     sheets = os.listdir(DATA)
-    
     # Clean the result to the sheet tabs we want
     print('Getting sheets...')
     cleaned_sheets = clean_sheet_names(sheets)

@@ -3,7 +3,6 @@ data_prep.py - Extract data from date range and create models
 Usage:
     data_prep.py [options]
     data_prep.py -h | --help
-
 Options:
     -h --help             Show this message.
     --output_folder=OUT   Output folder for the data and reports to be saved.
@@ -21,7 +20,7 @@ from string import capwords
 from difflib import get_close_matches
 from datetime import datetime, date, time 
 
-from covidify.sources import github, wiki
+from covidify.covidify_data import DataStore
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
 
@@ -42,11 +41,13 @@ if country == 'Global':
     country = None
 
 if source == 'JHU':
-    df = github.get()
+    datastore = DataStore()
+    df = datastore.jhu_sources()
     
 elif source == 'wiki':
     print('Apologies, the wikipedia source is not ready yet - getting github data')
-    df = github.get()
+    datastore = DataStore()
+    df = datastore.wiki_sources()
     
 
 
@@ -151,7 +152,6 @@ daily_cases_df.insert(loc=0, column='day', value=np.arange(0, len(daily_cases_df
 Calculate the number of people that are ACTUALLY infected on a given day
 currently infected = sum of people date - (recovored + died)
 ex: 5 = 10 - (4 - 1)
-
 '''
 current_infected = pd.DataFrame([])
 current_infected['currently_infected'] = (df.groupby('file_date').confirmed.sum() - (df.groupby('file_date').deaths.sum() + df.groupby('file_date').recovered.sum()))
