@@ -3,7 +3,7 @@ from convidify.sources import github, wiki
 """
 global values
 """
-class DataStore():
+class DataStoreBridge():
     def jhu_sources(self):
         return github.get()
 
