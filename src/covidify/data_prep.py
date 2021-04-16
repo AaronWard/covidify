@@ -98,16 +98,6 @@ def check_specified_country(df, country):
         print('... No specific country specified')
         return df
 
-df = check_specified_country(df, country)
-
-############ DAILY CASES ############
-
-# sheets need to be sorted by date value
-# print('Sorting by datetime...')
-df = df.sort_values('datetime')
-
-current_date = str(datetime.date(datetime.now()))
-
 '''
 Get the difference of the sum totals for each
 date and plot them on a trendline graph
@@ -137,6 +127,41 @@ def get_exp_moving_average(tmp, col):
     return df[col].ewm(span=2, adjust=True).mean()
 
 
+def get_top_countries(data):
+    # Get top N infected countries
+    tmp_df = data.copy()
+    tmp_df = tmp_df[tmp_df.file_date == df.file_date.max()]
+    return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index 
+
+def get_day_counts(d, country):
+    '''
+    For each country, get the days of the spread since 500
+    cases
+    '''
+    data = d.copy()
+    result_df = pd.DataFrame([])
+    result_df = data.groupby(['file_date']).agg({'confirmed': 'sum',
+                                                'recovered': 'sum',
+                                                'deaths': 'sum'})
+    result_df['date'] = data['file_date'].unique()
+    result_df['country'] = country
+        
+    result_df = result_df[result_df.confirmed >= 500]
+    result_df.insert(loc=0, column='day', value=np.arange(len(result_df)))
+    return result_df
+
+#### START SCRIPT ####
+
+df = check_specified_country(df, country)
+
+############ DAILY CASES ############
+
+# sheets need to be sorted by date value
+# print('Sorting by datetime...')
+df = df.sort_values('datetime')
+
+current_date = str(datetime.date(datetime.now()))
+
 print('... Calculating dataframe for new cases')
 daily_cases_df = pd.DataFrame([])
 daily_cases_df['date'] = df.file_date.unique()
@@ -163,45 +188,21 @@ daily_cases_df = pd.merge(daily_cases_df, current_infected, how='outer', on='dat
 ############ LOG DATA ############
 
 print('Calculating data for logarithmic plotting...')
+
 if not country:
     print('... top infected countries: {}'.format(top))
 
-def get_top_countries(data):
-    # Get top N infected countries
-    tmp_df = data.copy()
-    tmp_df = tmp_df[tmp_df.file_date == df.file_date.max()]
-    return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index 
-        
 TOP_N_COUNTRIES = get_top_countries(df)    
 
 tmp_df = df[df.country.isin(TOP_N_COUNTRIES)].copy()
 
-def get_day_counts(d, country):
-    '''
-    For each country, get the days of the spread since 500
-    cases
-    '''
-    data = d.copy()
-    result_df = pd.DataFrame([])
-    result_df = data.groupby(['file_date']).agg({'confirmed': 'sum',
-                                                'recovered': 'sum',
-                                                'deaths': 'sum'})
-    result_df['date'] = data['file_date'].unique()
-    result_df['country'] = country
-        
-    result_df = result_df[result_df.confirmed >= 500]
-    result_df.insert(loc=0, column='day', value=np.arange(len(result_df)))
-    return result_df
-
 df_list = []
 
 for country in TOP_N_COUNTRIES:
-    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) & 
-                                                 (tmp_df.country == country)].confirmed.sum()))
+    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) & (tmp_df.country == country)].confirmed.sum()))
     df_list.append(get_day_counts(tmp_df[tmp_df.country == country], country))
     
 log_df = pd.concat(df_list, axis=0, ignore_index=True)
-
 
 ############ SAVE DATA ############
 #Create date of extraction folder
@@ -214,17 +215,127 @@ if not os.path.exists(save_dir):
 print('Creating subdirectory for data...')
 print('...', save_dir)
 
+# class Report():
+#     """
+#     """
+#     def __init__(self, data, report_type, save_dir) -> None:
+#         self.df = data
+#         self.save_dir = save_dir
+#         self.report_type = report_type
+#         self.filename = self.create_filename()
+
+#     def create_filename(self):
+#         self.filename = '{}_{}.csv'.format(self.report_type, datetime.date(datetime.now()))
+
+#     def save_file(self):
+#         self.create_filename()
+#         self.df.astype(str).to_csv(os.path.join(self.save_dir, self.filename))
+#         print('...', self.filename)
+
+# print('Saving...')
+
+# agg_report = Report(data=df, report_type="agg", save_dir=save_dir)
+# agg_report.save_file()
+
+# trend_report = Report(data=daily_cases_df, report_type="trend", save_dir=save_dir)
+# trend_report.save_file()
+
+# log_report = Report(data=log_df, report_type="log", save_dir=save_dir)
+# log_report.save_file()
+
+# csv_file_name = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
+# df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
+# print('...', csv_file_name)
+
+# daily_cases_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
+# daily_cases_df.astype(str).to_csv(os.path.join(save_dir, daily_cases_file_name))
+# print('...', daily_cases_file_name)
+
+# log_file_name = 'log_{}.csv'.format(datetime.date(datetime.now()))
+# log_df.astype(str).to_csv(os.path.join(save_dir, log_file_name))
+# print('...', log_file_name)
+
+# print('Done!')
+
+from abc import ABC, abstractstaticmethod, abstractclassmethod, abstractmethod, abstractproperty
+
+class ReportCreator(ABC):
+
+    @abstractmethod
+    def create_report(self):
+        pass
+
+    def save_csv(self):
+        report = self.create_report()
+        report.save_csv()
+
+class LogReportCreator(ReportCreator):
+
+    def __init__(self, df):
+        self.df = df
+
+    def create_report(self):
+        return LogReport(self.df)
+
+class TrendReportCreator(ReportCreator):
+
+    def __init__(self, df):
+        self.df = df
+
+    def create_report(self):
+        return TrendReport(self.df)
+
+class AggReportCreator(ReportCreator):
+
+    def __init__(self, df):
+        self.df = df
+
+    def create_report(self):
+        return AggReport(self.df)
+
+class Report(ABC):
+
+    @abstractmethod
+    def save_csv(self):
+        pass
+
+class LogReport(Report):
+
+    def __init__(self, df):
+        self.df = df
+
+    def save_csv(self):
+        self.filename = 'log_{}.csv'.format(datetime.date(datetime.now()))
+        self.df.astype(str).to_csv(os.path.join(save_dir, self.filename))
+        print('...', self.filename)
+
+class TrendReport(Report):
+
+    def __init__(self, df):
+        self.df = df
+
+    def save_csv(self):
+        self.filename = 'trend_{}.csv'.format(datetime.date(datetime.now()))
+        self.df.astype(str).to_csv(os.path.join(save_dir, self.filename))
+        print('...', self.filename)
+
+class AggReport(Report):
+
+    def __init__(self, df):
+        self.df = df
+
+    def save_csv(self):
+        self.filename = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
+        self.df.astype(str).to_csv(os.path.join(save_dir, self.filename))
+        print('...', self.filename)
+
+def create_report(creator: ReportCreator):
+    report = creator.create_report()
+    report.save_csv()
+
+
 print('Saving...')
-csv_file_name = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
-df.astype(str).to_csv(os.path.join(save_dir, csv_file_name))
-print('...', csv_file_name)
-
-daily_cases_file_name = 'trend_{}.csv'.format(datetime.date(datetime.now()))
-daily_cases_df.astype(str).to_csv(os.path.join(save_dir, daily_cases_file_name))
-print('...', daily_cases_file_name)
-
-log_file_name = 'log_{}.csv'.format(datetime.date(datetime.now()))
-log_df.astype(str).to_csv(os.path.join(save_dir, log_file_name))
-print('...', log_file_name)
-
+create_report(AggReportCreator(df=df))
+create_report(TrendReportCreator(df=daily_cases_df))
+create_report(LogReportCreator(df=log_df))
 print('Done!')
