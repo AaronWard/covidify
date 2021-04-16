@@ -20,7 +20,7 @@ from string import capwords
 from difflib import get_close_matches
 from datetime import datetime, date, time 
 
-from covidify.sources import github, wiki
+from covidify.covidify_data import DataStore
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
 
