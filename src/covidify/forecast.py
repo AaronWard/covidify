@@ -62,7 +62,7 @@ if not os.path.exists(image_dir):
 
 
 
-class Implementation:
+class Abstraction:
     @staticmethod
     def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
         '''
@@ -74,8 +74,8 @@ class Implementation:
         ''' forecasting '''
 
 
-class Abstraction:
-    def __init__(self, implementation: Implementation) -> None:
+class Implementation:
+    def __init__(self, implementation) -> None:
         self.implementation = implementation
 
     def plot_forecast(tmp_df, train, index_forecast, forecast, confint):
