@@ -182,3 +182,4 @@ class TerminalDisplay(IObserver):
         self.check.valid_source_arg()
         self.check.valid_country()
         self.check.valid_list_flag()
+        
