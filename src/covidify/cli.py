@@ -105,10 +105,13 @@ def run(output, source, country, top, forecast):
     
     #Do checks on args
     country_str = check_country(country, '\033[1;31m No country specified, defaulting to global cases \033[0;0m')    
-    output   = check_output_folder(output, country_str, '\033[1;31m No output directory given, defaulting to /Users/' + USER + '/Desktop/ \033[0;0m')
-    source   = check_source_arg(source, '\033[1;31m No source given, defaulting to John Hopkin CSSE github repo \033[0;0m')
-    top      = check_top_countries(top, '\033[1;31m No top countries given, defaulting to top ' + str(LOG_TOP_N_COUNTRIES) + ' \033[0;0m')
+    output   = check_output_folder(output, country_str, '\033[1;31m No output directory given, defaulting to /Users/' + USER + '/Desktop/ \033[0;0m')    
+    source   = check_source_arg(source, '\033[1;31m No source given, defaulting to John Hopkin CSSE github repo \033[0;0m')    
+    top      = check_top_countries(top, '\033[1;31m No top countries given, defaulting to top ' + str(LOG_TOP_N_COUNTRIES) + ' \033[0;0m')    
     forecast = check_forecast_days(forecast, '\033[1;31m No days for forecasting given, defaulting to ' + str(DAYS_IN_FUTURE) + ' \033[0;0m')
+    
+    check_object = [country_str, output, source, top, forecast, list.countries]
+    Checks.add(check_object)
     
     os.system(env + SCRIPT + ' ' + env + ' ' + output + ' ' + source + ' ' + country_str + ' ' + str(top) + ' ' + str(forecast))
 
@@ -123,3 +126,59 @@ def list(countries):
 
     if countries:
         get_countries()
+
+class ISubject:
+    @staticmethod
+    def add(self, observer):
+        ""
+
+    @staticmethod
+    def notify(self):
+        ""
+
+class Checks(ISubject):
+    observers = []
+    country_str = ""
+
+    def add(self, observer):
+        self.observers.add(observer)
+
+    def notify(self):
+        for observer in observers:
+            observer.update()
+
+    def valid_output_folder(self):
+        print("Valid output folder")
+        
+    def valid_forecast_days(self):
+        print("Valid days for forecast")
+
+    def valid_top_countries(self):
+        print("Valid number of countries for log plot")
+        
+    def valid_source_arg(self):
+        print("Valid data source")
+            
+    def valid_country(self):
+        print("Valid country")
+
+    def valid_list_flag(self):
+        print("Valid flag")
+
+class IObserver:
+    @staticmethod
+    def update(self):
+        ""
+
+class TerminalDisplay(IObserver):    
+    check = Checks()
+    def __init__(self, check : Checks):
+        self.check = check
+    
+    def update(self):
+        self.check.valid_output_folder()
+        self.check.valid_forecast_days()
+        self.check.valid_top_countries()
+        self.check.valid_source_arg()
+        self.check.valid_country()
+        self.check.valid_list_flag()
