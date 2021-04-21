@@ -167,3 +167,43 @@ def get():
     
     #Clean the column names
     return df
+
+    # ------------------------------------------------------------------------------------------------------
+    # import unittest
+    # class TestGraphTypes(unittest.TestCase)
+
+    # image_dir = './images/'
+    # if not os.path.exists(image_dir):
+    # os.mkdir(image_dir)
+    # COUNTRY = 'Uk'
+
+    # data_dir  = './data/' + str(datetime.date(datetime.now()))
+    # trend_file  = 'trend_{}.csv'.format(datetime.date(datetime.now()))
+    # agg_file  = 'agg_data_{}.parquet.gzip'.format(datetime.date(datetime.now()))
+    # daily_df = pd.read_csv(os.path.join(data_dir, trend_file))
+    # agg_df = pd.read_parquet(os.path.join(data_dir, agg_file))
+    # new_df = pd.DataFrame([])
+    # new_df['date'] = daily_df['date']
+    # new_df['confirmed_cases'] = agg_df.groupby(['date']).confirmed.sum().values - daily_df.new_confirmed_cases
+    # new_df['new_confirmed_cases'] = daily_df.new_confirmed_cases
+    # create_stacked_bar(new_df, 'new_confirmed_cases', 'confirmed_cases', "Stacked bar of confirmed and new cases by day", COUNTRY)
+    # create_trend_line(agg_df, 'confirmed', 'deaths', 'recovered', 'Accumalitive trend', COUNTRY)
+    # daily_figures_cols = ['new_confirmed_cases', 'new_deaths', 'new_recoveries', 'currently_infected']
+    # for col, rgb in zip(daily_figures_cols, ['tomato', 'lightblue', 'mediumpurple', 'green']):
+    #     create_bar(daily_df, col, rgb, COUNTRY)
+
+
+    # def get_image_types(path):
+    #     # get all the possible types of images in
+    #     # the passed directory path
+    #     types = []
+    #     for fn in glob.glob(os.path.join(path, '*.png')):
+    #         types.append(fn.split('_',)[-1].split('.')[0])
+    #     return types
+
+    # image_types = []
+    # image_types = get_image_types(image_dir)
+
+    # def test_types(self):
+    #     expected = ['bar', 'trendline', 'bar']
+    #     self.assertEqual(expected, image_types)
