@@ -174,6 +174,8 @@ workbook_writer = pd.ExcelWriter(os.path.join(reports_dir, report), engine='xlsx
 daily_df.to_excel(workbook_writer, sheet_name='daily figures')  
 workbook = workbook_writer.book
 
+#iteravive design pattern implemented
+
 def get_image_types(path):
     '''
     get all the possible types of images in
@@ -183,7 +185,14 @@ def get_image_types(path):
     for fn in glob.glob(os.path.join(path, '*.png')):
         types.append(fn.split('_',)[-1].split('.')[0])
     
-    return types
+    yield types
+image_types = get_image_types(image_dir)
+
+padding = 1 # Set padding for images in spreadsheet
+for types in set(image_types):
+    print('... reading images for:', types)
+    type_dict = read_images(image_dir, types)
+        
 
 # Get all images for each type
 def read_images(path, graph_type):
