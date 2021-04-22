@@ -22,13 +22,14 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 from covidify.utils.utils import replace_arg_score
+import abc
 
 # plt settings
 font = {'weight' : 'bold',
         'size'   : 22}
 plt.rc('font', **font)
 plt.style.use('ggplot')
- 
+
 args = docopt.docopt(__doc__)
 out = args['--output_folder']
 country = args['--country']
@@ -41,19 +42,15 @@ if '_' in country:
 if country == 'Global':
     country = None
 
-#change report name if country specified
-def create_report_name(country):
-    if country:
-        return '{}_report_{}.xlsx'.format(country, datetime.date(datetime.now()))
-    else:
-        return 'report_{}.xlsx'.format(datetime.date(datetime.now()))
+#Create instance of Country class
+context_country = Country(country)
 
 # Dynamic parameters
 data_dir  = os.path.join(out, 'data', str(datetime.date(datetime.now())))
 agg_file  = 'agg_data_{}.csv'.format(datetime.date(datetime.now()))
 trend_file  = 'trend_{}.csv'.format(datetime.date(datetime.now()))
 log_file  = 'log_{}.csv'.format(datetime.date(datetime.now()))
-report  = create_report_name(country)
+report  = context_country.create_report_name(country)
 
 
 # import data
@@ -75,54 +72,123 @@ for col in ['confirmed', 'deaths', 'recovered']:
     agg_df[col] = agg_df[col].replace('', 0).astype(int)
 
 
-##### Define Graphs #####
-#Change titles and saved file names if country
-#is specified
-def create_title(fig_title, country):
-    if country:
+
+class State(metaclass=abc.ABCMeta):
+'''
+State interface
+'''
+    def __init__(self):
+        pass
+
+    #Creates title used for graphs
+    @abc.abstractmethod
+    def create_title(self):
+        pass
+
+    #Creates safe file name for graphs
+    @abc.abstractmethod
+    def create_save_file(self):
+        pass
+
+    #Creates report name
+    @abc.abstractmethod
+    def create_report_name(self):
+        pass
+
+
+
+class CountryGivenState(State):
+'''
+State to be used if user gives a country
+'''
+    def __init__(self):
+        pass
+
+    def create_title(self, fig_title, country):
         return fig_title + ' for ' + country
-    else:
-        return fig_title
-    
-def create_save_file(col, country, graph_type):
-    if country:
+
+    def create_save_file(self, col, country, graph_type):
         return '{}_{}_{}.png'.format(country, col, graph_type)
-    else:
-        return '{}_{}.png'.format(col, graph_type)
+
+    def create_report_name(self, country):
+        return '{}_report_{}.xlsx'.format(country, datetime.date(datetime.now()))
+
+class GlobalCountryState(State):
+'''
+State to be used if no country was specifed and in that case we include all countries
+'''
+
+    def __init__(self):
+        pass
+
+    def create_title(self, fig_title, country):
+        return fig_title
+
+    def create_save_file(self, col, country, graph_type):
+        return '{}_{}_{}.png'.format(col, graph_type)
+
+    def create_report_name(self, country):
+        return 'report_{}.xlsx'.format(datetime.date(datetime.now()))
+
+class Country:
+'''
+Context class for the different states
+This class should be the one that is instantied and called upon
+'''
+    def __init__(self, country):
+        if country:
+            self._state = CountryGivenState()
+        else
+            self._state = GlobalCountryState()
+
+    def create_title(self, fig_title, country):
+        self._state.create_title(self, fig_title, country)
+
+    def create_save_file(self, col, country, graph_type):
+        self._state.create_save_file(self, col, country, graph_type)
+
+    def create_report_name(self, country):
+        self._state.create_report_name(self, country)
+
+    def change_state(self, country):
+        if country:
+            self._state = CountryGivenState()
+        else
+            self._state = GlobalCountryState()
 
 # Plot and save trendline graph
 def create_trend_line(tmp_df, date_col, col, col2, col3, fig_title, country):
     fig, ax = plt.subplots(figsize=(20,10))
     tmp_df.groupby([date_col])[[col, col2, col3]].sum().plot(ax=ax, marker='o')
-    ax.set_title(create_title(fig_title, country))
+    ax.set_title(context_country.create_title(fig_title, country))
     fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'trendline')))
+    fig.savefig(os.path.join(image_dir, context_country.create_save_file(col, country, 'trendline')))
 
 def create_bar(tmp_df, col, rgb, country):
     tmp_df = tmp_df.tail(120)
     fig, ax = plt.subplots(figsize=(20,10))
     tmp = tmp_df.groupby(['date'])[[col]].sum()
-    ax.set_title(create_title(col, country))
+    ax.set_title(context_country.create_title(col, country))
     tmp.plot.bar(ax=ax, rot=90, color=rgb)
     fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, create_save_file(col, country, 'bar')))
+    fig.savefig(os.path.join(image_dir, context_country.create_save_file(col, country, 'bar')))
 
 def create_stacked_bar(tmp_df, col1, col2, fig_title, country):
     tmp_df = tmp_df.tail(120)
     tmp_df = tmp_df.set_index('date')
     fig, ax = plt.subplots(figsize=(20,10))
-    ax.set_title(create_title(fig_title, country))
+    ax.set_title(context_country.create_title(fig_title, country))
     tmp_df[[col2, col1]].plot.bar(ax=ax,
                                   rot=90,
                                   stacked=True)
     fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, create_save_file(col2, country, 'stacked_bar')))
+    fig.savefig(os.path.join(image_dir, context_country.create_save_file(col2, country, 'stacked_bar')))
 
 def log_plot(tmp, col, fig_title):
     '''
     Plot on a logarithmic scale for comparing
     countries infection rates
-    
+
     '''
     cm = plt.get_cmap('gist_rainbow')
     fig = plt.figure(figsize = (20,10))
@@ -136,8 +202,9 @@ def log_plot(tmp, col, fig_title):
         ax.set_yscale('log', basey=10)
     ax.set_title(fig_title)
     fig = ax.get_figure()
-    fig.savefig(os.path.join(image_dir, create_save_file(col, country=None, graph_type='log')))
-    
+    context_country.change_state(None)
+    fig.savefig(os.path.join(image_dir, context_country.create_save_file(col, country=, graph_type='log')))
+
 ##### Create Graphs #####
 print('Creating graphs...')
 print('... Time Series Trend Line')
@@ -171,7 +238,7 @@ print('Creating excel spreadsheet report...')
 workbook_writer = pd.ExcelWriter(os.path.join(reports_dir, report), engine='xlsxwriter')
 
 # Add daily summary to spreadsheet
-daily_df.to_excel(workbook_writer, sheet_name='daily figures')  
+daily_df.to_excel(workbook_writer, sheet_name='daily figures')
 workbook = workbook_writer.book
 
 def get_image_types(path):
@@ -182,14 +249,14 @@ def get_image_types(path):
     types = []
     for fn in glob.glob(os.path.join(path, '*.png')):
         types.append(fn.split('_',)[-1].split('.')[0])
-    
+
     return types
 
 # Get all images for each type
 def read_images(path, graph_type):
     image_list = []
     for fn in glob.glob(os.path.join(path, '*_{}.png'.format(graph_type))):
-        image_list.append(fn)    
+        image_list.append(fn)
     images = {graph_type : image_list}
     return dict(images)
 
@@ -199,13 +266,13 @@ padding = 1 # Set padding for images in spreadsheet
 for types in set(image_types):
     print('... reading images for:', types)
     type_dict = read_images(image_dir, types)
-    
+
     # Add image to the worksheet
     worksheet = workbook.add_worksheet(name='{}_graphs'.format(types))
     for image in type_dict[types]:
-        worksheet.insert_image('A' +str(padding), image) 
+        worksheet.insert_image('A' +str(padding), image)
         padding += 50
     padding = 1
-    
+
 workbook.close()
 print('Done!')
