@@ -19,8 +19,8 @@ import numpy as np
 import pandas as pd
 from string import capwords
 from difflib import get_close_matches
-from datetime import datetime, date, time 
-
+from datetime import datetime, date, time
+import abc
 from covidify.sources import github, wiki
 from covidify.config import REPO, TMP_FOLDER, TMP_GIT, DATA
 from covidify.utils.utils import replace_arg_score
@@ -43,41 +43,39 @@ if country == 'Global':
 
 if source == 'JHU':
     df = github.get()
-    
+
 elif source == 'wiki':
     print('Apologies, the wikipedia source is not ready yet - getting github data')
     df = github.get()
-    
+
 
 
 ############ COUNTRY SELECTION ############
 
-def get_similar_countries(c, country_list):
-    pos_countries = get_close_matches(c, country_list)
-    
-    if len(pos_countries) > 0:
-        print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
-        
-        #Only delete if its a covidify generated folder
-        if 'Desktop/covidify-output-' in out:
-            os.system('rm -rf ' + out)
-        sys.exit(1)
-    else:
-        print('\033[1;31m'+c, 'was not listed.\033[0;0m')
-        if 'Desktop/covidify-output-' in out:
-            os.system('rm -rf ' + out)
-        sys.exit(1)
-        
-def check_specified_country(df, country):
+class State (metaclass= abc.ABCMeta):
     '''
-    let user filter reports by country, if not found
-    then give a option if the string is similar
+    State interface
     '''
-    
-    # Get all unique countries in the data
-    country_list = list(map(lambda x:x.lower().strip(), set(df.country.values)))
 
-    if country:
+    def __init__(self):
+        pass
+
+    @abc.abstractmethod
+    def check_specified_country(self, df, country):
+        pass
+
+class CountryGivenState(State):
+    '''
+    State to be used if user gives a country
+    '''
+
+    def __init__(self):
+        pass
+
+    def check_specified_country(self, df, country):
+        # Get all unique countries in the data
+        country_list = list(map(lambda x:x.lower().strip(), set(df.country.values)))
+
         print('Country specified!')
         if country.lower() == 'Mainland China': #Mainland china and china doesn't come up as similar
             print(country, 'was not listed. did you mean China?')
@@ -85,7 +83,6 @@ def check_specified_country(df, country):
         # give similar option if similarity found
         if country.lower() not in country_list:
             get_similar_countries(country, country_list)
-            
         else:
             #Return filtered dataframe
             print('... filtering data for', country)
@@ -94,11 +91,53 @@ def check_specified_country(df, country):
             else:
                 df = df[df.country == capwords(country)]
             return df
-    else:
+
+    def get_similar_countries(c, country_list):
+        pos_countries = get_close_matches(c, country_list)
+
+        if len(pos_countries) > 0:
+            print('\033[1;31m'+c, 'was not listed. did you mean', pos_countries[0].capitalize() + '?\033[0;0m')
+
+            #Only delete if its a covidify generated folder
+            if 'Desktop/covidify-output-' in out:
+                os.system('rm -rf ' + out)
+            sys.exit(1)
+        else:
+            print('\033[1;31m'+c, 'was not listed.\033[0;0m')
+            if 'Desktop/covidify-output-' in out:
+                os.system('rm -rf ' + out)
+            sys.exit(1)
+
+class GlobalCountryState(State):
+    '''
+    State to be used if no country is given
+    '''
+
+    def __init__(self):
+        pass
+
+    def check_specified_country(self, df, country):
         print('... No specific country specified')
         return df
 
-df = check_specified_country(df, country)
+
+class Country:
+    '''
+    Context class for different states
+    This class should be the one that is instantiated and called upon
+    '''
+
+    def __init__(self, country):
+        if country:
+            self._state = CountryGivenState()
+        else:
+            self._state = GlobalCountryState()
+
+    def check_specified_country(self, df, country):
+        self._state.check_specified_country(df, country)
+
+context_country = Country(country)
+df = context_country.check_specified_country(df, country)
 
 ############ DAILY CASES ############
 
@@ -170,9 +209,9 @@ def get_top_countries(data):
     # Get top N infected countries
     tmp_df = data.copy()
     tmp_df = tmp_df[tmp_df.file_date == df.file_date.max()]
-    return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index 
-        
-TOP_N_COUNTRIES = get_top_countries(df)    
+    return tmp_df.groupby(['country']).agg({'confirmed': 'sum'}).sort_values('confirmed',ascending=False).head(top).index
+
+TOP_N_COUNTRIES = get_top_countries(df)
 
 tmp_df = df[df.country.isin(TOP_N_COUNTRIES)].copy()
 
@@ -188,7 +227,7 @@ def get_day_counts(d, country):
                                                 'deaths': 'sum'})
     result_df['date'] = data['file_date'].unique()
     result_df['country'] = country
-        
+
     result_df = result_df[result_df.confirmed >= 500]
     result_df.insert(loc=0, column='day', value=np.arange(len(result_df)))
     return result_df
@@ -196,10 +235,10 @@ def get_day_counts(d, country):
 df_list = []
 
 for country in TOP_N_COUNTRIES:
-    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) & 
+    print('   ...', country + ': ' +  str(tmp_df[(tmp_df.file_date == df.file_date.max()) &
                                                  (tmp_df.country == country)].confirmed.sum()))
     df_list.append(get_day_counts(tmp_df[tmp_df.country == country], country))
-    
+
 log_df = pd.concat(df_list, axis=0, ignore_index=True)
 
 
